@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# schex
+
+```{r echo=FALSE, results="hide", message=FALSE}
+library("badger")
+```
+
+```{r, echo = FALSE, results='asis'}
+cat(
+  badge_travis("SaskiaFreytag/schex"),
+	badge_coveralls("SaskiaFreytag/schex")
+)
+```
+
+The goal of schex is to provide easy plotting of hexagon cell representations
+of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
+
+## Installation
+
+You can install the development version of schex with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("SaskiaFreytag/schex")
+```
+
+
