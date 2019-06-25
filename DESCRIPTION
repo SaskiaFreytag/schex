@@ -1,0 +1,30 @@
+Package: schex
+Type: Package
+Title: Hexbin plots for single cell omics data
+Version: 0.1.0
+Author: Saskia Freytag
+Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
+Description: Builds hexbin plots for variables and dimension reduction stored
+    in single cell omics data such as SingleCellExperiment and SeuratObject.
+Depends: SingleCellExperiment,
+    Seurat,
+    ggplot2,
+    dplyr
+Imports: hexbin,
+            scater,
+            tidyr,
+            methods,
+            cluster
+Suggests: 
+    ggrepel,
+    igraph,
+    scran,
+    TENxPBMCData,
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
