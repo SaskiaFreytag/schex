@@ -7,14 +7,14 @@
 \alias{plot_hexbin_meta,Seurat-method}
 \title{Plot of meta data of single cell data in bivariate hexagon cells.}
 \usage{
-plot_hexbin_meta(sce, col, action, no = 1, title = NULL, xlab = NULL,
-  ylab = NULL)
+plot_hexbin_meta(sce, col, action, no = 1, colors = NULL,
+  title = NULL, xlab = NULL, ylab = NULL)
 
 \S4method{plot_hexbin_meta}{SingleCellExperiment}(sce, col, action,
-  no = 1, title = NULL, xlab = NULL, ylab = NULL)
+  no = 1, colors = NULL, title = NULL, xlab = NULL, ylab = NULL)
 
 \S4method{plot_hexbin_meta}{Seurat}(sce, col, action, no = 1,
-  title = NULL, xlab = NULL, ylab = NULL)
+  colors = NULL, title = NULL, xlab = NULL, ylab = NULL)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -30,6 +30,10 @@ binned  hexagon cells are to be summarized. Possible actions are
 
 \item{no}{An integer specifying which level to plot of the column. Only in
 effect when \code{action=prop}.}
+
+\item{colors}{A vector of strings specifying which colors to use for plotting
+the different levels in the selected column of the meta data. Only in
+effect when the selected \code{action="majority"}.}
 
 \item{title}{A string containing the title of the plot.}
 

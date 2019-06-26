@@ -132,7 +132,7 @@ plotting this.
 
 #### Calculate hexagon cell representation
 
-First, I will calculate the hexagon cell representation for each cell/nuclus for
+First, I will calculate the hexagon cell representation for each cell for
 a specified dimension reduction representation. I decide to use `nbins=40` which
 specifies that I divide my x range into 40 bins. Note that this might be a 
 parameter that you want to play around with depending on the number of cells/
@@ -146,7 +146,7 @@ tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, nbins = 40,
 
 #### Plot number of cells/nuclei in each hexagon cell
 
-First I plot how many cells/nuclei are in each hexagon cell. This should be
+First I plot how many cells are in each hexagon cell. This should be
 relatively even, otherwise change the `nbins` parameter in the previous 
 calculation.
 

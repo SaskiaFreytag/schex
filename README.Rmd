@@ -14,16 +14,10 @@ knitr::opts_chunk$set(
 ```
 # schex
 
-```{r echo=FALSE, results="hide", message=FALSE}
-library("badger")
-```
-
-```{r, echo = FALSE, results='asis'}
-cat(
-  badge_travis("SaskiaFreytag/schex"),
-	badge_coveralls("SaskiaFreytag/schex")
-)
-```
+<!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/SaskiaFreytag/schex.svg?branch=master)](https://travis-ci.org/SaskiaFreytag/schex)
+    [![Codecov test coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master)
+<!-- badges: end -->
 
 The goal of schex is to provide easy plotting of hexagon cell representations
 of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
