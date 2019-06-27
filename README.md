@@ -8,6 +8,8 @@ schex
 
 The goal of schex is to provide easy plotting of hexagon cell representations of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
 
+<img src="misc/schex_hex.png" style="width:25.0%" />
+
 Installation
 ------------
 
