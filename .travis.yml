@@ -3,5 +3,8 @@
 language: R
 r: bioc-release
 cache: packages
+before_install:
+  - Rscript -e 'install.packages("shiny", lib="/home/travis/R-bin/lib/R/library/")'
+  - Rscript -e 'install.packages("Seurat", lib="/home/travis/R-bin/lib/R/library/")'
 after_success:
     - Rscript -e 'covr::codecov()'
