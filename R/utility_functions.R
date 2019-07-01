@@ -44,7 +44,7 @@
     if (func_if) {
       stop(paste0("For action 'median' col needs to be numeric"))
     } else {
-      res <- tapply(x, cID, FUN = function(z) get_mode(z))
+      res <- tapply(x, cID, FUN = function(z) .get_mode(z))
       res <- as.numeric(res)
       return(res)
     }
@@ -85,7 +85,7 @@
   }
 }
 
-get_mode <- function(v){
+.get_mode <- function(v){
 
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
