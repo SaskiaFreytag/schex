@@ -44,7 +44,7 @@
     if (func_if) {
       stop(paste0("For action 'median' col needs to be numeric"))
     } else {
-      res <- tapply(x, cID, FUN = function(z) mode(z))
+      res <- tapply(x, cID, FUN = function(z) max(z))
       res <- as.numeric(res)
       return(res)
     }
