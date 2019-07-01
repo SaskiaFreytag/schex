@@ -17,9 +17,6 @@ Imports: hexbin,
             cluster
 Suggests: 
     ggrepel,
-    igraph,
-    scran,
-    TENxPBMCData,
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
