@@ -8,4 +8,13 @@ test_that("done computing", {
             dimension_reduction = "PCA")@misc$hexbin[[1]]), 80)
 })
 
+test_that("error dimension reduction", {
+  expect_error(make_hexbin(sce, 10,
+           dimension_reduction = "UMAP"))
+})
 
+test_that("error class", {
+  sce <- c(1,2,3)
+  expect_error(make_hexbin(sce, 10,
+          dimension_reduction = "PCA"))
+})
