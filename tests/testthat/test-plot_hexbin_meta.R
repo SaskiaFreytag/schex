@@ -50,3 +50,33 @@ test_that("correct plot_hexbin numeric", {
                "ggplot")
 })
 
+
+
+test_that("correct class prop sce", {
+  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+  expect_equal(class(plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1",
+      action="prop", no=1))[2], "ggplot")
+})
+
+test_that("correct class majority sce", {
+  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+  expect_equal(class(plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1",
+    action="majority"))[2], "ggplot")
+})
+
+test_that("error no hexbin sce", {
+  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  expect_error(plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1",
+    action="prop", no=1))
+})
+
+test_that("error wrong col sce", {
+  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+  expect_error(plot_hexbin_meta(pbmc_small, col="RNA_snn_res.2",
+          action="prop", no=1))
+})
+
+
