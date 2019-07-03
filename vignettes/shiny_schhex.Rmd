@@ -1,0 +1,102 @@
+---
+title: "Communicating results with schex and shinydashboard"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{shiny_schhex}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, eval=FALSE}
+library(shiny)
+library(Seurat)
+library(ggrepel)
+library(shinydashboard)
+library(schex)
+```
+
+## Setting up for a simple shiny dashboard
+
+Interrogating your data is often easier when being able to do it interactively
+on the fly. With the packages `shiny` and `shinydashboard` it is simple to create
+an interactive dashboard for exactly that purpose. Here we will work with the
+single cell data from peripheral mononuclear cells (PBMCs) stored in the `pbmc_small` 
+`Seurat` object (which can be found in the `Seurat` package.) 
+
+First we create a the hexagon cell representation and also make a data frame to
+store the position of cluster labels.
+
+```{r, eval=FALSE}
+pbmc_small <- make_hexbin(pbmc_small, nbins=10, dimension_reduction = "PCA")
+df_label <- make_hexbin_label(pbmc_small, "RNA_snn_res.0.8")
+```    
+
+## The shiny dashboard
+
+Now it is pretty easy to create a simple shiny dashboard which allows you
+to visualize the gene expression of every gene in the dataset. After 
+running the function, the application is initialized by running `app`.
+
+```{r, eval=FALSE}
+app <- shinyApp( 
+  server= function(input, output){
+  
+    output$all_genes <- renderUI({
+      selectInput(inputId = "gene", label = "Gene", 
+                  choices = rownames(pbmc_small))
+    })
+    
+    output$plot1 <- renderPlot({ 
+      plot_hexbin_meta(pbmc_small, "RNA_snn_res.0.8", action="majority",
+        title="Clusters") + guides(fill=FALSE) +
+        ggrepel::geom_label_repel(data=df_label, 
+        aes(x=x, y=y, label=label), colour="black",
+        label.size=NA, fill=NA)
+        
+    })
+      
+    output$plot2 <- renderPlot({ 
+      plot_hexbin_gene(pbmc_small, input$type, input$gene, action=input$action,
+        title=input$gene) 
+    })
+    
+    
+  },
+  ui= dashboardPage(skin = "purple",
+    dashboardHeader(),
+    dashboardSidebar(
+      uiOutput("all_genes"),
+      radioButtons("type", "Type of expression:",
+                   c("Raw" = "counts",
+                     "Logcounts" = "logcounts")),
+      radioButtons("action", "Summarize using:",
+                   c("Proportion not 0" = "prop_0",
+                     "Mean" = "mean",
+                     "Median" = "median"))
+      
+    ),
+    dashboardBody(
+      fluidRow(
+        box(plotOutput("plot1", width = 450, height=400), width=6),
+        box(plotOutput("plot2", width = 500, height=400), width=6))
+    )
+  )
+)
+```
+
+## Customizing your own shiny dashboard
+
+If you want to add functionality to your shiny dashboard, I would suggest the 
+following resources:
+
+*[shiny](https://shiny.rstudio.com/)
+
+*[shinydashboard](https://rstudio.github.io/shinydashboard/)
+

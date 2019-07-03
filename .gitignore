@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 inst/doc
+misc/example_schex.html
+misc/example_schex.md
