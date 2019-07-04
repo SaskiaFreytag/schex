@@ -35,3 +35,10 @@ The solution
 Instead of plotting points on top of each other, schex summarizes points into hexagon cells. Hence avoiding confusion due to observation order.
 
 <img src="misc/example_schex_files/figure-html/schex-1.png" alt="schex plotting" style="width:49.0%" />
+
+How schex works?
+----------------
+
+Points in the same neighbourhood are summarized using one of many different summary statistics. The animation below shows how this works when using the mean to summarize the expression of CD19.
+
+![animation](misc/myanimation.gif)
