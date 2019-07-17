@@ -86,26 +86,32 @@ ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
 ```{r ggplot-increasing, dev = "png"}
 dat <- dat[order(dat$gene, decreasing = FALSE),]
 
-ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
+g1 <- ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
   theme_classic() + scale_color_viridis_c(name=gene) + 
   ggtitle(paste0("Expression of ", gene))
+
+ggsave(g1, file=here::here("misc/increasing.pdf"), width=4, height=3)
 ```
 
 ```{r ggplot-decreasing, dev = "png"}
 dat <- dat[order(dat$gene, decreasing = TRUE),]
 
-ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
+g2 <- ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
   theme_classic() + scale_color_viridis_c(name=gene) + 
   ggtitle(paste0("Expression of ", gene))
+
+ggsave(g2, file=here::here("misc/decreasing.pdf"), width=4, height=3)
 ```
 
 ```{r schex, dev = "png"}
 tenx_pbmc6k <- make_hexbin(tenx_pbmc6k, nbins = 40, 
                            dimension_reduction = "UMAP")
 gene_id_id <-rownames(tenx_pbmc6k)[gene_id]
-plot_hexbin_gene(tenx_pbmc6k, type="logcounts", gene=gene_id_id, 
+g3 <- plot_hexbin_gene(tenx_pbmc6k, type="logcounts", gene=gene_id_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
                  title=paste0("Mean of ", gene))
+
+ggsave(g3, file=here::here("misc/hexbin.pdf"), width=4, height=3)
 ```
 ```
 
