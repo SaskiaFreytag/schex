@@ -20,6 +20,14 @@ You can install the development version of schex with:
 devtools::install_github("SaskiaFreytag/schex")
 ```
 
+Note that you may need to install several bioconductor packages if you haven't done so manually.
+
+``` r
+# install.packages("BiocManager")
+BiocManager::install("SingleCellExperiment")
+BiocManager::install("scater")
+```
+
 Why you need schex?
 -------------------
 
