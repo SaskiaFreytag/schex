@@ -22,9 +22,10 @@ or \code{\link[Seurat]{Seurat}} object.}
 
 \item{type}{A string referring to the type of expression data plotted.
 Possible options are \code{counts} for raw counts and \code{logcounts}
-for normalized counts in the
-\code{\link[SingleCellExperiment]{SingleCellExperiment}} object or
-the scaled data in the \code{\link[Seurat]{Seurat}} object.}
+for normalized coun  in the
+\code{\link[SingleCellExperiment]{SingleCellExperiment}} object,
+additionally for the \code{\link[Seurat]{Seurat}} object
+the scaled data can be accessed using \code{scale.data}.}
 
 \item{gene}{A string referring to the name of one gene.}
 

@@ -7,13 +7,14 @@
 \alias{make_hexbin,Seurat-method}
 \title{Bivariate binning of single cell data into hexagon cells.}
 \usage{
-make_hexbin(sce, nbins = 80, dimension_reduction = "UMAP")
+make_hexbin(sce, nbins = 80, dimension_reduction = "UMAP",
+  use_dims = c(1, 2))
 
 \S4method{make_hexbin}{SingleCellExperiment}(sce, nbins = 80,
-  dimension_reduction = "UMAP")
+  dimension_reduction = "UMAP", use_dims = c(1, 2))
 
 \S4method{make_hexbin}{Seurat}(sce, nbins = 80,
-  dimension_reduction = "UMAP")
+  dimension_reduction = "UMAP", use_dims = c(1, 2))
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -24,6 +25,8 @@ component of the chosen dimension reduction.}
 
 \item{dimension_reduction}{A string indicating the reduced dimension
 result to calculate hexagon cell representation of.}
+
+\item{use_dims}{A vector of two integers specifying the dimensions used.}
 }
 \value{
 A \code{\link[SingleCellExperiment]{SingleCellExperiment}} or

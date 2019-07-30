@@ -34,10 +34,14 @@ this vignette I will be presenting the use of `schex` for `Seurat` objects.
 
 ## Load libraries
 
+Please install the package [SeuratData](https://github.com/satijalab/seurat-data)
+from github.
+
 ```{r load-libraries, message=FALSE, warning=FALSE}
 library(schex)
 library(dplyr)
 library(Seurat)
+library(SeuratData)
 ```
 
 ## Setup single cell data
@@ -45,13 +49,11 @@ library(Seurat)
 In order to demonstrate the capabilities of the schex package, I will use the
 a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
 10x Genomics. There are 2,700 single cells that were sequenced on the 
-Illumina NextSeq 500. You can download the data from the 
-[Seurat website](https://s3-us-west-2.amazonaws.com/10x.files/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz). 
+Illumina NextSeq 500. This data is handly availabe in the `SeuratData` package.
 
-```{r load, eval=FALSE}
-pbmc.data <- Read10X(data.dir = here::here("misc/data/pbmc3k/filtered_gene_bc_matrices/hg19/"))
-# Initialize the Seurat object with the raw (non-normalized data).
-pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+```{r load, eval=TRUE}
+InstallData("pbmc3k")
+pbmc <- pbmc3k
 ```
 
 In the next few sections, I will perform some simple quality control steps
@@ -65,7 +67,7 @@ reductions and cluster the data also outlined in the vignette.
 Cells with high mitochondrial content as well as cells with too low
 or too high feature count are filtered.
 
-```{r filter, eval=FALSE}
+```{r filter, eval=TRUE}
 pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
 ```
@@ -75,7 +77,7 @@ pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent
 Next a global-scaling normalization method is employed to normalizes the 
 feature expression measurements for each cell.
 
-```{r norm, message=FALSE, warning=FALSE, eval=FALSE}
+```{r norm, message=FALSE, warning=FALSE}
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", 
                       scale.factor = 10000, verbose=FALSE)
 ```
@@ -85,7 +87,7 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize",
 Many of the downstream methods are based on only the highly variable genes, hence
 we require their identification.
 
-```{r highly-variable, message=FALSE, warning=FALSE, eval=FALSE}
+```{r highly-variable, message=FALSE, warning=FALSE}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000,
                              verbose = FALSE)
 ```
@@ -94,7 +96,7 @@ pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000,
 
 Prior to dimension reduction the data is scaled.
 
-```{r scaling, message=FALSE, warning=FALSE, eval=FALSE}
+```{r scaling, message=FALSE, warning=FALSE}
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 ```
@@ -105,14 +107,14 @@ First a PCA is applied to the data. Using the PCA you will have to decide on the
 dimensionality of the data. Here the dimensionality was decided to be 10. 
 Please refer to the original Seurat vignette for methods on how this is assessed.
 
-```{r pca, message=FALSE, warning=FALSE, eval=FALSE}
+```{r pca, message=FALSE, warning=FALSE}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
                verbose = FALSE)
 ```
 
 Next a UMAP dimensionality reduction is also run.
 
-```{r umap, message=FALSE, warning=FALSE, eval=FALSE}
+```{r umap, message=FALSE, warning=FALSE}
 pbmc <- RunUMAP(pbmc, dims = 1:10, verbose=FALSE)
 ```
 
@@ -120,7 +122,7 @@ pbmc <- RunUMAP(pbmc, dims = 1:10, verbose=FALSE)
 
 Finally the data is clustered.
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r message=FALSE, warning=FALSE}
 pbmc <- FindNeighbors(pbmc, dims = 1:10, verbose = FALSE)
 pbmc <- FindClusters(pbmc, resolution = 0.5, verbose = FALSE)
 ```
@@ -141,7 +143,7 @@ parameter that you want to play around with depending on the number of cells/
 nuclei in your dataset. Generally, for more cells/nuclei, `nbins` should be 
 increased.
 
-```{r calc-hexbin, eval=FALSE}
+```{r calc-hexbin}
 pbmc <- make_hexbin(pbmc, nbins = 35, 
                            dimension_reduction = "UMAP")
 ```
@@ -152,53 +154,45 @@ First I plot how many cells are in each hexagon cell. This should be
 relatively even, otherwise change the `nbins` parameter in the previous 
 calculation.
 
-```{r plot-density, fig.height=7, fig.width=7, eval=FALSE}
+```{r plot-density, fig.height=7, fig.width=7}
 plot_hexbin_density(pbmc)
 ```
-
-![](../misc/images_Seurat/plot-density-1.png)
 
 #### Plot meta data in hexagon cell representation
 
 Next I colour the hexagon cells by some meta information, such as the median 
 total count or cluster membership in each hexagon cell.
 
-```{r plot-meta-1, fig.height=7, fig.width=7, eval=FALSE}
+```{r plot-meta-1, fig.height=7, fig.width=7}
 plot_hexbin_meta(pbmc, col="nCount_RNA", action="median")
 ```
 
-![](../misc/images_Seurat/plot-meta-1.png)
-```{r plot-meta-2, fig.height=7, fig.width=7, eval=FALSE}
+```{r plot-meta-2, fig.height=7, fig.width=7}
 plot_hexbin_meta(pbmc, col="RNA_snn_res.0.5", action="majority")
 ```
-
-![](../misc/images_Seurat/plot-meta-2.png)
 
 For convenience there is also a function that allows the calculation of label
 positions for factor variables. These can be overlayed with the package 
 `ggrepel`.
 
-```{r plot-meta-label, message=FALSE, fig.height=7, fig.width=7, eval=FALSE}
+```{r plot-meta-label, message=FALSE, fig.height=7, fig.width=7}
 label_df <- make_hexbin_label(pbmc, col="RNA_snn_res.0.5")
 pp <- plot_hexbin_meta(pbmc, col="RNA_snn_res.0.5", action="majority") 
 pp + ggrepel::geom_label_repel(data = label_df, aes(x=x, y=y, label = label), 
                             colour="black",  label.size = NA, fill = NA)  
 ```
 
-![](../misc/images_Seurat/plot-meta-label-1.png)
-
 #### Plot gene expression in hexagon cell representation
 
 Finally, I will visualize the gene expression of the CD19 gene in the 
 hexagon cell representation.
 
-```{r plot-gene, fig.height=7, fig.width=7, eval=FALSE}
+```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"CD19"
 plot_hexbin_gene(pbmc, type="logcounts", gene=gene_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
                  title=paste0("Mean of ", gene_id))
 ```
 
-![](../misc/images_Seurat/plot-gene-1.png)
 
 
