@@ -1,5 +1,5 @@
 ---
-title: "Communicating results with schex and shinydashboard"
+title: "Communicating results with schex and shinydashboard or iSEE"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{shiny_schhex}
@@ -20,9 +20,10 @@ library(Seurat)
 library(ggrepel)
 library(shinydashboard)
 library(schex)
+library(iSEE)
 ```
 
-## Setting up for a simple shiny dashboard
+## Setting up for a simple shiny dashboard or iSEE instance
 
 Interrogating your data is often easier when being able to do it interactively
 on the fly. With the packages `shiny` and `shinydashboard` it is simple to create
@@ -91,7 +92,7 @@ app <- shinyApp(
 )
 ```
 
-## Customizing your own shiny dashboard
+### Customizing your own shiny dashboard
 
 If you want to add functionality to your shiny dashboard, I would suggest the 
 following resources:
@@ -99,4 +100,49 @@ following resources:
 *[shiny](https://shiny.rstudio.com/)
 
 *[shinydashboard](https://rstudio.github.io/shinydashboard/)
+
+## An iSEE instance
+
+The [iSEE package](https://bioconductor.org/packages/release/bioc/html/iSEE.html) 
+provides another way of generating an interactive session in order to 
+interrogate your data in a web browser. However in order to use schex plots you
+need to provide a custom function that works on an object of the 
+`SummerizedExperiment` class. The `SingleCellExperiment` class inherits all 
+features from this class and can thus be used.
+
+```{r convert, eval=FALSE}
+pbmc_small <- as.SingleCellExperiment(pbmc_small)
+pbmc_small <- make_hexbin(pbmc_small, nbins=10, dimension_reduction = "PCA")
+```
+
+```{r, eval=FALSE}
+plot_hexbin_gene_new <- function(sce, rows=NULL, rownames=character(0), 
+                                 columns=NULL, type="logcounts", action="prop_0"){
+
+  plot_hexbin_gene(sce, type=type, gene=rownames, action=action)
+}
+```
+
+Simply now tell iSEE about schex, using the following. After 
+running the functions, the application is initialized by running `app`.
+
+```{r, eval=FALSE}
+schex_plot_gene <- customDataPlotDefaults(pbmc_small, 1)
+schex_plot_gene$Function <- "plot_hexbin_gene_new"
+schex_plot_gene$Arguments <- "type counts\naction prop_0\nrownames ODC1"
+schex_plot_gene$ColumnSource <- "NULL"
+schex_plot_gene$RowSource <- "NULL"
+schex_plot_gene$DataBoxOpen <- TRUE
+
+  
+app <- iSEE(
+    pbmc_small, 
+    customDataArgs=schex_plot_gene, 
+    initialPanels=DataFrame(
+        Name=c("Custom data plot 1"),
+        Width=c(12)),
+    customDataFun=list(plot_hexbin_gene_new=plot_hexbin_gene_new)
+    )
+```
+
 

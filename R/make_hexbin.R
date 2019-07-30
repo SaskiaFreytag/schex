@@ -10,6 +10,7 @@
 #'   component of the chosen dimension reduction.
 #' @param dimension_reduction A string indicating the reduced dimension
 #'   result to calculate hexagon cell representation of.
+#' @param use_dims A vector of two integers specifying the dimensions used.
 #'
 #' @details This function bins observations with computed reduced dimension
 #'   results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
@@ -43,8 +44,9 @@
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 80, dimension_reduction = "PCA")
 #' }
-setGeneric("make_hexbin", function(sce,nbins = 80,
-                                   dimension_reduction = "UMAP")
+setGeneric("make_hexbin", function(sce, nbins = 80,
+                                   dimension_reduction = "UMAP",
+                                   use_dims=c(1,2))
   standardGeneric("make_hexbin"))
 
 #' @export
@@ -52,7 +54,8 @@ setGeneric("make_hexbin", function(sce,nbins = 80,
 #'   into hexagon cells.
 setMethod("make_hexbin", "SingleCellExperiment", function(sce,
                                             nbins = 80,
-                                            dimension_reduction = "UMAP") {
+                                            dimension_reduction = "UMAP",
+                                            use_dims=c(1,2)) {
 
   if(!is.element(dimension_reduction, names(sce@reducedDims))) {
     stop("Specify existing dimension reduction.")
@@ -60,7 +63,7 @@ setMethod("make_hexbin", "SingleCellExperiment", function(sce,
 
   dr <- reducedDim(sce, dimension_reduction)
 
-  res <- .make_hexbin_helper(dr, nbins)
+  res <- .make_hexbin_helper(dr, nbins, use_dims)
   sce@metadata$hexbin<- res
 
   return(sce)
@@ -72,7 +75,8 @@ setMethod("make_hexbin", "SingleCellExperiment", function(sce,
 #'   into hexagon cells.
 setMethod("make_hexbin", "Seurat", function(sce,
                                             nbins = 80,
-                                            dimension_reduction = "UMAP") {
+                                            dimension_reduction = "UMAP",
+                                            use_dims=c(1,2)) {
 
   if(!is.element(tolower(dimension_reduction), names(sce@reductions))) {
     stop("Specify existing dimension reduction.")
@@ -83,20 +87,24 @@ setMethod("make_hexbin", "Seurat", function(sce,
 
   eval(parse(text = func))
 
-  res <- .make_hexbin_helper(dr, nbins)
+  res <- .make_hexbin_helper(dr, nbins, use_dims)
   sce@misc$hexbin <- res
 
   return(sce)
 
 })
 
-.make_hexbin_helper <- function(dr, nbins = 80) {
+.make_hexbin_helper <- function(dr, nbins = 80, use_dims) {
 
-  xbnds <- range(c(dr[, 1]))
-  ybnds <- range(c(dr[, 2]))
+  if(dim(dr)[2] < max(use_dims)) {
+    stop("Please specify use_dims that are calculated.")
+  }
 
-  drhex <- hexbin(dr[, 1],
-                  dr[, 2],
+  xbnds <- range(c(dr[, use_dims[1]]))
+  ybnds <- range(c(dr[, use_dims[2]]))
+
+  drhex <- hexbin(dr[, use_dims[1]],
+                  dr[, use_dims[2]],
                   nbins,
                   xbnds = xbnds,
                   ybnds = ybnds,

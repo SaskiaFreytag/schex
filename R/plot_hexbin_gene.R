@@ -4,9 +4,10 @@
 #'   or \code{\link[Seurat]{Seurat}} object.
 #' @param type A string referring to the type of expression data plotted.
 #'     Possible options are \code{counts} for raw counts and \code{logcounts}
-#'     for normalized counts in the
-#'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or
-#'     the scaled data in the \code{\link[Seurat]{Seurat}} object.
+#'     for normalized coun  in the
+#'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} object,
+#'     additionally for the \code{\link[Seurat]{Seurat}} object
+#'     the scaled data can be accessed using \code{scale.data}.
 #' @param gene A string referring to the name of one gene.
 #' @param action A strings pecifying how meta data of observations in
 #'   binned  hexagon cells are to be summarized. Possible actions are
@@ -140,12 +141,14 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
 
     x <- GetAssayData(sce, "counts")
 
-  }else if(type == "logcounts"){
+  } else if(type == "logcounts"){
 
     x <- GetAssayData(sce, "data")
 
-  }else{
+  } else{
+
     x <- GetAssayData(sce, "scale.data")
+
   }
 
   ind <- match(gene, rownames(x))

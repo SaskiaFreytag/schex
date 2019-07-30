@@ -141,7 +141,8 @@ increased.
 
 ```{r calc-hexbin}
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, nbins = 40, 
-                           dimension_reduction = "UMAP")
+                           dimension_reduction = "UMAP",
+                           use_dims=c(1,2))
 ```
 
 #### Plot number of cells/nuclei in each hexagon cell

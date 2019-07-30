@@ -171,7 +171,7 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
   }
 
   if (any(!col %in% colnames(sce@meta.data))) {
-    stop("Column cannot be found in colData(sce).")
+    stop("Column cannot be found in slot(sce, 'meta.data').")
   }
 
   name_s <- paste0("sce$", col)
