@@ -75,7 +75,7 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
                                                                xlab=NULL,
                                                                ylab=NULL) {
 
-  if(!type %in% c("counts", "logcounts")){
+  if(!type %in% c("counts", "logcounts", "scale.data")){
     stop("Specify a valid assay type.")
   }
 
@@ -125,7 +125,7 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
                                                  xlab=NULL,
                                                  ylab=NULL) {
 
-  if(!type %in% c("counts", "logcounts")){
+  if(!type %in% c("counts", "logcounts", "scale.data")){
     stop("Specify a valid assay type.")
   }
 
@@ -136,26 +136,25 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
     stop("Compute hexbin representation before plotting.")
   }
 
-  if(type=="logcounts"){
+  if(type == "counts"){
 
-    ind <- match(gene, rownames(sce@assays$RNA@scale.data))
+    x <- GetAssayData(sce, "counts")
 
-  } else {
+  }else if(type == "logcounts"){
 
-    ind <- match(gene, rownames(sce@assays$RNA@counts))
+    x <- GetAssayData(sce, "data")
 
+  }else{
+    x <- GetAssayData(sce, "scale.data")
   }
+
+  ind <- match(gene, rownames(x))
 
   if (is.na(ind)) {
     stop("Gene cannot be found.")
   }
 
-  if(type=="counts"){
-    x <- as.numeric(sce@assays$RNA@counts[ind,])
-  }
-  if(type=="logcounts"){
-    x <- as.numeric(sce@assays$RNA@scale.data[ind,])
-  }
+  x <- as.numeric(x[ind,])
 
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
