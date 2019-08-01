@@ -22,7 +22,7 @@ the label position on the plot is calculated for every level. The chosen
 column needs to be a factor.}
 }
 \value{
-A tibble.
+A dataframe.
 }
 \description{
 Group label plot position.
