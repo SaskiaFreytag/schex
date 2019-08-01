@@ -36,6 +36,7 @@
 #' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
+#' @importFrom dplyr as_tibble
 #' @export
 #'
 #' @examples

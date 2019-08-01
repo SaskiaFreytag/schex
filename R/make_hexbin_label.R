@@ -6,12 +6,10 @@
 #'   the label position on the plot is calculated for every level. The chosen
 #'   column needs to be a factor.
 #'
-#' @return A tibble.
-#' @importFrom tidyr nest
+#' @return A dataframe.
 #' @importFrom cluster pam
 #' @import Seurat
 #' @import SingleCellExperiment
-#' @import dplyr
 #' @export
 #'
 #' @examples
@@ -53,28 +51,26 @@ setMethod("make_hexbin_label", "Seurat", function(sce, col){
   eval(parse(text = func))
 
   hh <- .make_hexbin_function(x, action, cID)
-  out <- as_tibble(out)
+  out <- as.data.frame(out)
 
   label <- paste0(col, "_majority")
 
   func1 <- paste0("out$", label, " <- hh")
   eval(parse(text=func1))
 
-  label.df_2 <- out %>%
-    dplyr::select_("x", "y", label) %>%
-    dplyr::group_by_(label) %>%
-    nest()
+  label.df_2 <- list()
+  for(i in levels(out[, label])){
+    label.df_2[[i]] <- out[which(out[, label]==i),c(1,2)]
+  }
 
-  label.df_3 <- lapply(label.df_2$data, function(x) cluster::pam(x, 1)$medoids)
-  names(label.df_3) <- unlist(label.df_2 %>% select_(label))
+  label.df_3 <- lapply(label.df_2, function(x) cluster::pam(x, 1)$medoids)
 
   label.df_3 <- Reduce(rbind, label.df_3)
   label.df_3 <- data.frame(
     x = label.df_3[, 1],
     y = label.df_3[, 2],
-    label = unlist(label.df_2 %>% select_(label))
+    label = levels(out[, label])
   )
-  rownames(label.df_3) <- NULL
 
   label.df_3
 })
@@ -109,28 +105,26 @@ setMethod("make_hexbin_label", "SingleCellExperiment", function(sce, col){
   eval(parse(text = func))
 
   hh <- .make_hexbin_function(x, action, cID)
-  out <- as_tibble(out)
+  out <- as.data.frame(out)
 
   label <- paste0(col, "_majority")
 
   func1 <- paste0("out$", label, " <- hh")
   eval(parse(text=func1))
 
-  label.df_2 <- out %>%
-    dplyr::select_("x", "y", label) %>%
-    dplyr::group_by_(label) %>%
-    nest()
+  label.df_2 <- list()
+  for(i in levels(out[, label])){
+    label.df_2[[i]] <- out[which(out[, label]==i),c(1,2)]
+  }
 
-  label.df_3 <- lapply(label.df_2$data, function(x) cluster::pam(x, 1)$medoids)
-  names(label.df_3) <- unlist(label.df_2 %>% select_(label))
+  label.df_3 <- lapply(label.df_2, function(x) cluster::pam(x, 1)$medoids)
 
   label.df_3 <- Reduce(rbind, label.df_3)
   label.df_3 <- data.frame(
     x = label.df_3[, 1],
     y = label.df_3[, 2],
-    label = unlist(label.df_2 %>% select_(label))
+    label = levels(out[, label])
   )
-  rownames(label.df_3) <- NULL
 
   label.df_3
 })
