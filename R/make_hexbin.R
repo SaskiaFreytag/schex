@@ -57,7 +57,7 @@ setMethod("make_hexbin", "SingleCellExperiment", function(sce,
                                             dimension_reduction = "UMAP",
                                             use_dims=c(1,2)) {
 
-  if(!is.element(dimension_reduction, names(sce@reducedDims))) {
+  if(!is.element(dimension_reduction, names(reducedDimNames(sce)))) {
     stop("Specify existing dimension reduction.")
   }
 
