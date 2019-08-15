@@ -10,27 +10,21 @@
 #'     transformation.
 #' @param feature A vector of strings referring to the names of one features in
 #'     the same order as the vector of modularities.
-#' @param action A strings pecifying how meta data of observations in
-#'   binned  hexagon cells are to be summarized. Possible actions are
-#'   \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).
+#' @param interact A string specifying how interaction between features is
+#'   calculated. Possible interaction measures are
+#'   \code{corr_spearman} and \code{mi} (see details).
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
 #'
 #' @details This function plots the interaction between any features in the hexagon cell
-#'   representation calculated with \code{\link{make_hexbin}}. The chosen gene
-#'   expression is summarized by one of four actions \code{prop_0}, \code{mode},
-#'   \code{mean} and \code{median}:
+#'   representation calculated with \code{\link{make_hexbin}}. The interaction
+#'   between the chosen features is calculated by one of two measurers \code{corr_spearman},
+#'   and \code{mi}:
 #'
 #'   \describe{
-#'     \item{\code{prop_0}}{Returns the proportion of observations in the bin
-#'      greater than 0. The associated meta data column needs to be numeric.}
-#'     \item{\code{mode}}{Returns the mode of the observations in the bin. The
-#'      associated meta data column needs to be numeric.}
-#'     \item{\code{mean}}{Returns the mean of the observations in the bin. The
-#'      associated meta data column needs to be numeric.}
-#'      \item{\code{median}}{Returns the median of the observations in the bin.
-#'      The associated meta data column needs to be numeric.}
+#'     \item{\code{mi}}{Returns the mutual information coefficient.}
+#'     \item{\code{corr_spearman}}{Returns the Spearman correlation.}}
 #'   }
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
