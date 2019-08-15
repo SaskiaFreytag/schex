@@ -38,7 +38,7 @@
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
+#' rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
 #' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 #' tenx_pbmc3k <- normalize(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)

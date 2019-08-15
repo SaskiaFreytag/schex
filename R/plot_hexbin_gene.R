@@ -2,12 +2,9 @@
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'   or \code{\link[Seurat]{Seurat}} object.
-#' @param type A string referring to the type of expression data plotted.
-#'     Possible options are \code{counts} for raw counts and \code{logcounts}
-#'     for normalized counts in the
-#'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} object,
-#'     additionally for the \code{\link[Seurat]{Seurat}} object
-#'     the scaled data can be accessed using \code{scale.data}.
+#' @param type A string referring to the type of assay in the
+#'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
+#'     data transformation in the \code{\link[Seurat]{Seurat}} object.
 #' @param gene A string referring to the name of one gene.
 #' @param action A strings pecifying how meta data of observations in
 #'   binned  hexagon cells are to be summarized. Possible actions are
@@ -52,7 +49,8 @@
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 #' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
 #' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-#' tenx_pbmc3k <- calculateQCMetrics(tenx_pbmc3k)
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
+#'      perCellQCMetrics(tenx_pbmc3k))
 #' tenx_pbmc3k <- normalize(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
@@ -77,10 +75,6 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
                                                                xlab=NULL,
                                                                ylab=NULL) {
 
-  if(!type %in% c("counts", "logcounts", "scale.data")){
-    stop("Specify a valid assay type.")
-  }
-
   out <- sce@metadata$hexbin[[2]]
   cID <- sce@metadata$hexbin[[1]]
 
@@ -89,16 +83,16 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
   }
 
   ind <- match(gene, rownames(sce))
+  x <- assays(sce)
+
+  if(!type %in% names(x)){
+    stop("Specify a valid assay type.")
+  }
+
+  x <- x [[which(names(x)==type)]]
 
   if (is.na(ind)) {
     stop("Gene cannot be found.")
-  }
-
-  if(type=="counts"){
-    x <- as.numeric(counts(sce[ind,]))
-  }
-  if(type=="logcounts"){
-    x <- as.numeric(logcounts(sce[ind,]))
   }
 
   hh <- .make_hexbin_function(x, action, cID)
@@ -127,10 +121,6 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
                                                  xlab=NULL,
                                                  ylab=NULL) {
 
-  if(!type %in% c("counts", "logcounts", "scale.data")){
-    stop("Specify a valid assay type.")
-  }
-
   out <- sce@misc$hexbin[[2]]
   cID <- sce@misc$hexbin[[1]]
 
@@ -138,19 +128,11 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
     stop("Compute hexbin representation before plotting.")
   }
 
-  if(type == "counts"){
-
-    x <- GetAssayData(sce, "counts")
-
-  } else if(type == "logcounts"){
-
-    x <- GetAssayData(sce, "data")
-
-  } else{
-
-    x <- GetAssayData(sce, "scale.data")
-
+  if(!type %in% names(x)){
+    stop("Specify a data transformation type.")
   }
+
+  x <- GetAssayData(sce, assay="RNA", type)
 
   ind <- match(gene, rownames(x))
 
