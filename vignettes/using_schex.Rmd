@@ -73,15 +73,18 @@ library size or feature count.
 
 ```{r filter-cells}
 rowData(tenx_pbmc3k)$Mito <- grepl("^MT-", rowData(tenx_pbmc3k)$Symbol_TENx)
-tenx_pbmc3k <- calculateQCMetrics(tenx_pbmc3k,
-  feature_controls = list(Mt = rowData(tenx_pbmc3k)$Mito)
-)
-tenx_pbmc3k <- tenx_pbmc3k[, !colData(tenx_pbmc3k)$pct_counts_Mt > 50]
+colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), 
+        perCellQCMetrics(tenx_pbmc3k, 
+        subsets=list(Mt=rowData(tenx_pbmc3k)$Mito)))
+rowData(tenx_pbmc3k) <- cbind(rowData(tenx_pbmc3k), 
+        perFeatureQCMetrics(tenx_pbmc3k))
 
-libsize_drop <- isOutlier(tenx_pbmc3k$total_counts,
+tenx_pbmc3k <- tenx_pbmc3k[, !colData(tenx_pbmc3k)$subsets_Mt_percent > 50]
+
+libsize_drop <- isOutlier(tenx_pbmc3k$total,
   nmads = 3,type = "lower", log = TRUE
 )
-feature_drop <- isOutlier(tenx_pbmc3k$total_features_by_counts,
+feature_drop <- isOutlier(tenx_pbmc3k$detected,
   nmads = 3, type = "lower", log = TRUE
 )
 tenx_pbmc3k <- tenx_pbmc3k[, !(libsize_drop | feature_drop)]
@@ -90,7 +93,7 @@ tenx_pbmc3k <- tenx_pbmc3k[, !(libsize_drop | feature_drop)]
 I filter any genes that have 0 count for all cells.
 
 ```{r filter-genes}
-rm_ind <- calcAverage(tenx_pbmc3k)<0
+rm_ind <- calculateAverage(tenx_pbmc3k)<0
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 ```
 
@@ -99,7 +102,7 @@ tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 I normalize the data by using a simple library size normalization feature.
 
 ```{r norm, message=FALSE, warning=FALSE}
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
+tenx_pbmc3k <- scater::normalize(tenx_pbmc3k)
 ```
 
 ### Dimension reduction
@@ -110,7 +113,8 @@ representations of the data.
 
 ```{r dim-red, message=FALSE, warning=FALSE}
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- runUMAP(tenx_pbmc3k, use_dimred = "PCA", n_neighbors = 50)
+tenx_pbmc3k <- runUMAP(tenx_pbmc3k, use_dimred = "PCA", spread = 1, 
+                       min_dist = 0.4)
 ```
 
 ### Clustering
@@ -162,7 +166,7 @@ of cells cluster membership and the median total count in each hexagon cell.
 
 ```{r plot-meta, fig.height=7, fig.width=7}
 plot_hexbin_meta(tenx_pbmc3k, col="cluster", action="majority")
-plot_hexbin_meta(tenx_pbmc3k, col="total_counts", action="median")
+plot_hexbin_meta(tenx_pbmc3k, col="total", action="median")
 ```
 
 While for plotting the cluster membership the outcome is not too different from
@@ -170,7 +174,7 @@ the classic plot, it is much easier to observe differences in the total count.
 
 ```{r plot-meta-trad, fig.height=7, fig.width=7}
 plotUMAP(tenx_pbmc3k, colour_by="cluster")
-plotUMAP(tenx_pbmc3k, colour_by="total_counts")
+plotUMAP(tenx_pbmc3k, colour_by="total")
 ```
 
 For convenience there is also a function that allows the calculation of label
@@ -193,7 +197,7 @@ hexagon cell representation.
 gene_id <-"ENSG00000085998"
 gene_symbol <- rowData(tenx_pbmc3k)$Symbol_TENx[
   which(rownames(tenx_pbmc3k)==gene_id)]
-plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
+schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
                  title=paste0("Mean of ", gene_symbol))
 ```

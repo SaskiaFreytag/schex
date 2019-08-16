@@ -24,12 +24,13 @@
 #'
 #'   \describe{
 #'     \item{\code{mi}}{Returns the mutual information coefficient.}
-#'     \item{\code{corr_spearman}}{Returns the Spearman correlation.}}
+#'     \item{\code{corr_spearman}}{Returns the Spearman correlation.}
 #'   }
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
 #' @import Seurat
 #' @import SingleCellExperiment
+#' @importFrom entropy mi.plugin
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @export
@@ -64,7 +65,7 @@ setGeneric("plot_hexbin_interact", function(sce, mod,
                                            ylab=NULL) standardGeneric("plot_hexbin_interact"))
 
 #' @export
-#' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
+#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell for
 #'   SingleCellExperiment object.
 setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
                                                                    mod,
@@ -138,9 +139,9 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
 })
 
 #' @export
-#' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
+#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell for
 #'   Seurat object.
-setMethod("plot_hexbin_protein", "Seurat", function(sce,
+setMethod("plot_hexbin_interact", "Seurat", function(sce,
                                                     mod,
                                                     type,
                                                     feature,
@@ -158,7 +159,7 @@ setMethod("plot_hexbin_protein", "Seurat", function(sce,
   }
 
   if(!type[1] %in% slotNames(GetAssay(sce, mod[1]))|
-     !type[2] %in% slotNames(GetAssay(sce, mod[2])){
+     !type[2] %in% slotNames(GetAssay(sce, mod[2]))){
     stop("Specify a valid assay type.")
   }
 

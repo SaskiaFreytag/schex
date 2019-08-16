@@ -20,10 +20,10 @@ cbmc <- NormalizeData(cbmc)
 cbmc <- FindVariableFeatures(cbmc)
 cbmc <- ScaleData(cbmc)
 cbmc <- RunPCA(cbmc, verbose = FALSE)
+cbmc <- RunTSNE(cbmc, verbose = FALSE)
 
 cbmc <- NormalizeData(cbmc, assay = "ADT", normalization.method = "CLR")
 cbmc <- ScaleData(cbmc, assay = "ADT")
-cbmc <- RunTSNE(cbmc, verbose = FALSE)
 
 cbmc <- make_hexbin(cbmc, nbins=10, dimension_reduction = "TSNE")
 summary(cbmc@misc$hexbin$hexbin.matrix[,3])

@@ -89,11 +89,11 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
     stop("Specify a valid assay type.")
   }
 
-  x <- x [[which(names(x)==type)]]
-
   if (is.na(ind)) {
     stop("Gene cannot be found.")
   }
+
+  x <- as.numeric(x[[which(names(x)==type)]][ind,])
 
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
