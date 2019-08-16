@@ -61,7 +61,7 @@
 #' plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mode")
 #' }
 setGeneric("plot_hexbin_feature", function(sce, mod, type,
-                                        protein,
+                                        feature,
                                         action,
                                         title=NULL,
                                         xlab=NULL,
@@ -73,7 +73,7 @@ setGeneric("plot_hexbin_feature", function(sce, mod, type,
 setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
                                                                 mod,
                                                                type,
-                                                               protein,
+                                                               feature,
                                                                action,
                                                                title=NULL,
                                                                xlab=NULL,

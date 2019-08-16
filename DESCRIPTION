@@ -15,7 +15,8 @@ Imports: hexbin,
             scater,
             methods,
             cluster,
-            dplyr
+            dplyr,
+            entropy
 Suggests: 
     ggrepel,
     knitr,
