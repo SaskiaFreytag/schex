@@ -72,20 +72,10 @@ Seurat object.
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_gene(pbmc_small, type="counts", gene="TALDO1", action="prop_0")
-# For SingleCellExperiment object
-\dontrun{
-library(TENxPBMCData)
-library(scater)
-tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
-tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-     perCellQCMetrics(tenx_pbmc3k))
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
-tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mean")
-plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mode")
-}
+protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
+rownames(protein) <- paste0("A", seq(1,10,1))
+colnames(protein) <- colnames(pbmc_small)
+pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
+plot_hexbin_interact(pbmc_small, type=c("counts", "counts"),
+    mod=c("RNA", "ADT" ), feature=c("CD7", "A1"), interact="mi")
 }

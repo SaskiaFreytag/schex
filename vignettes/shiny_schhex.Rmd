@@ -76,7 +76,7 @@ app <- shinyApp(
       uiOutput("all_genes"),
       radioButtons("type", "Type of expression:",
                    c("Raw" = "counts",
-                     "Logcounts" = "logcounts")),
+                     "Normalized" = "data")),
       radioButtons("action", "Summarize using:",
                    c("Proportion not 0" = "prop_0",
                      "Mean" = "mean",
