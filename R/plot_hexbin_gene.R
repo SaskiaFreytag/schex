@@ -128,11 +128,7 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
     stop("Compute hexbin representation before plotting.")
   }
 
-  if(!type %in% names(x)){
-    stop("Specify a data transformation type.")
-  }
-
-  x <- GetAssayData(sce, assay="RNA", type)
+  x <- GetAssayData(sce, type)
 
   ind <- match(gene, rownames(x))
 

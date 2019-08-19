@@ -68,7 +68,8 @@ or too high feature count are filtered.
 
 ```{r filter, eval=TRUE}
 pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
-pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 &
+                 percent.mt < 5)
 ```
 
 ### Normalization
@@ -136,14 +137,14 @@ plotting this.
 #### Calculate hexagon cell representation
 
 First, I will calculate the hexagon cell representation for each cell for
-a specified dimension reduction representation. I decide to use `nbins=35` which
+a specified dimension reduction representation. I decide to use `nbins=40` which
 specifies that I divide my x range into 40 bins. Note that this might be a 
 parameter that you want to play around with depending on the number of cells/
 nuclei in your dataset. Generally, for more cells/nuclei, `nbins` should be 
 increased.
 
 ```{r calc-hexbin}
-pbmc <- make_hexbin(pbmc, nbins = 35, 
+pbmc <- make_hexbin(pbmc, nbins = 40, 
                            dimension_reduction = "UMAP")
 ```
 
@@ -188,7 +189,7 @@ hexagon cell representation.
 
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"CD19"
-plot_hexbin_gene(pbmc, type="logcounts", gene=gene_id, 
+schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
                  title=paste0("Mean of ", gene_id))
 ```
