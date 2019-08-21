@@ -25,9 +25,6 @@ r:
 r_packages:
   - covr
 
-# we need to install BiocInstaller for testing Bioconductor packages
-bioc_required: true
-
 # only report coverage for the release version
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
