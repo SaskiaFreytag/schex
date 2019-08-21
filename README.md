@@ -4,11 +4,9 @@ schex
 =====
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/SaskiaFreytag/schex.svg?branch=master)](https://travis-ci.org/SaskiaFreytag/schex) [![Codecov test coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master) <!-- badges: end -->
+[![Travis build status](https://travis-ci.org/SaskiaFreytag/schex.svg?branch=master)](https://travis-ci.org/SaskiaFreytag/schex) [![Codecov test coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master) <!-- badges: end --> <img src='man/figures/logo.png' align="right" height="139" />
 
 The goal of schex is to provide easy plotting of hexagon cell representations of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
-
-<img src="misc/schex_hex.png" style="width:25.0%" />
 
 Installation
 ------------
