@@ -18,6 +18,10 @@ env:
 r_build_args: --no-build-vignettes --no-manual
 r_check_args: --no-build-vignettes --no-manual --timings
 
+
+# we need to install BiocInstaller for testing Bioconductor packages
+bioc_required: true
+
 r:
  - release
 
