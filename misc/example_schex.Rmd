@@ -14,6 +14,7 @@ library(scater)
 library(scran)
 library(ggplot2)
 library(schex)
+library(cowplot)
 ```
 
 ## Setup single cell data
@@ -29,15 +30,18 @@ library size or feature count.
 
 ```{r filter-cells}
 rowData(tenx_pbmc6k)$Mito <- grepl("^MT-", rowData(tenx_pbmc6k)$Symbol_TENx)
-tenx_pbmc6k <- calculateQCMetrics(tenx_pbmc6k,
-  feature_controls = list(Mt = rowData(tenx_pbmc6k)$Mito)
-)
-tenx_pbmc6k <- tenx_pbmc6k[, !colData(tenx_pbmc6k)$pct_counts_Mt > 50]
+colData(tenx_pbmc6k) <- cbind(colData(tenx_pbmc6k), 
+        perCellQCMetrics(tenx_pbmc6k, 
+        subsets=list(Mt=rowData(tenx_pbmc6k)$Mito)))
+rowData(tenx_pbmc6k) <- cbind(rowData(tenx_pbmc6k), 
+        perFeatureQCMetrics(tenx_pbmc6k))
 
-libsize_drop <- isOutlier(tenx_pbmc6k$total_counts,
+tenx_pbmc6k <- tenx_pbmc3k[, !colData(tenx_pbmc6k)$subsets_Mt_percent > 50]
+
+libsize_drop <- isOutlier(tenx_pbmc6k$total,
   nmads = 3,type = "lower", log = TRUE
 )
-feature_drop <- isOutlier(tenx_pbmc6k$total_features_by_counts,
+feature_drop <- isOutlier(tenx_pbmc6k$detected,
   nmads = 3, type = "lower", log = TRUE
 )
 tenx_pbmc6k <- tenx_pbmc6k[, !(libsize_drop | feature_drop)]
@@ -46,7 +50,7 @@ tenx_pbmc6k <- tenx_pbmc6k[, !(libsize_drop | feature_drop)]
 I filter any genes that have 0 count for all cells.
 
 ```{r filter-genes}
-rm_ind <- calcAverage(tenx_pbmc6k)<0
+rm_ind <- calculateAverage(tenx_pbmc6k)<0
 tenx_pbmc6k <- tenx_pbmc6k[!rm_ind,]
 ```
 
@@ -55,7 +59,7 @@ tenx_pbmc6k <- tenx_pbmc6k[!rm_ind,]
 I normalize the data by using a simple library size normalization feature.
 
 ```{r norm, message=FALSE, warning=FALSE}
-tenx_pbmc6k <- normalize(tenx_pbmc6k)
+tenx_pbmc6k <- scater::normalize(tenx_pbmc6k)
 ```
 
 ### Dimension reduction
@@ -66,7 +70,9 @@ representations of the data.
 
 ```{r dim-red, message=FALSE, warning=FALSE}
 tenx_pbmc6k <- runPCA(tenx_pbmc6k)
-tenx_pbmc6k <- runUMAP(tenx_pbmc6k, use_dimred = "PCA", n_neighbors = 50)
+tenx_pbmc6k <- runUMAP(tenx_pbmc6k, use_dimred = "PCA", n_neighbors = 50,
+                       spread = 1, 
+                       min_dist = 0.4)
 ```
 
 ## Plotting
@@ -87,20 +93,22 @@ ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
 dat <- dat[order(dat$gene, decreasing = FALSE),]
 
 g1 <- ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
-  theme_classic() + scale_color_viridis_c(name=gene) + 
-  ggtitle(paste0("Expression of ", gene))
+  theme_classic() + scale_color_viridis_c(name=gene) 
 
 ggsave(g1, file=here::here("misc/increasing.pdf"), width=4, height=3)
+
+g1
 ```
 
 ```{r ggplot-decreasing, dev = "png"}
 dat <- dat[order(dat$gene, decreasing = TRUE),]
 
 g2 <- ggplot(dat, aes(x=umap1, y=umap2, colour=gene)) + geom_point(alpha=0.5) +
-  theme_classic() + scale_color_viridis_c(name=gene) + 
-  ggtitle(paste0("Expression of ", gene))
+  theme_classic() + scale_color_viridis_c(name=gene)
 
 ggsave(g2, file=here::here("misc/decreasing.pdf"), width=4, height=3)
+
+g2
 ```
 
 ```{r schex, dev = "png"}
@@ -108,10 +116,24 @@ tenx_pbmc6k <- make_hexbin(tenx_pbmc6k, nbins = 40,
                            dimension_reduction = "UMAP")
 gene_id_id <-rownames(tenx_pbmc6k)[gene_id]
 g3 <- plot_hexbin_gene(tenx_pbmc6k, type="logcounts", gene=gene_id_id, 
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene))
+                 action="mean", xlab="umap1", ylab="umap2", 
+                 title=paste0(""))
 
 ggsave(g3, file=here::here("misc/hexbin.pdf"), width=4, height=3)
-```
+
+g3
 ```
 
+
+## Combine all plots for publication
+
+```{r}
+gg <- ggdraw() +
+  draw_plot(g1, x = 0, y = .55, width = .5, height = .45) +
+  draw_plot(g2, x = .5, y = .55, width = .5, height = .45) +
+  draw_plot(g3, x = 0, y = 0, width = 0.6, height = 0.55) +
+  draw_plot_label(label = c("A", "B", "C"), size = 15,
+                  x = c(0, 0.5, 0), y = c(1, 1, 0.55))
+
+ggsave(gg, file="Figure_1.png")
+```

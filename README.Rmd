@@ -38,8 +38,8 @@ you haven't done so manually.
 
 ``` r
 # install.packages("BiocManager")
+BiocManager::install(version='devel')
 BiocManager::install("SingleCellExperiment")
-BiocManager::install("scater")
 ```
 
 ## Why you need schex?

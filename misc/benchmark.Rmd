@@ -1,0 +1,105 @@
+---
+title: "Testing speed and storage needs of schex"
+author: "Saskia Freytag"
+date: "23/08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prerequistes
+
+```{r packages}
+library(TENxPBMCData)
+library(scater)
+library(BiocSingular)
+library(schex)
+library(rbenchmark)
+```
+
+## Prepare a large dataset
+
+```{r cars}
+sce <- mockSCE(ncells = 300000, ngenes = 2000, nspikes = 100)
+```
+
+### Normalization
+
+I normalize the data by using a simple library size normalization feature.
+
+```{r norm, message=FALSE, warning=FALSE}
+sce <- scater::normalize(sce)
+```
+
+### Dimension reduction
+
+I use both Principal Components Analysis (PCA) and Uniform Manifold 
+Approximation and Projection (UMAP) in order to obtain reduced dimension 
+representations of the mock-up data.
+
+```{r dim-red, message=FALSE, warning=FALSE}
+sce <- runPCA(sce, BSPARAM=IrlbaParam(fold=Inf))
+sce <- runUMAP(sce, use_dimred = "PCA", n_neighbors = 50)
+```
+
+### Make hexbin representation
+
+I calculate the hexagonal representation of the data with 50 bins. 
+
+```{r hexbin}
+sce <- make_hexbin(sce, nbins = 50, 
+                           dimension_reduction = "UMAP",
+                           use_dims=c(1,2))
+plot_hexbin_density(sce)
+```
+
+## Benchmark different plots
+
+```{r ggplot-random}
+gene_id <- rownames(sce)[100]
+
+benchmark_plot <- benchmark("scater" = {
+            plotReducedDim(sce, dimred="UMAP", colour_by=gene_id)
+          },
+          "schex" = {
+            plot_hexbin_gene(sce, type="logcounts", gene=gene_id, 
+                 action="mean")
+          },
+          replications = 100,
+          columns = c("test", "replications", "elapsed",
+                      "relative", "user.self", "sys.self"))
+
+benchmark_plot
+```
+
+## Benchmark saving plot
+
+```{r}
+gg_scater <- plotReducedDim(sce, dimred="UMAP", colour_by=gene_id)
+gg_schex <- plot_hexbin_gene(sce, type="logcounts", gene=gene_id, 
+                 action="mean")
+
+benchmark_save <- benchmark("scater" = {
+            ggsave(gg_scater, file="scater_test.pdf")
+          },
+          "schex" = {
+            ggsave(gg_schex, file="schex_test.pdf")
+          },
+          replications = 10,
+          columns = c("test", "replications", "elapsed",
+                      "relative", "user.self", "sys.self"))
+
+benchmark_save
+```
+
+## Compare file sizes
+
+```{r}
+PrintFileSize <- function(gg, name) {
+  invisible(ggsave('tmp.pdf', gg, width = 4, height = 4))
+  cat(name, ': ', file.info('tmp.pdf')$size / 1024, ' Kb.\n', sep = '')
+  unlink('tmp.pdf')
+}
+```
