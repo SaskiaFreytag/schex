@@ -22,8 +22,8 @@ Note that you may need to install several bioconductor packages if you haven't d
 
 ``` r
 # install.packages("BiocManager")
+BiocManager::install(version='devel')
 BiocManager::install("SingleCellExperiment")
-BiocManager::install("scater")
 ```
 
 Why you need schex?
