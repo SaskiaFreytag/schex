@@ -108,6 +108,10 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
 
+  if(grepl("^[[:digit:]]", feature )){
+    feature <- paste0("F_", feature)
+  }
+
   feature <- gsub("-", "_", feature)
 
   col_hh <- paste0(feature, "_", action)
@@ -159,6 +163,10 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
 
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
+
+  if(grepl("^[[:digit:]]", feature )){
+    feature <- paste0("F_", feature)
+  }
 
   feature <- gsub("-", "_", feature)
 

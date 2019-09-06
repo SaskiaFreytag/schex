@@ -98,6 +98,10 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
 
+  if(grepl("^[[:digit:]]", gene )){
+    gene <- paste0("G_", gene)
+  }
+
   gene <- gsub("-", "_", gene)
 
   col_hh <- paste0(gene, "_", action)
@@ -140,6 +144,10 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
 
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
+
+  if(grepl("^[[:digit:]]", gene )){
+    gene <- paste0("G_", gene)
+  }
 
   gene <- gsub("-", "_", gene)
 
