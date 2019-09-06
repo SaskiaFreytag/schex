@@ -97,9 +97,9 @@ benchmark_save
 ## Compare file sizes
 
 ```{r}
-PrintFileSize <- function(gg, name) {
-  invisible(ggsave('tmp.pdf', gg, width = 4, height = 4))
-  cat(name, ': ', file.info('tmp.pdf')$size / 1024, ' Kb.\n', sep = '')
-  unlink('tmp.pdf')
-}
+
+paste0(file.info('scater_test.pdf')$size / 1024, ' Kb.\n', sep = '')
+paste0(file.info('schex_test.pdf')$size / 1024, ' Kb.\n', sep = '')
+
+paste0(file.info('scater_test.pdf')$size /file.info('schex_test.pdf')$size )
 ```
