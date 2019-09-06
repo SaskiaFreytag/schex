@@ -118,6 +118,10 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
 
      feature <- gsub("-", "_", feature)
 
+     if(any(grepl("^[[:digit:]]", feature))){
+       feature <- paste0("F_", feature)
+     }
+
      col_hh <- paste0(interact, "_", feature[1], "_", feature[2])
 
      func1 <- paste0("out$", col_hh, " <- hh")
@@ -175,6 +179,10 @@ setMethod("plot_hexbin_interact", "Seurat", function(sce,
 
   hh <- .interact_hexbin_function(first_x, second_x, interact, cID)
   out <- as_tibble(out)
+
+  if(any(grepl("^[[:digit:]]", feature))){
+    feature <- paste0("F_", feature)
+  }
 
   feature <- gsub("-", "_", feature)
 
