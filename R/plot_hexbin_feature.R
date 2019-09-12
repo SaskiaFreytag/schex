@@ -61,11 +61,11 @@
 #' plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mode")
 #' }
 setGeneric("plot_hexbin_feature", function(sce, mod, type,
-                                        feature,
-                                        action,
-                                        title=NULL,
-                                        xlab=NULL,
-                                        ylab=NULL) standardGeneric("plot_hexbin_feature"))
+    feature,
+    action,
+    title=NULL,
+    xlab=NULL,
+    ylab=NULL) standardGeneric("plot_hexbin_feature"))
 
 #' @export
 #' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell for
