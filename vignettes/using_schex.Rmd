@@ -31,10 +31,13 @@ package and `Seurat` from the [Seurat](https://satijalab.org/seurat/) package.
 
 ## Load libraries
 
+Please install the package [SeuratData](https://github.com/satijalab/seurat-data)
+from github.
+
 ```{r setup, message=FALSE}
 library(igraph)
 library(schex)
-library(TENxPBMCData)
+library(SeuratData)
 library(scater)
 library(scran)
 library(ggrepel)
@@ -43,16 +46,17 @@ library(ggrepel)
 ## Setup single cell data
 
 In order to demonstrate the capabilities of the schex package, I will use the
-[TENxPBMCData](http://bioconductor.org/packages/release/data/experiment/html/TENxPBMCData.html) 
-package and in particular the `pbmc3k` data stored within. This
-[dataset](https://support.10xgenomics.com/single-cell-gene-expression/datasets/1.1.0/pbmc3k) 
-was generated with the 10x Genomics platform from human peripheral blood 
-mononuclear cells (PBMC). Note that the `TENxPBMCData` package stores data in
-the `SingleCellExperiment` object class. For the `schex` package to work single 
-cell data is expected to be in a `SingleCellExperiment` or `Seurat` object.
+a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
+10x Genomics. There are 2,700 single cells that were sequenced on the 
+Illumina NextSeq 500. This data is handly availabe in the [`SeuratData` package](https://github.com/satijalab/seurat-data).
+Note that we will convert the data from a `Seurat object` to a `SingleCellExperiment`
+in order to be able to run a Bioconductor workflow.
 
 ```{r load}
-tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+InstallData("pbmc3k")
+tenx_pbmc3k <- pbmc3k
+
+tenx_pbmc3k <- as.SingleCellExperiment(tenx_pbmc3k)
 ```
 
 In the  next few sections, I will perform some simple quality control steps
@@ -72,7 +76,7 @@ I filter cells with high mitochondrial content as well as cells with low
 library size or feature count.
 
 ```{r filter-cells}
-rowData(tenx_pbmc3k)$Mito <- grepl("^MT-", rowData(tenx_pbmc3k)$Symbol_TENx)
+rowData(tenx_pbmc3k)$Mito <- grepl("^MT-", rownames(tenx_pbmc3k))
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), 
         perCellQCMetrics(tenx_pbmc3k, 
         subsets=list(Mt=rowData(tenx_pbmc3k)$Mito)))
@@ -113,7 +117,7 @@ representations of the data.
 
 ```{r dim-red, message=FALSE, warning=FALSE}
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- runUMAP(tenx_pbmc3k, use_dimred = "PCA", spread = 1, 
+tenx_pbmc3k <- runUMAP(tenx_pbmc3k, dimred = "PCA", spread = 1, 
                        min_dist = 0.4)
 ```
 
@@ -194,12 +198,10 @@ Finally, I will visualize the gene expression of the POMGNT1 gene in the
 hexagon cell representation.
 
 ```{r plot-gene, fig.height=7, fig.width=7}
-gene_id <-"ENSG00000085998"
-gene_symbol <- rowData(tenx_pbmc3k)$Symbol_TENx[
-  which(rownames(tenx_pbmc3k)==gene_id)]
+gene_id <-"POMGNT1"
 schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_symbol))
+                 title=paste0("Mean of ", gene_id))
 ```
 
 Again it is much easier to observe differences in gene expression using the 

@@ -48,7 +48,8 @@ library(SeuratData)
 In order to demonstrate the capabilities of the schex package, I will use the
 a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
 10x Genomics. There are 2,700 single cells that were sequenced on the 
-Illumina NextSeq 500. This data is handly availabe in the `SeuratData` package.
+Illumina NextSeq 500. This data is handly availabe in the [`SeuratData` 
+package](https://github.com/satijalab/seurat-data).
 
 ```{r load, eval=TRUE}
 InstallData("pbmc3k")
