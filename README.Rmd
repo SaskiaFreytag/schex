@@ -23,7 +23,6 @@ knitr::opts_chunk$set(
 The goal of schex is to provide easy plotting of hexagon cell representations
 of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
 
-
 ## Installation
 
 You can install the development version of schex with:
