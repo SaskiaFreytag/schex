@@ -26,10 +26,10 @@ library(iSEE)
 ## Setting up for a simple shiny dashboard or iSEE instance
 
 Interrogating your data is often easier when being able to do it interactively
-on the fly. With the packages `shiny` and `shinydashboard` it is simple to create
-an interactive dashboard for exactly that purpose. Here we will work with the
-single cell data from peripheral mononuclear cells (PBMCs) stored in the `pbmc_small` 
-`Seurat` object (which can be found in the `Seurat` package.) 
+on the fly. With the packages `shiny` and `shinydashboard` it is simple to 
+create an interactive dashboard for exactly that purpose. Here we will work with 
+the single cell data from peripheral mononuclear cells (PBMCs) stored in the 
+`pbmc_small` `Seurat` object (which can be found in the `Seurat` package.) 
 
 First we create a the hexagon cell representation and also make a data frame to
 store the position of cluster labels.

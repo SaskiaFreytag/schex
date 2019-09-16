@@ -1,4 +1,5 @@
-#' Plot of external feature expression of single cells in bivariate hexagon cells.
+#' Plot of external feature expression of single cells in bivariate hexagon
+#' cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'   or \code{\link[Seurat]{Seurat}} object.
@@ -16,10 +17,10 @@
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
 #'
-#' @details This function plots the expression of any feature in the hexagon cell
-#'   representation calculated with \code{\link{make_hexbin}}. The chosen gene
-#'   expression is summarized by one of four actions \code{prop_0}, \code{mode},
-#'   \code{mean} and \code{median}:
+#' @details This function plots the expression of any feature in the hexagon
+#'   cell representation calculated with \code{\link{make_hexbin}}. The chosen
+#'   gene expression is summarized by one of four actions \code{prop_0},
+#'   \code{mode}, \code{mean} and \code{median}:
 #'
 #'   \describe{
 #'     \item{\code{prop_0}}{Returns the proportion of observations in the bin
@@ -37,6 +38,7 @@
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
+#' @importFrom methods slotNames
 #' @export
 #'
 #' @examples
@@ -44,22 +46,13 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_gene(pbmc_small, type="counts", gene="TALDO1", action="prop_0")
-#' # For SingleCellExperiment object
-#' \dontrun{
-#' library(TENxPBMCData)
-#' library(scater)
-#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
-#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-#'      perCellQCMetrics(tenx_pbmc3k))
-#' tenx_pbmc3k <- normalize(tenx_pbmc3k)
-#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mean")
-#' plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mode")
-#' }
+#' protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
+#' rownames(protein) <- paste0("A", seq(1,10,1))
+#' colnames(protein) <- colnames(pbmc_small)
+#' pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
+#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+#' plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
+#'                                feature="A1", action="prop_0")
 setGeneric("plot_hexbin_feature", function(sce, mod, type,
     feature,
     action,
@@ -68,8 +61,8 @@ setGeneric("plot_hexbin_feature", function(sce, mod, type,
     ylab=NULL) standardGeneric("plot_hexbin_feature"))
 
 #' @export
-#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell for
-#'   SingleCellExperiment object.
+#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon
+#'   cell for SingleCellExperiment object.
 setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
                                                                 mod,
                                                                type,
@@ -125,8 +118,8 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
 })
 
 #' @export
-#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell for
-#'   Seurat object.
+#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell
+#'  for Seurat object.
 setMethod("plot_hexbin_feature", "Seurat", function(sce,
                                                  mod,
                                                  type,

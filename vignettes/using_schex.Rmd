@@ -49,8 +49,8 @@ In order to demonstrate the capabilities of the schex package, I will use the
 a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
 10x Genomics. There are 2,700 single cells that were sequenced on the 
 Illumina NextSeq 500. This data is handly availabe in the [`SeuratData` package](https://github.com/satijalab/seurat-data).
-Note that we will convert the data from a `Seurat object` to a `SingleCellExperiment`
-in order to be able to run a Bioconductor workflow.
+Note that we will convert the data from a `Seurat object` to a 
+`SingleCellExperiment` in order to be able to run a Bioconductor workflow.
 
 ```{r load}
 InstallData("pbmc3k")
@@ -66,7 +66,8 @@ comprehensive handling of the data. For a more detailed guide the reader is
 referred to the following guides:
 
 * [Luecken MD and Theis FJ; Current best practices in single‐cell RNA‐seq analysis:
-  a tutorial; Molecular Systems Biology, 2019](https://www.embopress.org/doi/10.15252/msb.20188746)
+  a tutorial; Molecular Systems Biology, 
+  2019](https://www.embopress.org/doi/10.15252/msb.20188746)
 * [Lun ATL, McCarthy DJ and Marioni JC; A step-by-step workflow for low-level 
   analysis of single-cell RNA-seq data with Bioconductor; F1000 Research, 2016](https://f1000research.com/articles/5-2122)
 

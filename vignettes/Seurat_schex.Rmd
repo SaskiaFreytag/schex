@@ -11,8 +11,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = here::here("misc/images_Seurat/")
+  comment = "#>"
 )
 library(ggplot2)
 theme_set(theme_classic())
@@ -57,7 +56,8 @@ pbmc <- pbmc3k
 ```
 
 In the next few sections, I will perform some simple quality control steps
-outlined in the [Seurat vignette](https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html). I will then calculate various dimension 
+outlined in the [Seurat vignette](https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html). 
+I will then calculate various dimension 
 reductions and cluster the data also outlined in the vignette.
 
 ## Standard pre-processing workflow
@@ -85,8 +85,8 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize",
 
 ### Identification of highly variable genes
 
-Many of the downstream methods are based on only the highly variable genes, hence
-we require their identification.
+Many of the downstream methods are based on only the highly variable genes, 
+hence we require their identification.
 
 ```{r highly-variable, message=FALSE, warning=FALSE}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000,
@@ -106,7 +106,8 @@ pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 
 First a PCA is applied to the data. Using the PCA you will have to decide on the
 dimensionality of the data. Here the dimensionality was decided to be 10. 
-Please refer to the original Seurat vignette for methods on how this is assessed.
+Please refer to the original Seurat vignette for methods on how this is 
+assessed.
 
 ```{r pca, message=FALSE, warning=FALSE}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
@@ -138,14 +139,14 @@ plotting this.
 #### Calculate hexagon cell representation
 
 First, I will calculate the hexagon cell representation for each cell for
-a specified dimension reduction representation. I decide to use `nbins=40` which
+a specified dimension reduction representation. I decide to use `nbins=50` which
 specifies that I divide my x range into 40 bins. Note that this might be a 
 parameter that you want to play around with depending on the number of cells/
 nuclei in your dataset. Generally, for more cells/nuclei, `nbins` should be 
 increased.
 
 ```{r calc-hexbin}
-pbmc <- make_hexbin(pbmc, nbins = 40, 
+pbmc <- make_hexbin(pbmc, nbins = 50, 
                            dimension_reduction = "UMAP")
 ```
 
