@@ -67,13 +67,14 @@
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_meta(tenx_pbmc3k, col="total_counts", action="median")
 #' }
-setGeneric("plot_hexbin_meta", function(sce, col,
-                                        action,
-                                        no = 1,
-                                        colors=NULL,
-                                        title=NULL,
-                                        xlab=NULL,
-                                        ylab=NULL) standardGeneric("plot_hexbin_meta"))
+setGeneric("plot_hexbin_meta", function(sce,
+      col,
+      action,
+      no = 1,
+      colors=NULL,
+      title=NULL,
+      xlab=NULL,
+      ylab=NULL) standardGeneric("plot_hexbin_meta"))
 
 #' @export
 #' @describeIn plot_hexbin_meta  Plot of meta data into hexagon cell for
@@ -110,7 +111,7 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
     if(action == "prop"){
       col_hh <- .make_hexbin_colnames(x,col)
       func1 <- paste0("out$", col_hh, " <- hh[,", seq(1,length(col_hh),1),"]")
-      for(i in 1:length(func1)){
+      for(i in seq_len(length(func1))){
         eval(parse(text=func1[i]))
       }
     }
@@ -188,7 +189,7 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
     if(action == "prop"){
       col_hh <- .make_hexbin_colnames(x,col)
       func1 <- paste0("out$", col_hh, " <- hh[,", seq(1,length(col_hh),1),"]")
-      for(i in 1:length(func1)){
+      for(i in seq_len(length(func1))){
         eval(parse(text=func1[i]))
       }
     }

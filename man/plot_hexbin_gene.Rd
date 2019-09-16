@@ -86,7 +86,9 @@ colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
 tenx_pbmc3k <- normalize(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mean")
-plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene="ENSG00000135250", action="mode")
+plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
+gene="ENSG00000135250", action="mean")
+plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
+gene="ENSG00000135250", action="mode")
 }
 }

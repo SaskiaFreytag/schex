@@ -60,11 +60,11 @@ This function plots the interaction between any features in the hexagon cell
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{SingleCellExperiment}: Plot of gene expression into hexagon cell for
-SingleCellExperiment object.
+\item \code{SingleCellExperiment}: Plot of gene expression into hexagon cell
+for SingleCellExperiment object.
 
-\item \code{Seurat}: Plot of gene expression into hexagon cell for
-Seurat object.
+\item \code{Seurat}: Plot of gene expression into hexagon cell
+for Seurat object.
 }}
 
 \examples{
