@@ -2,9 +2,9 @@
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'   or \code{\link[Seurat]{Seurat}} object.
-#' @param mod A vector of strings referring to the names of the modularities. For
-#'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to access
-#'     the RNA expression data stored as the main experiment type.
+#' @param mod A vector of strings referring to the names of the modularities.
+#'     For \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to
+#'     access the RNA expression data stored as the main experiment type.
 #' @param type A vector of strings referring to the types of assays in the
 #'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the types of
 #'     transformation.
@@ -17,10 +17,10 @@
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
 #'
-#' @details This function plots the interaction between any features in the hexagon cell
-#'   representation calculated with \code{\link{make_hexbin}}. The interaction
-#'   between the chosen features is calculated by one of two measurers \code{corr_spearman},
-#'   and \code{mi}:
+#' @details This function plots the interaction between any features in the
+#'   hexagon cell representation calculated with \code{\link{make_hexbin}}. The
+#'   interaction between the chosen features is calculated by one of two
+#'   measurers \code{corr_spearman}, and \code{mi}:
 #'
 #'   \describe{
 #'     \item{\code{mi}}{Returns the mutual information coefficient.}
@@ -31,6 +31,8 @@
 #' @import Seurat
 #' @import SingleCellExperiment
 #' @importFrom entropy mi.plugin
+#' @importFrom stats cor
+#' @importFrom methods slotNames
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @export
@@ -46,17 +48,18 @@
 #' pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
 #' plot_hexbin_interact(pbmc_small, type=c("counts", "counts"),
 #'     mod=c("RNA", "ADT" ), feature=c("CD7", "A1"), interact="mi")
-setGeneric("plot_hexbin_interact", function(sce, mod,
-                                            type,
-                                            feature,
-                                           interact,
-                                           title=NULL,
-                                           xlab=NULL,
-                                           ylab=NULL) standardGeneric("plot_hexbin_interact"))
+setGeneric("plot_hexbin_interact", function(sce,
+      mod,
+      type,
+      feature,
+      interact,
+      title=NULL,
+      xlab=NULL,
+      ylab=NULL) standardGeneric("plot_hexbin_interact"))
 
 #' @export
-#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell for
-#'   SingleCellExperiment object.
+#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell
+#'   for SingleCellExperiment object.
 setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
                                                                    mod,
                                                                    type,
@@ -133,8 +136,8 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
 })
 
 #' @export
-#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell for
-#'   Seurat object.
+#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell
+#'   for Seurat object.
 setMethod("plot_hexbin_interact", "Seurat", function(sce,
                                                     mod,
                                                     type,
@@ -211,7 +214,7 @@ setMethod("plot_hexbin_interact", "Seurat", function(sce,
       res_first <- tapply(first_x, cID, FUN = function(z) z)
       res_second <- tapply(second_x, cID, FUN = function(z) z)
 
-      res <- unlist(lapply(1:length(res_first), function(x)
+      res <- unlist(lapply(seq_len(length(res_first)), function(x)
         cor(res_first[[x]], res_second[[x]], method="spearman")))
 
      return(res)
@@ -230,7 +233,7 @@ setMethod("plot_hexbin_interact", "Seurat", function(sce,
       res_first <- tapply(first_x, cID, FUN = function(z) z)
       res_second <- tapply(second_x, cID, FUN = function(z) z)
 
-      res <- lapply(1:length(res_first), function(x)
+      res <- lapply(seq_len(length(res_first)), function(x)
         rbind(res_first[[x]], res_second[[x]]))
 
       res <- unlist(lapply(res, function(x)

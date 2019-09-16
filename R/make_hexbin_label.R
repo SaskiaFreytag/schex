@@ -19,14 +19,14 @@
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' make_hexbin_label(pbmc_small, col="RNA_snn_res.1")
 setGeneric("make_hexbin_label", function(sce, col)
-  standardGeneric("make_hexbin_label"))
+    standardGeneric("make_hexbin_label"))
 
 #' @export
 #' @describeIn make_hexbin_label  Group label position for
 #'   Seurat object.
 setMethod("make_hexbin_label", "Seurat", function(sce, col){
 
-  func <- paste0("!(is.factor(sce$", col, ")|is.character(sce$", col, "))")
+  func <- paste0("!(is.factor(sce$", col, ")| is.character(sce$", col, "))")
 
   if (any(!col %in% colnames(sce@meta.data))) {
     stop("Column cannot be found in sce@meta.data.")
