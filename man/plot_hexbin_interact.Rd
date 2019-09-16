@@ -20,9 +20,9 @@ plot_hexbin_interact(sce, mod, type, feature, interact, title = NULL,
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 or \code{\link[Seurat]{Seurat}} object.}
 
-\item{mod}{A vector of strings referring to the names of the modularities. For
-\code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to access
-the RNA expression data stored as the main experiment type.}
+\item{mod}{A vector of strings referring to the names of the modularities.
+For \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to
+access the RNA expression data stored as the main experiment type.}
 
 \item{type}{A vector of strings referring to the types of assays in the
 \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the types of
@@ -48,10 +48,10 @@ A \code{\link{ggplot2}{ggplot}} object.
 Plot of interaction of expression of single cells in bivariate hexagon cells.
 }
 \details{
-This function plots the interaction between any features in the hexagon cell
-  representation calculated with \code{\link{make_hexbin}}. The interaction
-  between the chosen features is calculated by one of two measurers \code{corr_spearman},
-  and \code{mi}:
+This function plots the interaction between any features in the
+  hexagon cell representation calculated with \code{\link{make_hexbin}}. The
+  interaction between the chosen features is calculated by one of two
+  measurers \code{corr_spearman}, and \code{mi}:
 
   \describe{
     \item{\code{mi}}{Returns the mutual information coefficient.}
