@@ -37,7 +37,7 @@ from github.
 ```{r setup, message=FALSE}
 library(igraph)
 library(schex)
-library(SeuratData)
+library(TENxPBMCData)
 library(scater)
 library(scran)
 library(ggrepel)
@@ -48,15 +48,13 @@ library(ggrepel)
 In order to demonstrate the capabilities of the schex package, I will use the
 a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
 10x Genomics. There are 2,700 single cells that were sequenced on the 
-Illumina NextSeq 500. This data is handly availabe in the [`SeuratData` package](https://github.com/satijalab/seurat-data).
-Note that we will convert the data from a `Seurat object` to a 
-`SingleCellExperiment` in order to be able to run a Bioconductor workflow.
+Illumina NextSeq 500. This data is handly availabe in the [`TENxPBMCData` package](http://bioconductor.org/packages/release/data/experiment/html/TENxPBMCData.html).
 
 ```{r load}
-InstallData("pbmc3k")
-tenx_pbmc3k <- pbmc3k
+tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
-tenx_pbmc3k <- as.SingleCellExperiment(tenx_pbmc3k)
+rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
+                              rowData(tenx_pbmc3k)$Symbol_TENx)
 ```
 
 In the  next few sections, I will perform some simple quality control steps
