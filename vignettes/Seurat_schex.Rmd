@@ -100,9 +100,10 @@ pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 First a PCA is applied to the data. Using the PCA you will have to decide on the
 dimensionality of the data. Here the dimensionality was decided to be 10. 
 Please refer to the original Seurat vignette for methods on how this is 
-assessed.
+assessed. Since there is a random component in the UMAP, we will set a seed.
 
 ```{r pca, message=FALSE, warning=FALSE}
+set.seed(10)
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
                verbose = FALSE)
 ```
