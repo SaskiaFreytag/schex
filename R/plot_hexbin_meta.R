@@ -91,66 +91,12 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
   out <- sce@metadata$hexbin[[2]]
   cID <- sce@metadata$hexbin[[1]]
 
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
-
   if (any(!col %in% colnames(colData(sce)))) {
     stop("Column cannot be found in colData(sce).")
   }
 
-  name_s <- paste0("sce$", col)
-  func <- paste0("x <- ", name_s)
-
-  eval(parse(text = func))
-
-  hh <- .make_hexbin_function(x, action, cID)
-  out <- as_tibble(out)
-
-  if (action == "prop"|action=="majority") {
-    if(action == "prop"){
-      col_hh <- .make_hexbin_colnames(x,col)
-      func1 <- paste0("out$", col_hh, " <- hh[,", seq(1,length(col_hh),1),"]")
-      for(i in seq_len(length(func1))){
-        eval(parse(text=func1[i]))
-      }
-    }
-    if(action == "majority"){
-      col_hh <-paste0(col, "_", action)
-      if(is.factor(x)){
-        func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
-              "levels(x))")
-      } else {
-        func1 <- paste0("out$", col_hh, " <- hh")
-      }
-      eval(parse(text=func1))
-    }
-  } else {
-    col_hh <-paste0(col, "_", action)
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
-  }
-
-
-  if(action!="prop"){
-
-    if(action=="majority"){
-
-      .plot_hexbin(out, colour_by=col_hh, colors=colors,
-                   title=title, xlab=xlab, ylab=ylab)
-
-    } else {
-
-      .plot_hexbin(out, colour_by=col_hh, colors=NULL,
-          title=title, xlab=xlab, ylab=ylab)
-    }
-
-  } else {
-
-   .plot_hexbin(out, colour_by=col_hh[no], colors=NULL,
-                title=title, xlab=xlab, ylab=ylab)
-
-  }
+  .plot_hexbin_meta_helper(out, cID, col, action, no, title, xlab, ylab,
+                           colors)
 
 })
 
@@ -158,36 +104,44 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
 #' @describeIn plot_hexbin_meta  Plot of meta data into hexagon cell for
 #'   Seurat object.
 setMethod("plot_hexbin_meta", "Seurat", function(sce,
-                                                               col,
-                                                               action,
-                                                               no = 1,
-                                                               colors=NULL,
-                                                               title=NULL,
-                                                               xlab=NULL,
-                                                               ylab=NULL) {
+                                                 col,
+                                                 action,
+                                                 no = 1,
+                                                 colors=NULL,
+                                                 title=NULL,
+                                                 xlab=NULL,
+                                                 ylab=NULL) {
 
   out <- sce@misc$hexbin[[2]]
   cID <- sce@misc$hexbin[[1]]
-
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
 
   if (any(!col %in% colnames(sce@meta.data))) {
     stop("Column cannot be found in slot(sce, 'meta.data').")
   }
 
+  .plot_hexbin_meta_helper(out, cID, col, action, no, title, xlab, ylab,
+                           colors)
+  
+})
+
+.plot_hexbin_meta_helper <- function(out, cID, col, action, no, title,
+                                     xlab, ylab, colors) {
+  
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }
+  
   name_s <- paste0("sce$", col)
   func <- paste0("x <- ", name_s)
-
+  
   eval(parse(text = func))
-
+  
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
-
+  
   if (action == "prop"|action=="majority") {
     if(action == "prop"){
-      col_hh <- .make_hexbin_colnames(x,col)
+      col_hh <- .make_hexbin_colnames(x, col)
       func1 <- paste0("out$", col_hh, " <- hh[,", seq(1,length(col_hh),1),"]")
       for(i in seq_len(length(func1))){
         eval(parse(text=func1[i]))
@@ -208,74 +162,26 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
     func1 <- paste0("out$", col_hh, " <- hh")
     eval(parse(text=func1))
   }
-
+  
   if(action!="prop"){
-
+    
     if(action=="majority"){
-
+      
       .plot_hexbin(out, colour_by=col_hh, colors=colors,
                    title=title, xlab=xlab, ylab=ylab)
-
+      
     } else {
-
+      
       .plot_hexbin(out, colour_by=col_hh, colors=NULL,
                    title=title, xlab=xlab, ylab=ylab)
     }
-
+    
   } else {
-
+    
     .plot_hexbin(out, colour_by=col_hh[no], colors=NULL,
                  title=title, xlab=xlab, ylab=ylab)
-
+    
   }
-
-})
-
-.plot_hexbin <- function(drhex, colour_by="Cluster_majority", colors=NULL,
-                        title=NULL, xlab=NULL, ylab=NULL) {
-
-  if (any(!c("x", "y", colour_by) %in% colnames(drhex))) {
-    stop("The dataframe must contain columns named 'x', 'y' and label.")
-  }
-
-  if(is.null(title)) {
-    title <- colour_by
-  }
-
-  if(is.null(xlab)) {
-    xlab <- "x"
-  }
-
-  if(is.null(ylab)) {
-    ylab <- "y"
-  }
-
-  if(grepl("majority", colour_by)){
-
-    if(is.null(colors)){
-
-      ggplot(drhex, aes_string("x", "y", fill=colour_by)) +
-       geom_hex(stat = "identity") +
-        theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
-        labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
-
-    } else {
-
-      ggplot(drhex, aes_string("x", "y", fill=colour_by)) +
-        geom_hex(stat = "identity") + scale_fill_manual(values=colors) +
-        theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
-        labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
-
-    }
-
-  } else {
-
-    ggplot(drhex, aes_string("x","y", fill=colour_by)) +
-      geom_hex(stat = "identity") +
-      theme_classic() + scale_fill_viridis_c() + ggtitle(title) +
-      labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
-
-  }
-
+  
 }
 

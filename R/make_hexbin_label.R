@@ -39,40 +39,8 @@ setMethod("make_hexbin_label", "Seurat", function(sce, col){
   out <- sce@misc$hexbin[[2]]
   cID <- sce@misc$hexbin[[1]]
 
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
-
-  action <- "majority"
-
-  name_s <- paste0("sce$", col)
-  func <- paste0("x <- ", name_s)
-
-  eval(parse(text = func))
-
-  hh <- .make_hexbin_function(x, action, cID)
-  out <- as.data.frame(out)
-
-  label <- paste0(col, "_majority")
-
-  func1 <- paste0("out$", label, " <- hh")
-  eval(parse(text=func1))
-
-  label.df_2 <- list()
-  for(i in levels(out[, label])){
-    label.df_2[[i]] <- out[which(out[, label]==i),c(1,2)]
-  }
-
-  label.df_3 <- lapply(label.df_2, function(x) cluster::pam(x, 1)$medoids)
-
-  label.df_3 <- Reduce(rbind, label.df_3)
-  label.df_3 <- data.frame(
-    x = label.df_3[, 1],
-    y = label.df_3[, 2],
-    label = levels(out[, label])
-  )
-
-  label.df_3
+  .make_hexbin_label_helper(out, cID, col)
+  
 })
 
 #' @export
@@ -92,40 +60,45 @@ setMethod("make_hexbin_label", "SingleCellExperiment", function(sce, col){
 
   out <- sce@metadata$hexbin[[2]]
   cID <- sce@metadata$hexbin[[1]]
+  
+  .make_hexbin_label_helper(out, cID, col)
+  
+})
 
+.make_hexbin_label_helper <- function(out, cID, col){
+  
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
   }
-
+  
   action <- "majority"
-
+  
   name_s <- paste0("sce$", col)
   func <- paste0("x <- ", name_s)
-
+  
   eval(parse(text = func))
-
+  
   hh <- .make_hexbin_function(x, action, cID)
   out <- as.data.frame(out)
-
+  
   label <- paste0(col, "_majority")
-
+  
   func1 <- paste0("out$", label, " <- hh")
   eval(parse(text=func1))
-
+  
   label.df_2 <- list()
   for(i in levels(out[, label])){
     label.df_2[[i]] <- out[which(out[, label]==i),c(1,2)]
   }
-
+  
   label.df_3 <- lapply(label.df_2, function(x) cluster::pam(x, 1)$medoids)
-
+  
   label.df_3 <- Reduce(rbind, label.df_3)
   label.df_3 <- data.frame(
     x = label.df_3[, 1],
     y = label.df_3[, 2],
     label = levels(out[, label])
   )
-
+  
   label.df_3
-})
-
+}

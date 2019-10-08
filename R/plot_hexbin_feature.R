@@ -90,30 +90,8 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
   x <- assays(altExp(sce, mod))
   x <- x[[which(names(x)==type)]]
 
-  ind <- match(feature, rownames(x))
-
-  if (is.na(ind)) {
-    stop("Feature cannot be found.")
-  }
-
-  x <- as.numeric(x[ind,])
-
-  hh <- .make_hexbin_function(x, action, cID)
-  out <- as_tibble(out)
-
-  if(grepl("^[[:digit:]]", feature )){
-    feature <- paste0("F_", feature)
-  }
-
-  feature <- gsub("-", "_", feature)
-
-  col_hh <- paste0(feature, "_", action)
-
-  func1 <- paste0("out$", col_hh, " <- hh")
-  eval(parse(text=func1))
-
-  .plot_hexbin(out, colour_by=col_hh,
-                       title=title, xlab=xlab, ylab=ylab)
+  .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
+                                          xlab, ylab)
 
 })
 
@@ -146,29 +124,36 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
 
   x <- GetAssayData(sce, assay=mod, type)
 
-  ind <- match(feature, rownames(x))
+  .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
+                                          xlab, ylab)
 
+})
+
+.plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
+                                        xlab, ylab){
+  
+  ind <- match(feature, rownames(x))
+  
   if (is.na(ind)) {
     stop("Feature cannot be found.")
   }
-
+  
   x <- as.numeric(x[ind,])
-
+  
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
-
+  
   if(grepl("^[[:digit:]]", feature )){
     feature <- paste0("F_", feature)
   }
-
+  
   feature <- gsub("-", "_", feature)
-
+  
   col_hh <- paste0(feature, "_", action)
-
+  
   func1 <- paste0("out$", col_hh, " <- hh")
   eval(parse(text=func1))
-
+  
   .plot_hexbin(out, colour_by=col_hh,
                title=title, xlab=xlab, ylab=ylab)
-
-})
+}
