@@ -106,32 +106,8 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
      first_x <- first_x[[which(names(first_x)==type[1])]]
      second_x <- second_x[[which(names(second_x)==type[2])]]
 
-     first_ind <- match(feature[1], rownames(first_x))
-     second_ind <- match(feature[2], rownames(second_x))
-
-     if (is.na(second_ind)|is.na(first_ind)) {
-       stop("One/two features cannot be found.")
-     }
-
-     first_x <- as.numeric(first_x[first_ind,])
-     second_x <- as.numeric(second_x[second_ind,])
-
-     hh <- .interact_hexbin_function(first_x, second_x, interact, cID)
-     out <- as_tibble(out)
-
-     feature <- gsub("-", "_", feature)
-
-     if(any(grepl("^[[:digit:]]", feature))){
-       feature <- paste0("F_", feature)
-     }
-
-     col_hh <- paste0(interact, "_", feature[1], "_", feature[2])
-
-     func1 <- paste0("out$", col_hh, " <- hh")
-     eval(parse(text=func1))
-
-     .plot_hexbin(out, colour_by=col_hh,
-                          title=title, xlab=xlab, ylab=ylab)
+     .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
+                                  feature, title, xlab, ylab)
 
 })
 
@@ -170,76 +146,40 @@ setMethod("plot_hexbin_interact", "Seurat", function(sce,
   first_x <- GetAssayData(sce, assay=mod[1], type[1])
   second_x <- GetAssayData(sce, assay=mod[2], type[2])
 
-  first_ind <- match(feature[1], rownames(first_x))
-  second_ind <- match(feature[2], rownames(second_x))
-
-  if (is.na(second_ind)|is.na(first_ind)) {
-    stop("One/two features cannot be found.")
-  }
-
-  first_x <- as.numeric(first_x[first_ind,])
-  second_x <- as.numeric(second_x[second_ind,])
-
-  hh <- .interact_hexbin_function(first_x, second_x, interact, cID)
-  out <- as_tibble(out)
-
-  if(any(grepl("^[[:digit:]]", feature))){
-    feature <- paste0("F_", feature)
-  }
-
-  feature <- gsub("-", "_", feature)
-
-  col_hh <- paste0(interact, "_", feature[1], "_", feature[2])
-
-  func1 <- paste0("out$", col_hh, " <- hh")
-  eval(parse(text=func1))
-
-  .plot_hexbin(out, colour_by=col_hh,
-                       title=title, xlab=xlab, ylab=ylab)
-
+  .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
+                               feature, title, xlab, ylab)
+  
 })
 
 
-.interact_hexbin_function<- function(first_x, second_x, interact, cID) {
 
-  if(interact=="corr_spearman"){
-
-    func_if <- !(is.numeric(first_x)|is.numeric(second_x))
-
-    if (func_if) {
-      stop(paste0("Features need to be numeric."))
-
-    } else {
-
-      res_first <- tapply(first_x, cID, FUN = function(z) z)
-      res_second <- tapply(second_x, cID, FUN = function(z) z)
-
-      res <- unlist(lapply(seq_len(length(res_first)), function(x)
-        cor(res_first[[x]], res_second[[x]], method="spearman")))
-
-     return(res)
-    }
+.plot_hexbin_interact_helper <- function(first_x, second_x,  out, cID, interact,
+                                         feature, title, xlab, ylab) {
+  
+  first_ind <- match(feature[1], rownames(first_x))
+  second_ind <- match(feature[2], rownames(second_x))
+  
+  if (is.na(second_ind)|is.na(first_ind)) {
+    stop("One/two features cannot be found.")
   }
-
-  if(interact=="mi"){
-
-    func_if <- !(is.numeric(first_x)|is.numeric(second_x))
-
-    if (func_if) {
-      stop(paste0("Features need to be numeric."))
-
-    } else {
-
-      res_first <- tapply(first_x, cID, FUN = function(z) z)
-      res_second <- tapply(second_x, cID, FUN = function(z) z)
-
-      res <- lapply(seq_len(length(res_first)), function(x)
-        rbind(res_first[[x]], res_second[[x]]))
-
-      res <- unlist(lapply(res, function(x)
-        mi.plugin(x)))
-
-     return(res)
-    }
+  
+  first_x <- as.numeric(first_x[first_ind,])
+  second_x <- as.numeric(second_x[second_ind,])
+  
+  hh <- .interact_hexbin_function(first_x, second_x, interact, cID)
+  out <- as_tibble(out)
+  
+  if(any(grepl("^[[:digit:]]", feature))){
+    feature <- paste0("F_", feature)
   }
+  
+  feature <- gsub("-", "_", feature)
+  
+  col_hh <- paste0(interact, "_", feature[1], "_", feature[2])
+  
+  func1 <- paste0("out$", col_hh, " <- hh")
+  eval(parse(text=func1))
+  
+  .plot_hexbin(out, colour_by=col_hh,
+               title=title, xlab=xlab, ylab=ylab)
 }

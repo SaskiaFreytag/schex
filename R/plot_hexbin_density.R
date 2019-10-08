@@ -47,28 +47,8 @@ setMethod("plot_hexbin_density", "SingleCellExperiment", function(sce,
 
   out <- sce@metadata$hexbin[[2]]
 
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
-
-  if(is.null(title)) {
-    title <- "Density"
-  }
-
-  if(is.null(xlab)) {
-    xlab <- "x"
-  }
-
-  if(is.null(ylab)) {
-    ylab <- "y"
-  }
-
-  out <- as_tibble(out)
-
-  ggplot(out, aes_string("x", "y", fill="number_of_cells")) +
-    geom_hex(stat = "identity") + scale_fill_viridis_c() +
-    theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
-    labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
+  .plot_hexbin_density_helper(out, title, xlab, ylab)
+  
 })
 
 #' @export
@@ -81,27 +61,33 @@ setMethod("plot_hexbin_density", "Seurat", function(sce,
 
   out <- sce@misc$hexbin[[2]]
 
+  .plot_hexbin_density_helper(out, title, xlab, ylab)
+
+})
+
+.plot_hexbin_density_helper <- function(out, title, xlab, ylab){
+  
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
   }
-
+  
   if(is.null(title)) {
     title <- "Density"
   }
-
+  
   if(is.null(xlab)) {
     xlab <- "x"
   }
-
+  
   if(is.null(ylab)) {
     ylab <- "y"
   }
-
+  
   out <- as_tibble(out)
-
+  
   ggplot(out, aes_string("x", "y", fill="number_of_cells")) +
     geom_hex(stat = "identity") + scale_fill_viridis_c() +
     theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
     labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
-
-})
+  
+}
