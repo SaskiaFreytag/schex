@@ -22,12 +22,15 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-    covr
+    covr,
+    TENxPBMCData,
+    scater,
+    shinydashboard,
+    iSEE
 URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 6.1.1
 biocViews: Software, Sequencing,
       SingleCell, DimensionReduction, Visualization
