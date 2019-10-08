@@ -4,7 +4,7 @@
     func_if <- !(is.factor(x)|is.character(x))
 
     if (func_if) {
-      stop(paste0("For action 'majority' x needs to be a factor or character."))
+      stop("For action 'majority' x needs to be a factor or character.")
     } else {
         res <- tapply(x, cID, FUN = function(z) names(sort(table(z),
             decreasing = TRUE)[1]))
@@ -17,7 +17,7 @@
     func_if <- !(is.factor(x)|is.character(x))
 
     if (func_if) {
-      stop(paste0("For action 'prop' x needs to be a factor or character."))
+      stop("For action 'prop' x needs to be a factor or character.")
     } else {
       res <- sapply(unique(x), function(y) tapply(x, cID, FUN = function(z)
           sum(z==y)/length(z)))
@@ -30,7 +30,7 @@
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop(paste0("For action 'median' x needs to be numeric"))
+      stop("For action 'median' x needs to be numeric")
     } else {
         res <- tapply(x, cID, FUN = function(z) median(z))
         res <- as.numeric(res)
@@ -42,7 +42,7 @@
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop(paste0("For action 'median' x needs to be numeric"))
+      stop("For action 'median' x needs to be numeric")
     } else {
       res <- tapply(x, cID, FUN = function(z) .get_mode(z))
       res <- as.numeric(res)
@@ -54,7 +54,7 @@
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop(paste0("For action 'prop_0' x needs to be numeric"))
+      stop("For action 'prop_0' x needs to be numeric")
     } else {
       res <- tapply(x, cID, FUN = function(z) sum(z>0)/length(z))
       res <- as.numeric(res)
@@ -66,7 +66,7 @@
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop(paste0("For action 'median' x needs to be numeric"))
+      stop("For action 'median' x needs to be numeric")
     } else {
       res <- tapply(x, cID, FUN = function(z) mean(z))
       res <- as.numeric(res)

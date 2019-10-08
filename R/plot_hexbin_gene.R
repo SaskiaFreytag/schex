@@ -97,22 +97,8 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function(sce,
 
   x <- as.numeric(x[[which(names(x)==type)]][ind,])
 
-  hh <- .make_hexbin_function(x, action, cID)
-  out <- as_tibble(out)
-
-  if(grepl("^[[:digit:]]", gene )){
-    gene <- paste0("G_", gene)
-  }
-
-  gene <- gsub("-", "_", gene)
-
-  col_hh <- paste0(gene, "_", action)
-
-  func1 <- paste0("out$", col_hh, " <- hh")
-  eval(parse(text=func1))
-
-  .plot_hexbin(out, colour_by=col_hh,
-               title=title, xlab=xlab, ylab=ylab)
+  .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
+                           xlab, ylab) 
 
 })
 
@@ -144,21 +130,30 @@ setMethod("plot_hexbin_gene", "Seurat", function(sce,
 
   x <- as.numeric(x[ind,])
 
+  .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
+                                       xlab, ylab) 
+
+})
+
+
+.plot_hexbin_gene_helper <- function(x, action, cID, out, gene, title,
+                                     xlab, ylab) {
+  
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
-
+  
   if(grepl("^[[:digit:]]", gene )){
     gene <- paste0("G_", gene)
   }
-
+  
   gene <- gsub("-", "_", gene)
-
+  
   col_hh <- paste0(gene, "_", action)
-
+  
   func1 <- paste0("out$", col_hh, " <- hh")
   eval(parse(text=func1))
-
+  
   .plot_hexbin(out, colour_by=col_hh,
                title=title, xlab=xlab, ylab=ylab)
-
-})
+  
+}
