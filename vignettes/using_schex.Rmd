@@ -31,9 +31,6 @@ package and `Seurat` from the [Seurat](https://satijalab.org/seurat/) package.
 
 ## Load libraries
 
-Please install the package [SeuratData](https://github.com/satijalab/seurat-data)
-from github.
-
 ```{r setup, message=FALSE}
 library(igraph)
 library(schex)
@@ -112,10 +109,12 @@ tenx_pbmc3k <- scater::normalize(tenx_pbmc3k)
 
 I use both Principal Components Analysis (PCA) and Uniform Manifold 
 Approximation and Projection (UMAP) in order to obtain reduced dimension 
-representations of the data.
+representations of the data. Since there is a random component in the UMAP, we
+will also set a seed.
 
 ```{r dim-red, message=FALSE, warning=FALSE}
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+set.seed(10)
 tenx_pbmc3k <- runUMAP(tenx_pbmc3k, dimred = "PCA", spread = 1, 
                        min_dist = 0.4)
 ```
