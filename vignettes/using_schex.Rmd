@@ -218,7 +218,7 @@ components of the plots can be changed using the function `theme`.
 
 ```{r}
 gene_id <-"CD19"
-gg <- schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
+gg <- schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
                  action="mean", xlab="UMAP1", ylab="UMAP2", 
                  title=paste0("Mean of ", gene_id))
 gg + theme_void()
