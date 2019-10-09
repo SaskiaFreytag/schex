@@ -11,6 +11,13 @@ The goal of schex is to provide easy plotting of hexagon cell representations of
 Installation
 ------------
 
+You can install schex using the [Bioconductor project](https://bioconductor.org/):
+
+``` r
+# install.packages("BiocManager")
+BiocManager::install("schex")
+```
+
 You can install the development version of schex with:
 
 ``` r
@@ -18,7 +25,7 @@ You can install the development version of schex with:
 devtools::install_github("SaskiaFreytag/schex")
 ```
 
-Note that you may need to install several bioconductor packages if you haven't done so manually.
+Note that you may need to install several Bioconductor packages if you haven't done so manually.
 
 ``` r
 # install.packages("BiocManager")

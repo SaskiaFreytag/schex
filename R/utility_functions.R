@@ -90,3 +90,5 @@
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
+
+utils::globalVariables(c("dr", "x", "assayNames", "assays"))

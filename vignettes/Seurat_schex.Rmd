@@ -54,7 +54,6 @@ tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
 rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
                               rowData(tenx_pbmc3k)$Symbol_TENx)
-tenx_pbmc3k$nFeature_RNA
 
 pbmc <- as.Seurat(tenx_pbmc3k, data = NULL)
 ```
@@ -100,17 +99,18 @@ pbmc <- ScaleData(pbmc, features = all.genes, verbose = FALSE)
 First a PCA is applied to the data. Using the PCA you will have to decide on the
 dimensionality of the data. Here the dimensionality was decided to be 10. 
 Please refer to the original Seurat vignette for methods on how this is 
-assessed. Since there is a random component in the UMAP, we will set a seed.
+assessed. 
 
 ```{r pca, message=FALSE, warning=FALSE}
-set.seed(10)
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
                verbose = FALSE)
 ```
 
-Next a UMAP dimensionality reduction is also run.
+Next a UMAP dimensionality reduction is also run. Since there is a random 
+component in the UMAP, we will set a seed.
 
 ```{r umap, message=FALSE, warning=FALSE}
+set.seed(10)
 pbmc <- RunUMAP(pbmc, dims = 1:10, verbose=FALSE)
 ```
 
@@ -154,8 +154,6 @@ total count in each hexagon cell.
 plot_hexbin_meta(pbmc, col="nCount_RNA", action="median")
 ```
 
-
-
 #### Plot gene expression in hexagon cell representation
 
 Finally, I will visualize the gene expression of the CD19 gene in the 
@@ -168,5 +166,24 @@ schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id,
                  title=paste0("Mean of ", gene_id))
 ```
 
+### Understanding `schex` output as `ggplot` objects
 
+The `schex` packages renders ordinary `ggplot` objects and thus these can be 
+treated and manipulated using the 
+[`ggplot` grammar](https://ggplot2.tidyverse.org/). For example the non-data
+components of the plots can be changed using the function `theme`.
 
+```{r}
+gene_id <-"CD19"
+gg <- schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
+                 action="mean", xlab="UMAP1", ylab="UMAP2", 
+                 title=paste0("Mean of ", gene_id))
+gg + theme_void()
+```
+
+The fact that `schex` renders `ggplot` objects can also be used to save these 
+plots. Simply use `ggsave` in order to save any created plot.
+
+```{r, eval=FALSE}
+ggsave(gg, file="schex_plot.pdf")
+```

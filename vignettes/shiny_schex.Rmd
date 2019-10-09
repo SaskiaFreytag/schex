@@ -35,7 +35,7 @@ First we create a the hexagon cell representation and also make a data frame to
 store the position of cluster labels.
 
 ```{r, eval=FALSE}
-pbmc_small <- make_hexbin(pbmc_small, nbins=10, dimension_reduction = "PCA")
+pbmc_small <- make_hexbin(pbmc_small, nbins = 10, dimension_reduction = "PCA")
 df_label <- make_hexbin_label(pbmc_small, "RNA_snn_res.0.8")
 ```    
 
@@ -145,4 +145,18 @@ app <- iSEE(
     )
 ```
 
+Unfortunately in the iSEE application plots cannot be changed to diplay 
+different genes as conveniently as with `shinydashboards`. If you want
+to diplay a different gene you will need to edit the following box:
 
+![](../man/figures/iSEE.png){width=60%}
+
+For example by typing 
+
+```
+type counts
+action prop_0
+rownames CD19
+```
+
+you can change the plot to dsiplay the expression of *CD19*. 
