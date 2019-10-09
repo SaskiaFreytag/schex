@@ -14,13 +14,12 @@ Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 \details{
 Please see the help pages listed below:
  \itemize{
-    \item{\code{\link[schex]{make_hexbin}}}
-    \item{\code{\link[schex]{plot_hexbin_gene}}}
-    \item{\code{\link[schex]{plot_hexbin_meta}}}
+    \item{\code{\link{make_hexbin}}}
+    \item{\code{\link{plot_hexbin_gene}}}
+    \item{\code{\link{plot_hexbin_meta}}}
  }
- Also see the vignette for more usage examples:
  
- \code{browseVignettes("schex")}
+ Also see the vignettes for more usage examples.
  
  Please report issues and suggest improvements at Github:
  
