@@ -94,8 +94,13 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
   if (any(!col %in% colnames(colData(sce)))) {
     stop("Column cannot be found in colData(sce).")
   }
+  
+  name_s <- paste0("sce$", col)
+  func <- paste0("x <- ", name_s)
+  
+  eval(parse(text = func))
 
-  .plot_hexbin_meta_helper(out, cID, col, action, no, title, xlab, ylab,
+  .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
                            colors)
 
 })
@@ -118,23 +123,23 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
   if (any(!col %in% colnames(sce@meta.data))) {
     stop("Column cannot be found in slot(sce, 'meta.data').")
   }
-
-  .plot_hexbin_meta_helper(out, cID, col, action, no, title, xlab, ylab,
-                           colors)
-  
-})
-
-.plot_hexbin_meta_helper <- function(out, cID, col, action, no, title,
-                                     xlab, ylab, colors) {
-  
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
   
   name_s <- paste0("sce$", col)
   func <- paste0("x <- ", name_s)
   
   eval(parse(text = func))
+
+  .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
+                           colors)
+  
+})
+
+.plot_hexbin_meta_helper <- function(x, out, cID, col, action, no, title,
+                                     xlab, ylab, colors) {
+  
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }
   
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)

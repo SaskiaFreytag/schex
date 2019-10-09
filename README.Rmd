@@ -25,6 +25,14 @@ of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
 
 ## Installation
 
+You can install schex using the 
+[Bioconductor project](https://bioconductor.org/):
+
+``` r
+# install.packages("BiocManager")
+BiocManager::install("schex")
+```
+
 You can install the development version of schex with:
 
 ``` r
@@ -32,7 +40,7 @@ You can install the development version of schex with:
 devtools::install_github("SaskiaFreytag/schex")
 ```
 
-Note that you may need to install several bioconductor packages if 
+Note that you may need to install several Bioconductor packages if 
 you haven't done so manually.
 
 ``` r

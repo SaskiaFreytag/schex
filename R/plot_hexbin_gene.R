@@ -6,8 +6,8 @@
 #'     \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
 #'     data transformation in the \code{\link[Seurat]{Seurat}} object.
 #' @param gene A string referring to the name of one gene.
-#' @param action A strings pecifying how meta data of observations in
-#'   binned  hexagon cells are to be summarized. Possible actions are
+#' @param action A strings pecifying how gene expression of observations in
+#'   binned hexagon cells are to be summarized. Possible actions are
 #'   \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
