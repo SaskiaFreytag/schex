@@ -1,4 +1,14 @@
-# schex 0.0.1
+# 0.99.3
 
 * Minimal functioning package created.
-* Compliant with BiocCheck::BiocCheck() and goodpractice::goodpractice().
+* Mostly compliant with BiocCheck::BiocCheck() and goodpractice::goodpractice().
+
+# 0.99.4
+
+* Fixed typos in vignettes.
+* Added explanation of ggplot connection to vignettes.
+* Added explanation for interactivity in iSEE to vignette.
+* Fixed global variables.
+* Fixed documentation in plot_hexbin_gene.
+* Reformatted news.
+* Added packages to suggests in description.

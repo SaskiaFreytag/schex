@@ -38,8 +38,13 @@ setMethod("make_hexbin_label", "Seurat", function(sce, col){
 
   out <- sce@misc$hexbin[[2]]
   cID <- sce@misc$hexbin[[1]]
+  
+  name_s <- paste0("sce$", col)
+  func <- paste0("x <- ", name_s)
+  
+  eval(parse(text = func))
 
-  .make_hexbin_label_helper(out, cID, col)
+  .make_hexbin_label_helper(x, out, cID, col)
   
 })
 
@@ -61,22 +66,22 @@ setMethod("make_hexbin_label", "SingleCellExperiment", function(sce, col){
   out <- sce@metadata$hexbin[[2]]
   cID <- sce@metadata$hexbin[[1]]
   
-  .make_hexbin_label_helper(out, cID, col)
+  name_s <- paste0("sce$", col)
+  func <- paste0("x <- ", name_s)
+  
+  eval(parse(text = func))
+  
+  .make_hexbin_label_helper(x, out, cID, col)
   
 })
 
-.make_hexbin_label_helper <- function(out, cID, col){
+.make_hexbin_label_helper <- function(x, out, cID, col){
   
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
   }
   
   action <- "majority"
-  
-  name_s <- paste0("sce$", col)
-  func <- paste0("x <- ", name_s)
-  
-  eval(parse(text = func))
   
   hh <- .make_hexbin_function(x, action, cID)
   out <- as.data.frame(out)
