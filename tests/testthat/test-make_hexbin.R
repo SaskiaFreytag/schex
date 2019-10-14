@@ -35,4 +35,4 @@ test_that("error dimension reduction sce", {
     pbmc_small <- as.SingleCellExperiment(pbmc_small)
     expect_error(make_hexbin(pbmc_small, 10,
         dimension_reduction = "UMAP"))
-})
+

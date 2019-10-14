@@ -6,7 +6,11 @@
 \alias{plot_hexbin_density,SingleCellExperiment-method}
 \alias{plot_hexbin_density,Seurat-method}
 \title{Plot of density of observations from single cell data
+<<<<<<< HEAD
    in bivariate hexagon cells.}
+=======
+  in bivariate hexagon cells.}
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 \usage{
 plot_hexbin_density(sce, title = NULL, xlab = NULL, ylab = NULL)
 
@@ -31,7 +35,11 @@ A \code{\link{ggplot2}{ggplot}} object.
 }
 \description{
 Plot of density of observations from single cell data
+<<<<<<< HEAD
    in bivariate hexagon cells.
+=======
+  in bivariate hexagon cells.
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 }
 \section{Methods (by class)}{
 \itemize{

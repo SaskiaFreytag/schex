@@ -10,8 +10,13 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+<<<<<<< HEAD
     collapse = TRUE,
     comment = "#>"
+=======
+  collapse = TRUE,
+  comment = "#>"
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 )
 library(ggplot2)
 theme_set(theme_classic())
@@ -53,7 +58,11 @@ Note that we will then have to convert the `SingleCellExperiment` object to a
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
 rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
+<<<<<<< HEAD
     rowData(tenx_pbmc3k)$Symbol_TENx)
+=======
+                              rowData(tenx_pbmc3k)$Symbol_TENx)
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 
 pbmc <- as.Seurat(tenx_pbmc3k, data = NULL)
 ```
@@ -72,7 +81,11 @@ feature expression measurements for each cell.
 
 ```{r norm, message=FALSE, warning=FALSE}
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", 
+<<<<<<< HEAD
     scale.factor = 10000, verbose=FALSE)
+=======
+                      scale.factor = 10000, verbose=FALSE)
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 ### Identification of highly variable genes
@@ -82,7 +95,11 @@ hence we require their identification.
 
 ```{r highly-variable, message=FALSE, warning=FALSE}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000,
+<<<<<<< HEAD
     verbose = FALSE)
+=======
+                             verbose = FALSE)
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 ### Scaling
@@ -103,7 +120,11 @@ assessed.
 
 ```{r pca, message=FALSE, warning=FALSE}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
+<<<<<<< HEAD
       verbose = FALSE)
+=======
+               verbose = FALSE)
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 Next a UMAP dimensionality reduction is also run. Since there is a random 
@@ -132,7 +153,11 @@ increased.
 
 ```{r calc-hexbin}
 pbmc <- make_hexbin(pbmc, nbins = 40, 
+<<<<<<< HEAD
     dimension_reduction = "UMAP")
+=======
+                           dimension_reduction = "UMAP")
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 #### Plot number of cells/nuclei in each hexagon cell
@@ -162,8 +187,13 @@ hexagon cell representation.
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"CD19"
 schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
+<<<<<<< HEAD
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
+=======
+                 action="mean", xlab="UMAP1", ylab="UMAP2", 
+                 title=paste0("Mean of ", gene_id))
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 ### Understanding `schex` output as `ggplot` objects
@@ -176,8 +206,13 @@ components of the plots can be changed using the function `theme`.
 ```{r}
 gene_id <-"CD19"
 gg <- schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
+<<<<<<< HEAD
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
+=======
+                 action="mean", xlab="UMAP1", ylab="UMAP2", 
+                 title=paste0("Mean of ", gene_id))
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 gg + theme_void()
 ```
 
