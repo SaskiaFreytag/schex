@@ -49,7 +49,6 @@ Plot of interaction of expression of single cells in bivariate hexagon cells.
 }
 \details{
 This function plots the interaction between any features in the
-<<<<<<< HEAD
    hexagon cell representation calculated with \code{\link{make_hexbin}}. The
    interaction between the chosen features is calculated by one of two
    measurers \code{corr_spearman}, and \code{mi}:
@@ -58,16 +57,6 @@ This function plots the interaction between any features in the
       \item{\code{mi}}{Returns the mutual information coefficient.}
       \item{\code{corr_spearman}}{Returns the Spearman correlation.}
    }
-=======
-  hexagon cell representation calculated with \code{\link{make_hexbin}}. The
-  interaction between the chosen features is calculated by one of two
-  measurers \code{corr_spearman}, and \code{mi}:
-
-  \describe{
-    \item{\code{mi}}{Returns the mutual information coefficient.}
-    \item{\code{corr_spearman}}{Returns the Spearman correlation.}
-  }
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 }
 \section{Methods (by class)}{
 \itemize{
