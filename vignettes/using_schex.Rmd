@@ -10,8 +10,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 library(ggplot2)
 theme_set(theme_classic())
@@ -51,7 +51,7 @@ Illumina NextSeq 500. This data is handly availabe in the [`TENxPBMCData` packag
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
 rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
-                              rowData(tenx_pbmc3k)$Symbol_TENx)
+    rowData(tenx_pbmc3k)$Symbol_TENx)
 ```
 
 In the  next few sections, I will perform some simple quality control steps
@@ -74,19 +74,18 @@ library size or feature count.
 ```{r filter-cells}
 rowData(tenx_pbmc3k)$Mito <- grepl("^MT-", rownames(tenx_pbmc3k))
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), 
-        perCellQCMetrics(tenx_pbmc3k, 
+    perCellQCMetrics(tenx_pbmc3k, 
         subsets=list(Mt=rowData(tenx_pbmc3k)$Mito)))
 rowData(tenx_pbmc3k) <- cbind(rowData(tenx_pbmc3k), 
-        perFeatureQCMetrics(tenx_pbmc3k))
+    perFeatureQCMetrics(tenx_pbmc3k))
 
 tenx_pbmc3k <- tenx_pbmc3k[, !colData(tenx_pbmc3k)$subsets_Mt_percent > 50]
 
 libsize_drop <- isOutlier(tenx_pbmc3k$total,
-  nmads = 3,type = "lower", log = TRUE
-)
+      nmads = 3,type = "lower", log = TRUE)
 feature_drop <- isOutlier(tenx_pbmc3k$detected,
-  nmads = 3, type = "lower", log = TRUE
-)
+    nmads = 3, type = "lower", log = TRUE)
+
 tenx_pbmc3k <- tenx_pbmc3k[, !(libsize_drop | feature_drop)]
 ```
 
@@ -116,7 +115,7 @@ will also set a seed.
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 set.seed(10)
 tenx_pbmc3k <- runUMAP(tenx_pbmc3k, dimred = "PCA", spread = 1, 
-                       min_dist = 0.4)
+    min_dist = 0.4)
 ```
 
 ### Clustering
@@ -147,8 +146,7 @@ increased.
 
 ```{r calc-hexbin}
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, nbins = 40, 
-                           dimension_reduction = "UMAP",
-                           use_dims=c(1,2))
+    dimension_reduction = "UMAP", use_dims=c(1,2))
 ```
 
 #### Plot number of cells/nuclei in each hexagon cell
@@ -187,7 +185,7 @@ positions for factor variables. These can be overlayed with the package
 label_df <- make_hexbin_label(tenx_pbmc3k, col="cluster")
 pp <- plot_hexbin_meta(tenx_pbmc3k, col="cluster", action="majority") 
 pp + ggrepel::geom_label_repel(data = label_df, aes(x=x, y=y, label = label), 
-                            colour="black",  label.size = NA, fill = NA)  
+    colour="black",  label.size = NA, fill = NA)  
 ```
 
 #### Plot gene expression in hexagon cell representation
@@ -198,8 +196,8 @@ hexagon cell representation.
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"POMGNT1"
 schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
+    action="mean", xlab="UMAP1", ylab="UMAP2", 
+    title=paste0("Mean of ", gene_id))
 ```
 
 Again it is much easier to observe differences in gene expression using the 
@@ -219,8 +217,8 @@ components of the plots can be changed using the function `theme`.
 ```{r}
 gene_id <-"CD19"
 gg <- schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
+    action="mean", xlab="UMAP1", ylab="UMAP2", 
+    title=paste0("Mean of ", gene_id))
 gg + theme_void()
 ```
 

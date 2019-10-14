@@ -9,8 +9,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 ```
 
@@ -47,48 +47,48 @@ running the function, the application is initialized by running `app`.
 
 ```{r, eval=FALSE}
 app <- shinyApp( 
-  server= function(input, output){
+    server= function(input, output){
   
-    output$all_genes <- renderUI({
-      selectInput(inputId = "gene", label = "Gene", 
-                  choices = rownames(pbmc_small))
-    })
+        output$all_genes <- renderUI({
+            selectInput(inputId = "gene", label = "Gene", 
+                choices = rownames(pbmc_small))
+        })
     
-    output$plot1 <- renderPlot({ 
-      plot_hexbin_meta(pbmc_small, "RNA_snn_res.0.8", action="majority",
-        title="Clusters") + guides(fill=FALSE) +
-        ggrepel::geom_label_repel(data=df_label, 
-        aes(x=x, y=y, label=label), colour="black",
-        label.size=NA, fill=NA)
+        output$plot1 <- renderPlot({ 
+            plot_hexbin_meta(pbmc_small, "RNA_snn_res.0.8", action="majority",
+                title="Clusters") + guides(fill=FALSE) +
+                ggrepel::geom_label_repel(data=df_label, 
+                aes(x=x, y=y, label=label), colour="black",
+                label.size=NA, fill=NA)
         
-    })
+        })
       
-    output$plot2 <- renderPlot({ 
-      plot_hexbin_gene(pbmc_small, input$type, input$gene, action=input$action,
-        title=input$gene) 
-    })
+        output$plot2 <- renderPlot({ 
+            plot_hexbin_gene(pbmc_small, input$type, input$gene, 
+                action=input$action, title=input$gene) 
+        })
     
     
-  },
-  ui= dashboardPage(skin = "purple",
-    dashboardHeader(),
-    dashboardSidebar(
-      uiOutput("all_genes"),
-      radioButtons("type", "Type of expression:",
-                   c("Raw" = "counts",
+    },
+    ui= dashboardPage(skin = "purple",
+        dashboardHeader(),
+        dashboardSidebar(
+            uiOutput("all_genes"),
+            radioButtons("type", "Type of expression:",
+                c("Raw" = "counts",
                      "Normalized" = "data")),
-      radioButtons("action", "Summarize using:",
-                   c("Proportion not 0" = "prop_0",
-                     "Mean" = "mean",
-                     "Median" = "median"))
+            radioButtons("action", "Summarize using:",
+                c("Proportion not 0" = "prop_0",
+                      "Mean" = "mean",
+                      "Median" = "median"))
       
-    ),
-    dashboardBody(
-      fluidRow(
-        box(plotOutput("plot1", width = 450, height=400), width=6),
-        box(plotOutput("plot2", width = 500, height=400), width=6))
-    )
-  )
+        ),
+        dashboardBody(
+            fluidRow(
+                  box(plotOutput("plot1", width = 450, height=400), width=6),
+                  box(plotOutput("plot2", width = 500, height=400), width=6))
+            )
+        )
 )
 ```
 
@@ -117,9 +117,9 @@ pbmc_small <- make_hexbin(pbmc_small, nbins=10, dimension_reduction = "PCA")
 
 ```{r, eval=FALSE}
 plot_hexbin_gene_new <- function(sce, rows=NULL, rownames=character(0), 
-                                 columns=NULL, type="logcounts", action="prop_0"){
+    columns=NULL, type="logcounts", action="prop_0"){
 
-  plot_hexbin_gene(sce, type=type, gene=rownames, action=action)
+      plot_hexbin_gene(sce, type=type, gene=rownames, action=action)
 }
 ```
 

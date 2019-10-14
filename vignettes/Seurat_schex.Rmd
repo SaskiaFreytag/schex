@@ -10,8 +10,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 library(ggplot2)
 theme_set(theme_classic())
@@ -53,7 +53,7 @@ Note that we will then have to convert the `SingleCellExperiment` object to a
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
 rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
-                              rowData(tenx_pbmc3k)$Symbol_TENx)
+    rowData(tenx_pbmc3k)$Symbol_TENx)
 
 pbmc <- as.Seurat(tenx_pbmc3k, data = NULL)
 ```
@@ -72,7 +72,7 @@ feature expression measurements for each cell.
 
 ```{r norm, message=FALSE, warning=FALSE}
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", 
-                      scale.factor = 10000, verbose=FALSE)
+    scale.factor = 10000, verbose=FALSE)
 ```
 
 ### Identification of highly variable genes
@@ -82,7 +82,7 @@ hence we require their identification.
 
 ```{r highly-variable, message=FALSE, warning=FALSE}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000,
-                             verbose = FALSE)
+    verbose = FALSE)
 ```
 
 ### Scaling
@@ -103,7 +103,7 @@ assessed.
 
 ```{r pca, message=FALSE, warning=FALSE}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc), 
-               verbose = FALSE)
+      verbose = FALSE)
 ```
 
 Next a UMAP dimensionality reduction is also run. Since there is a random 
@@ -132,7 +132,7 @@ increased.
 
 ```{r calc-hexbin}
 pbmc <- make_hexbin(pbmc, nbins = 40, 
-                           dimension_reduction = "UMAP")
+    dimension_reduction = "UMAP")
 ```
 
 #### Plot number of cells/nuclei in each hexagon cell
@@ -162,8 +162,8 @@ hexagon cell representation.
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"CD19"
 schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
+    action="mean", xlab="UMAP1", ylab="UMAP2", 
+    title=paste0("Mean of ", gene_id))
 ```
 
 ### Understanding `schex` output as `ggplot` objects
@@ -176,8 +176,8 @@ components of the plots can be changed using the function `theme`.
 ```{r}
 gene_id <-"CD19"
 gg <- schex::plot_hexbin_gene(pbmc, type="data", gene=gene_id, 
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
+    action="mean", xlab="UMAP1", ylab="UMAP2", 
+    title=paste0("Mean of ", gene_id))
 gg + theme_void()
 ```
 

@@ -1,25 +1,25 @@
 #' Bivariate binning of single cell data into hexagon cells.
 #'
 #' \code{make_hexbin} returns a
-#'   \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
-#'   \code{\link[Seurat]{Seurat}} object of binned hexagon cells.
+#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
+#'    \code{\link[Seurat]{Seurat}} object of binned hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat}} object.
 #' @param nbins The number of bins partitioning the range of the first
-#'   component of the chosen dimension reduction.
+#'    component of the chosen dimension reduction.
 #' @param dimension_reduction A string indicating the reduced dimension
-#'   result to calculate hexagon cell representation of.
+#'    result to calculate hexagon cell representation of.
 #' @param use_dims A vector of two integers specifying the dimensions used.
 #'
 #' @details This function bins observations with computed reduced dimension
-#'   results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
-#'   results from this function are stored in \code{@misc}. For a
-#'   \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   as a list in the \code{@metadata}. The list contains two items. The first
-#'   item stores a vector specifying the hexagon ID for each
-#'   observation. The second item stores a matrix with the x and y positions of
-#'   the hexagon cells and the number of observations in each of them.
+#'    results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
+#'    results from this function are stored in \code{@misc}. For a
+#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}}
+#'    as a list in the \code{@metadata}. The list contains two items. The first
+#'    item stores a vector specifying the hexagon ID for each
+#'    observation. The second item stores a matrix with the x and y positions of
+#'    the hexagon cells and the number of observations in each of them.
 #'
 #' @return A \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
 #'    \code{\link[Seurat]{Seurat}} object.
@@ -45,82 +45,82 @@
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 80, dimension_reduction = "PCA")
 #' }
 setGeneric("make_hexbin", function(sce, nbins = 80,
-                                   dimension_reduction = "UMAP",
-                                   use_dims=c(1,2))
+    dimension_reduction = "UMAP",
+    use_dims=c(1,2))
   standardGeneric("make_hexbin"))
 
 #' @export
 #' @describeIn make_hexbin Bivariate binning of SingleCellExperiment
 #'   into hexagon cells.
 setMethod("make_hexbin", "SingleCellExperiment", function(sce,
-                                            nbins = 80,
-                                            dimension_reduction = "UMAP",
-                                            use_dims=c(1,2)) {
-
-  if(!is.element(dimension_reduction, reducedDimNames(sce))) {
-    stop("Specify existing dimension reduction.")
-  }
-
-  dr <- reducedDim(sce, dimension_reduction)
-
-  res <- .make_hexbin_helper(dr, nbins, use_dims)
-  sce@metadata$hexbin<- res
-
-  return(sce)
-
+    nbins = 80,
+    dimension_reduction = "UMAP",
+    use_dims=c(1,2)) {
+  
+    if(!is.element(dimension_reduction, reducedDimNames(sce))) {
+        stop("Specify existing dimension reduction.")
+    }
+  
+    dr <- reducedDim(sce, dimension_reduction)
+  
+    res <- .make_hexbin_helper(dr, nbins, use_dims)
+    sce@metadata$hexbin<- res
+  
+    return(sce)
+  
 })
 
 #' @export
 #' @describeIn make_hexbin Bivariate binning of Seurat
 #'   into hexagon cells.
 setMethod("make_hexbin", "Seurat", function(sce,
-                                            nbins = 80,
-                                            dimension_reduction = "UMAP",
-                                            use_dims=c(1,2)) {
-
-  if(!is.element(tolower(dimension_reduction), names(sce@reductions))) {
-    stop("Specify existing dimension reduction.")
-  }
-
-  func <- paste0("dr <- sce@reductions$", tolower(dimension_reduction),
-                 "@cell.embeddings")
-
-  eval(parse(text = func))
-
-  res <- .make_hexbin_helper(dr, nbins, use_dims)
-  sce@misc$hexbin <- res
-
-  return(sce)
-
+    nbins = 80,
+    dimension_reduction = "UMAP",
+    use_dims=c(1,2)) {
+  
+    if(!is.element(tolower(dimension_reduction), names(sce@reductions))) {
+        stop("Specify existing dimension reduction.")
+    }
+  
+    func <- paste0("dr <- sce@reductions$", tolower(dimension_reduction),
+        "@cell.embeddings")
+  
+    eval(parse(text = func))
+  
+    res <- .make_hexbin_helper(dr, nbins, use_dims)
+    sce@misc$hexbin <- res
+  
+    return(sce)
+  
 })
 
 .make_hexbin_helper <- function(dr, nbins = 80, use_dims) {
-
-  if(dim(dr)[2] < max(use_dims)) {
-    stop("Please specify use_dims that are calculated.")
-  }
-
-  xbnds <- range(c(dr[, use_dims[1]]))
-  ybnds <- range(c(dr[, use_dims[2]]))
-
-  drhex <- hexbin(dr[, use_dims[1]],
-                  dr[, use_dims[2]],
-                  nbins,
-                  xbnds = xbnds,
-                  ybnds = ybnds,
-                  IDs = TRUE
-  )
-  cID <- drhex@cID
-  drhex <- cbind(as.numeric(hcell2xy(drhex)$x),
-                 as.numeric(hcell2xy(drhex)$y),
-                 as.numeric(drhex@count))
-
-  colnames(drhex) <- c("x", "y", "number_of_cells")
-
-  res <- list(cID=cID, hexbin.matrix=drhex)
-
-  return(res)
-
+  
+    if(dim(dr)[2] < max(use_dims)) {
+        stop("Please specify use_dims that are calculated.")
+    }
+  
+    xbnds <- range(c(dr[, use_dims[1]]))
+    ybnds <- range(c(dr[, use_dims[2]]))
+  
+    drhex <- hexbin(dr[, use_dims[1]],
+        dr[, use_dims[2]],
+        nbins,
+        xbnds = xbnds,
+        ybnds = ybnds,
+        IDs = TRUE
+    )
+    cID <- drhex@cID
+    drhex <- cbind(as.numeric(hcell2xy(drhex)$x),
+        as.numeric(hcell2xy(drhex)$y),
+        as.numeric(drhex@count))
+  
+    colnames(drhex) <- c("x", "y", "number_of_cells")
+  
+    res <- list(cID=cID, hexbin.matrix=drhex)
+  
+    return(res)
+  
 }
 
 

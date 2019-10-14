@@ -1,8 +1,8 @@
 #' Plot of density of observations from single cell data
-#'   in bivariate hexagon cells.
+#'    in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat}} object.
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
@@ -33,21 +33,21 @@
 #' plot_hexbin_density(tenx_pbmc3k)
 #' }
 setGeneric("plot_hexbin_density", function(sce, title=NULL,
-                                           xlab=NULL,
-                                           ylab=NULL)
-  standardGeneric("plot_hexbin_density"))
+    xlab=NULL,
+    ylab=NULL)
+    standardGeneric("plot_hexbin_density"))
 
 #' @export
 #' @describeIn plot_hexbin_density  Plot of cell density in hexagon cell for
-#'   SingleCellExperiment object.
+#'    SingleCellExperiment object.
 setMethod("plot_hexbin_density", "SingleCellExperiment", function(sce,
-                                                               title=NULL,
-                                                               xlab=NULL,
-                                                               ylab=NULL) {
-
-  out <- sce@metadata$hexbin[[2]]
-
-  .plot_hexbin_density_helper(out, title, xlab, ylab)
+    title=NULL,
+    xlab=NULL,
+    ylab=NULL) {
+  
+    out <- sce@metadata$hexbin[[2]]
+  
+    .plot_hexbin_density_helper(out, title, xlab, ylab)
   
 })
 
@@ -55,39 +55,39 @@ setMethod("plot_hexbin_density", "SingleCellExperiment", function(sce,
 #' @describeIn plot_hexbin_density  Plot of cell density in hexagon cell for
 #'   Seurat object.
 setMethod("plot_hexbin_density", "Seurat", function(sce,
-                                                 title=NULL,
-                                                 xlab=NULL,
-                                                 ylab=NULL) {
-
-  out <- sce@misc$hexbin[[2]]
-
-  .plot_hexbin_density_helper(out, title, xlab, ylab)
-
+    title=NULL,
+    xlab=NULL,
+    ylab=NULL) {
+  
+    out <- sce@misc$hexbin[[2]]
+  
+    .plot_hexbin_density_helper(out, title, xlab, ylab)
+  
 })
 
 .plot_hexbin_density_helper <- function(out, title, xlab, ylab){
   
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
+    if(is.null(out)){
+      stop("Compute hexbin representation before plotting.")
+   }
   
-  if(is.null(title)) {
-    title <- "Density"
-  }
+    if(is.null(title)) {
+        title <- "Density"
+    }
   
-  if(is.null(xlab)) {
-    xlab <- "x"
-  }
+    if(is.null(xlab)) {
+        xlab <- "x"
+    }
+    
+    if(is.null(ylab)) {
+        ylab <- "y"
+    }
   
-  if(is.null(ylab)) {
-    ylab <- "y"
-  }
+    out <- as_tibble(out)
   
-  out <- as_tibble(out)
-  
-  ggplot(out, aes_string("x", "y", fill="number_of_cells")) +
-    geom_hex(stat = "identity") + scale_fill_viridis_c() +
-    theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
-    labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
+    ggplot(out, aes_string("x", "y", fill="number_of_cells")) +
+        geom_hex(stat = "identity") + scale_fill_viridis_c() +
+        theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
+        labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
   
 }
