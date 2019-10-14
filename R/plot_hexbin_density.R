@@ -1,5 +1,9 @@
 #' Plot of density of observations from single cell data
+<<<<<<< HEAD
 #'    in bivariate hexagon cells.
+=======
+#'   in bivariate hexagon cells.
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'    or \code{\link[Seurat]{Seurat}} object.
@@ -48,7 +52,7 @@ setMethod("plot_hexbin_density", "SingleCellExperiment", function(sce,
     out <- sce@metadata$hexbin[[2]]
   
     .plot_hexbin_density_helper(out, title, xlab, ylab)
-  
+
 })
 
 #' @export

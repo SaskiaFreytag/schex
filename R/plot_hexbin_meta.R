@@ -102,7 +102,6 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
   
     .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
         colors)
-  
 })
 
 #' @export
@@ -188,6 +187,5 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
             title=title, xlab=xlab, ylab=ylab)
     
     }
-  
 }
 
