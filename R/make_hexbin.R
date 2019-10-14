@@ -47,7 +47,7 @@
 setGeneric("make_hexbin", function(sce, nbins = 80,
     dimension_reduction = "UMAP",
     use_dims=c(1,2))
-  standardGeneric("make_hexbin"))
+    standardGeneric("make_hexbin"))
 
 #' @export
 #' @describeIn make_hexbin Bivariate binning of SingleCellExperiment
@@ -67,13 +67,13 @@ setMethod("make_hexbin", "SingleCellExperiment", function(sce,
     sce@metadata$hexbin<- res
   
     return(sce)
-  
 })
 
 #' @export
 #' @describeIn make_hexbin Bivariate binning of Seurat
 #'   into hexagon cells.
-setMethod("make_hexbin", "Seurat", function(sce,
+setMethod("make_hexbin", "Seurat", function(
+    sce,
     nbins = 80,
     dimension_reduction = "UMAP",
     use_dims=c(1,2)) {
@@ -120,7 +120,6 @@ setMethod("make_hexbin", "Seurat", function(sce,
     res <- list(cID=cID, hexbin.matrix=drhex)
   
     return(res)
-  
 }
 
 

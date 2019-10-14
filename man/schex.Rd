@@ -13,11 +13,19 @@ Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 }
 \details{
 Please see the help pages listed below:
+<<<<<<< HEAD
    \itemize{
       \item{\code{\link{make_hexbin}}}
       \item{\code{\link{plot_hexbin_gene}}}
       \item{\code{\link{plot_hexbin_meta}}}
    }
+=======
+ \itemize{
+    \item{\code{\link{make_hexbin}}}
+    \item{\code{\link{plot_hexbin_gene}}}
+    \item{\code{\link{plot_hexbin_meta}}}
+ }
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
  
  Also see the vignettes for more usage examples.
  
