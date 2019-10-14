@@ -1,9 +1,5 @@
 #' Plot of density of observations from single cell data
-<<<<<<< HEAD
 #'    in bivariate hexagon cells.
-=======
-#'   in bivariate hexagon cells.
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'    or \code{\link[Seurat]{Seurat}} object.
