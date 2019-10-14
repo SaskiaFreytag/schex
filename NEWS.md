@@ -12,3 +12,7 @@
 * Fixed documentation in plot_hexbin_gene.
 * Reformatted news.
 * Added packages to suggests in description.
+
+# 0.99.5
+
+* Fixed error introduced through merge conflict.

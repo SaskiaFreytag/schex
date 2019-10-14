@@ -51,11 +51,7 @@ Illumina NextSeq 500. This data is handly availabe in the [`TENxPBMCData` packag
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 
 rownames(tenx_pbmc3k) <- uniquifyFeatureNames(rowData(tenx_pbmc3k)$ENSEMBL_ID, 
-<<<<<<< HEAD
     rowData(tenx_pbmc3k)$Symbol_TENx)
-=======
-                              rowData(tenx_pbmc3k)$Symbol_TENx)
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 In the  next few sections, I will perform some simple quality control steps
@@ -78,7 +74,6 @@ library size or feature count.
 ```{r filter-cells}
 rowData(tenx_pbmc3k)$Mito <- grepl("^MT-", rownames(tenx_pbmc3k))
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), 
-<<<<<<< HEAD
     perCellQCMetrics(tenx_pbmc3k, 
         subsets=list(Mt=rowData(tenx_pbmc3k)$Mito)))
 rowData(tenx_pbmc3k) <- cbind(rowData(tenx_pbmc3k), 
@@ -91,21 +86,6 @@ libsize_drop <- isOutlier(tenx_pbmc3k$total,
 feature_drop <- isOutlier(tenx_pbmc3k$detected,
     nmads = 3, type = "lower", log = TRUE)
 
-=======
-        perCellQCMetrics(tenx_pbmc3k, 
-        subsets=list(Mt=rowData(tenx_pbmc3k)$Mito)))
-rowData(tenx_pbmc3k) <- cbind(rowData(tenx_pbmc3k), 
-        perFeatureQCMetrics(tenx_pbmc3k))
-
-tenx_pbmc3k <- tenx_pbmc3k[, !colData(tenx_pbmc3k)$subsets_Mt_percent > 50]
-
-libsize_drop <- isOutlier(tenx_pbmc3k$total,
-  nmads = 3,type = "lower", log = TRUE
-)
-feature_drop <- isOutlier(tenx_pbmc3k$detected,
-  nmads = 3, type = "lower", log = TRUE
-)
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 tenx_pbmc3k <- tenx_pbmc3k[, !(libsize_drop | feature_drop)]
 ```
 
@@ -135,11 +115,7 @@ will also set a seed.
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 set.seed(10)
 tenx_pbmc3k <- runUMAP(tenx_pbmc3k, dimred = "PCA", spread = 1, 
-<<<<<<< HEAD
     min_dist = 0.4)
-=======
-                       min_dist = 0.4)
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 ### Clustering
@@ -170,12 +146,7 @@ increased.
 
 ```{r calc-hexbin}
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, nbins = 40, 
-<<<<<<< HEAD
     dimension_reduction = "UMAP", use_dims=c(1,2))
-=======
-                           dimension_reduction = "UMAP",
-                           use_dims=c(1,2))
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 #### Plot number of cells/nuclei in each hexagon cell
@@ -225,13 +196,8 @@ hexagon cell representation.
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"POMGNT1"
 schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
-<<<<<<< HEAD
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
-=======
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 ```
 
 Again it is much easier to observe differences in gene expression using the 
@@ -251,13 +217,8 @@ components of the plots can be changed using the function `theme`.
 ```{r}
 gene_id <-"CD19"
 gg <- schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
-<<<<<<< HEAD
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
-=======
-                 action="mean", xlab="UMAP1", ylab="UMAP2", 
-                 title=paste0("Mean of ", gene_id))
->>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 gg + theme_void()
 ```
 
