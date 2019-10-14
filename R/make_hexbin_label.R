@@ -19,7 +19,7 @@
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' make_hexbin_label(pbmc_small, col="RNA_snn_res.1")
 setGeneric("make_hexbin_label", function(sce, col)
-  standardGeneric("make_hexbin_label"))
+    standardGeneric("make_hexbin_label"))
 
 #' @export
 #' @describeIn make_hexbin_label  Group label position for
@@ -45,7 +45,6 @@ setMethod("make_hexbin_label", "Seurat", function(sce, col){
     eval(parse(text = func))
   
     .make_hexbin_label_helper(x, out, cID, col)
-  
 })
 
 #' @export
@@ -76,7 +75,7 @@ setMethod("make_hexbin_label", "SingleCellExperiment", function(sce, col){
 })
 
 .make_hexbin_label_helper <- function(x, out, cID, col){
-  
+
     if(is.null(out)){
         stop("Compute hexbin representation before plotting.")
     }

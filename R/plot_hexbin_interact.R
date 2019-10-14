@@ -106,7 +106,6 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
   
     .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
         feature, title, xlab, ylab)
-  
 })
 
 #' @export
@@ -115,10 +114,10 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
 setMethod("plot_hexbin_interact", "Seurat", function(sce,
     mod,
     type,
-   feature,
-   interact,
-   title=NULL,
-   xlab=NULL,
+    feature,
+    interact,
+    title=NULL,
+    xlab=NULL,
     ylab=NULL) {
   
     if(length(mod)!=length(feature)|length(feature)!=length(type)){
@@ -146,9 +145,7 @@ setMethod("plot_hexbin_interact", "Seurat", function(sce,
   
     .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
         feature, title, xlab, ylab)
-  
 })
-
 
 
 .plot_hexbin_interact_helper <- function(first_x, second_x,  out, cID, interact,

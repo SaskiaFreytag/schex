@@ -156,5 +156,4 @@ setMethod("plot_hexbin_gene", "Seurat", function (sce,
   
     .plot_hexbin(out, colour_by=col_hh,
         title=title, xlab=xlab, ylab=ylab)
-  
 }

@@ -6,7 +6,11 @@
 \alias{plot_hexbin_feature,SingleCellExperiment-method}
 \alias{plot_hexbin_feature,Seurat-method}
 \title{Plot of external feature expression of single cells in bivariate hexagon
+<<<<<<< HEAD
    cells.}
+=======
+cells.}
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 \usage{
 plot_hexbin_feature(sce, mod, type, feature, action, title = NULL,
   xlab = NULL, ylab = NULL)
@@ -46,6 +50,7 @@ A \code{\link{ggplot2}{ggplot}} object.
 }
 \description{
 Plot of external feature expression of single cells in bivariate hexagon
+<<<<<<< HEAD
    cells.
 }
 \details{
@@ -64,6 +69,26 @@ This function plots the expression of any feature in the hexagon
       \item{\code{median}}{Returns the median of the observations in the bin.
       The associated meta data column needs to be numeric.}
    }
+=======
+cells.
+}
+\details{
+This function plots the expression of any feature in the hexagon
+  cell representation calculated with \code{\link{make_hexbin}}. The chosen
+  gene expression is summarized by one of four actions \code{prop_0},
+  \code{mode}, \code{mean} and \code{median}:
+
+  \describe{
+    \item{\code{prop_0}}{Returns the proportion of observations in the bin
+     greater than 0. The associated meta data column needs to be numeric.}
+    \item{\code{mode}}{Returns the mode of the observations in the bin. The
+     associated meta data column needs to be numeric.}
+    \item{\code{mean}}{Returns the mean of the observations in the bin. The
+     associated meta data column needs to be numeric.}
+     \item{\code{median}}{Returns the median of the observations in the bin.
+     The associated meta data column needs to be numeric.}
+  }
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 }
 \section{Methods (by class)}{
 \itemize{
@@ -85,5 +110,9 @@ colnames(protein) <- colnames(pbmc_small)
 pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
+<<<<<<< HEAD
     feature="A1", action="prop_0")
+=======
+                               feature="A1", action="prop_0")
+>>>>>>> 73fca473510fbfc1906bc0df2320441b4042cb9b
 }
