@@ -44,19 +44,19 @@ Plot of gene expression of single cells in bivariate hexagon cells.
 }
 \details{
 This function plots the expression of any gene in the hexagon cell
-  representation calculated with \code{\link{make_hexbin}}. The chosen gene
-  expression is summarized by one of four actions \code{prop_0}, \code{mode},
-  \code{mean} and \code{median}:
+   representation calculated with \code{\link{make_hexbin}}. The chosen gene
+   expression is summarized by one of four actions \code{prop_0}, \code{mode},
+   \code{mean} and \code{median}:
 
-  \describe{
-    \item{\code{prop_0}}{Returns the proportion of observations in the bin
-     greater than 0. The associated meta data column needs to be numeric.}
-    \item{\code{mode}}{Returns the mode of the observations in the bin. The
-     associated meta data column needs to be numeric.}
-    \item{\code{mean}}{Returns the mean of the observations in the bin. The
-     associated meta data column needs to be numeric.}
+   \describe{
+     \item{\code{prop_0}}{Returns the proportion of observations in the bin
+      greater than 0. The associated meta data column needs to be numeric.}
+     \item{\code{mode}}{Returns the mode of the observations in the bin. The
+      associated meta data column needs to be numeric.}
+     \item{\code{mean}}{Returns the mean of the observations in the bin. The
+      associated meta data column needs to be numeric.}
      \item{\code{median}}{Returns the median of the observations in the bin.
-     The associated meta data column needs to be numeric.}
+      The associated meta data column needs to be numeric.}
   }
 }
 \section{Methods (by class)}{
@@ -82,13 +82,13 @@ tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 rm_ind <- calcAverage(tenx_pbmc3k)<0.1
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-     perCellQCMetrics(tenx_pbmc3k))
+   perCellQCMetrics(tenx_pbmc3k))
 tenx_pbmc3k <- normalize(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
-gene="ENSG00000135250", action="mean")
+   gene="ENSG00000135250", action="mean")
 plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
-gene="ENSG00000135250", action="mode")
+   gene="ENSG00000135250", action="mode")
 }
 }

@@ -49,25 +49,25 @@ Plot of meta data of single cell data in bivariate hexagon cells.
 }
 \details{
 This function plots any column of the meta data in the hexagon cell
-  representation calculated with \code{\link{make_hexbin}}. The chosen meta
-  data column is summarized by one of six actions \code{majority},
-  \code{prop}, \code{prop_0}, \code{mode}, \code{mean} and \code{median}:
+   representation calculated with \code{\link{make_hexbin}}. The chosen meta
+   data column is summarized by one of six actions \code{majority},
+   \code{prop}, \code{prop_0}, \code{mode}, \code{mean} and \code{median}:
 
-  \describe{
-    \item{\code{majority}}{Returns the value of the majority of observations
-     in the bin. The associated meta data column needs to be a factor
-     or character.}
-    \item{\code{prop}}{Returns the proportion of each level or unique
-     character in the bin. The associated meta data column needs to be a
-     factor or character.}
-    \item{\code{prop_0}}{Returns the proportion of observations in the bin
-     greater than 0. The associated meta data column needs to be numeric.}
-    \item{\code{mode}}{Returns the mode of the observations in the bin. The
-     associated meta data column needs to be numeric.}
-    \item{\code{mean}}{Returns the mean of the observations in the bin. The
-     associated meta data column needs to be numeric.}
-     \item{\code{median}}{Returns the median of the observations in the bin.
-     The associated meta data column needs to be numeric.}
+   \describe{
+      \item{\code{majority}}{Returns the value of the majority of 
+      observations in the bin. The associated meta data column needs to be 
+      a factor or character.}
+      \item{\code{prop}}{Returns the proportion of each level or unique
+      character in the bin. The associated meta data column needs to be a
+      factor or character.}
+      \item{\code{prop_0}}{Returns the proportion of observations in the bin
+      greater than 0. The associated meta data column needs to be numeric.}
+      \item{\code{mode}}{Returns the mode of the observations in the bin. The
+      associated meta data column needs to be numeric.}
+      \item{\code{mean}}{Returns the mean of the observations in the bin. The
+      associated meta data column needs to be numeric.}
+      \item{\code{median}}{Returns the median of the observations in the bin.
+      The associated meta data column needs to be numeric.}
   }
 }
 \section{Methods (by class)}{

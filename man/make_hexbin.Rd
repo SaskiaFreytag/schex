@@ -34,18 +34,18 @@ A \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
 }
 \description{
 \code{make_hexbin} returns a
-  \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
-  \code{\link[Seurat]{Seurat}} object of binned hexagon cells.
+   \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
+   \code{\link[Seurat]{Seurat}} object of binned hexagon cells.
 }
 \details{
 This function bins observations with computed reduced dimension
-  results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
-  results from this function are stored in \code{@misc}. For a
-  \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-  as a list in the \code{@metadata}. The list contains two items. The first
-  item stores a vector specifying the hexagon ID for each
-  observation. The second item stores a matrix with the x and y positions of
-  the hexagon cells and the number of observations in each of them.
+   results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
+   results from this function are stored in \code{@misc}. For a
+   \code{\link[SingleCellExperiment]{SingleCellExperiment}}
+   as a list in the \code{@metadata}. The list contains two items. The first
+   item stores a vector specifying the hexagon ID for each
+   observation. The second item stores a matrix with the x and y positions of
+   the hexagon cells and the number of observations in each of them.
 }
 \section{Methods (by class)}{
 \itemize{
