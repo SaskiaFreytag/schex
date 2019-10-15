@@ -2,7 +2,7 @@
 #'    in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.

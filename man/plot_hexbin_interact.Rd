@@ -18,7 +18,7 @@ plot_hexbin_interact(sce, mod, type, feature, interact, title = NULL,
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{mod}{A vector of strings referring to the names of the modularities.
 For \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to
@@ -26,7 +26,7 @@ access the RNA expression data stored as the main experiment type.}
 
 \item{type}{A vector of strings referring to the types of assays in the
 \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the types of
-transformation.}
+transformation in \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{feature}{A vector of strings referring to the names of one features in
 the same order as the vector of modularities.}
