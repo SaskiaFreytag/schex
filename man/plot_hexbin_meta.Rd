@@ -18,7 +18,7 @@ plot_hexbin_meta(sce, col, action, no = 1, colors = NULL,
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{col}{A string referring to the name of one column in the meta data of
 sce by which to colour the hexagons.}

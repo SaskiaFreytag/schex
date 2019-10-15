@@ -18,7 +18,7 @@ plot_hexbin_density(sce, title = NULL, xlab = NULL, ylab = NULL)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{title}{A string containing the title of the plot.}
 

@@ -18,7 +18,7 @@ make_hexbin(sce, nbins = 80, dimension_reduction = "UMAP",
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{nbins}{The number of bins partitioning the range of the first
 component of the chosen dimension reduction.}
@@ -30,16 +30,16 @@ result to calculate hexagon cell representation of.}
 }
 \value{
 A \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
-   \code{\link[Seurat]{Seurat}} object.
+   \code{\link[Seurat]{Seurat-class}} object.
 }
 \description{
 \code{make_hexbin} returns a
    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or
-   \code{\link[Seurat]{Seurat}} object of binned hexagon cells.
+   \code{\link[Seurat]{Seurat-class}} object of binned hexagon cells.
 }
 \details{
 This function bins observations with computed reduced dimension
-   results into hexagon cells. For a \code{\link[Seurat]{Seurat}} object the
+   results into hexagon cells. For a \code{\link[Seurat]{Seurat-class}} object the
    results from this function are stored in \code{@misc}. For a
    \code{\link[SingleCellExperiment]{SingleCellExperiment}}
    as a list in the \code{@metadata}. The list contains two items. The first
