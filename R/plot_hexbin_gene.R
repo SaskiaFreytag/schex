@@ -1,10 +1,10 @@
 #' Plot of gene expression of single cells in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param type A string referring to the type of assay in the
 #'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-#'    data transformation in the \code{\link[Seurat]{Seurat}} object.
+#'    data transformation in the \code{\link[Seurat]{Seurat-class}} object.
 #' @param gene A string referring to the name of one gene.
 #' @param action A strings pecifying how gene expression of observations in
 #'    binned hexagon cells are to be summarized. Possible actions are

@@ -2,13 +2,13 @@
 #'    cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param mod A string referring to the name of the alternative object in a
 #'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the assay in a
-#'    \code{\link[Seurat]{Seurat}} object that stores the protein information.
+#'    \code{\link[Seurat]{Seurat-class}} object that stores the protein information.
 #' @param type A string referring to the type of assay in the
 #'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-#'    data transformation in the \code{\link[Seurat]{Seurat}} object.
+#'    data transformation in the \code{\link[Seurat]{Seurat-class}} object.
 #' @param feature A string referring to the name of one external feature.
 #' @param action A strings pecifying how meta data of observations in
 #'    binned  hexagon cells are to be summarized. Possible actions are

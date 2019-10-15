@@ -1,7 +1,7 @@
 #' Plot of meta data of single cell data in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param col A string referring to the name of one column in the meta data of
 #'    sce by which to colour the hexagons.
 #' @param action A string specifying how meta data of observations in
