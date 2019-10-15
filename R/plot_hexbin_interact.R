@@ -1,13 +1,13 @@
 #' Plot of interaction of expression of single cells in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param mod A vector of strings referring to the names of the modularities.
 #'    For \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to
 #'    access the RNA expression data stored as the main experiment type.
 #' @param type A vector of strings referring to the types of assays in the
 #'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the types of
-#'    transformation.
+#'    transformation in \code{\link[Seurat]{Seurat-class}} object.
 #' @param feature A vector of strings referring to the names of one features in
 #'    the same order as the vector of modularities.
 #' @param interact A string specifying how interaction between features is

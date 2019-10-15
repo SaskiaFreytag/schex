@@ -1,7 +1,7 @@
 #' Group label plot position.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat}} object.
+#'    or \code{\link[Seurat]{Seurat-class}} object.
 #' @param col The name referring to one column in meta data for which
 #'    the label position on the plot is calculated for every level. The chosen
 #'    column needs to be a factor.

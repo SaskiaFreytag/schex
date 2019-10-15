@@ -18,11 +18,11 @@ plot_hexbin_gene(sce, type, gene, action, title = NULL, xlab = NULL,
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{type}{A string referring to the type of assay in the
 \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-data transformation in the \code{\link[Seurat]{Seurat}} object.}
+data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{gene}{A string referring to the name of one gene.}
 

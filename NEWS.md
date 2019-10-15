@@ -16,3 +16,7 @@
 # 0.99.5
 
 * Fixed error introduced through merge conflict.
+
+# 0.99.6
+
+* Changed the link from Seurat to Seurat-class.
