@@ -65,7 +65,7 @@
 #' tenx_pbmc3k <- normalize(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' plot_hexbin_meta(tenx_pbmc3k, col="total_counts", action="median")
+#' plot_hexbin_meta(tenx_pbmc3k, col="total", action="median")
 #' }
 setGeneric("plot_hexbin_meta", function(sce,
     col,

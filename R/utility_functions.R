@@ -19,8 +19,10 @@
         if (func_if) {
             stop("For action 'prop' x needs to be a factor or character.")
         } else {
-            res <- sapply(unique(x), function(y) 
-                tapply(x, cID, FUN = function(z) sum(z==y)/length(z)))
+            nrows <- length(unique(cID))
+            res <- vapply(unique(x), FUN.VALUE=rep(0,length=nrows), 
+                function(y) tapply(x, cID, FUN = function(z) 
+                    sum(z==y)/length(z)))
             res <- apply(res, 2, as.numeric)
             return(res)
         }
