@@ -80,5 +80,3 @@ test_that("error wrong col sce", {
     expect_error(plot_hexbin_meta(pbmc_small, col="RNA_snn_res.2",
         action="prop", no=1))
 })
-
-

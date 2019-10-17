@@ -20,3 +20,7 @@
 # 0.99.6
 
 * Changed the link from Seurat to Seurat-class.
+
+# 0.99.7
+
+* Changed sapply to vapply in utility-function.
