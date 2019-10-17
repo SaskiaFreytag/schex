@@ -24,3 +24,4 @@
 # 0.99.7
 
 * Changed sapply to vapply in utility-function.
+
