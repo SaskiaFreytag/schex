@@ -45,7 +45,7 @@ library(TENxPBMCData)
 In order to demonstrate the capabilities of the schex package, I will use the
 a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 
 10x Genomics. There are 2,700 single cells that were sequenced on the 
-Illumina NextSeq 500. This data is handly availabe in the [`TENxPBMCData` package](http://bioconductor.org/packages/release/data/experiment/html/TENxPBMCData.html). 
+Illumina NextSeq 500. This data is handly available in the [`TENxPBMCData` package](http://bioconductor.org/packages/release/data/experiment/html/TENxPBMCData.html). 
 Note that we will then have to convert the `SingleCellExperiment` object to a 
 `Seurat` object first.
 
