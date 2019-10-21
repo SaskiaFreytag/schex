@@ -145,7 +145,7 @@ app <- iSEE(
     )
 ```
 
-Unfortunately in the iSEE application plots cannot be changed to diplay 
+Unfortunately in the iSEE application plots cannot be changed to display 
 different genes as conveniently as with `shinydashboards`. If you want
 to diplay a different gene you will need to edit the following box:
 
@@ -159,4 +159,4 @@ action prop_0
 rownames CD19
 ```
 
-you can change the plot to dsiplay the expression of *CD19*. 
+you can change the plot to display the expression of *CD19*. 
