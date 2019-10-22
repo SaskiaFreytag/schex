@@ -25,3 +25,6 @@
 
 * Changed sapply to vapply in utility-function.
 
+# 0.99.8
+
+* Fixed typos in vignettes. 
