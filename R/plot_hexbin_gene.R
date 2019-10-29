@@ -85,18 +85,7 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function (sce,
        stop("Compute hexbin representation before plotting.")
     }
   
-    ind <- match(gene, rownames(sce))
-    x <- assays(sce)
-  
-    if(!type %in% names(x)){
-        stop("Specify a valid assay type.")
-    }
-  
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
-  
-    x <- as.numeric(x[[which(names(x)==type)]][ind,])
+    x <-.prepare_data_feature(sce, "RNA", type, gene)
   
     .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
         xlab, ylab) 
@@ -121,15 +110,7 @@ setMethod("plot_hexbin_gene", "Seurat", function (sce,
         stop("Compute hexbin representation before plotting.")
     }
   
-    x <- GetAssayData(sce, type)
-  
-    ind <- match(gene, rownames(x))
-  
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
-  
-    x <- as.numeric(x[ind,])
+    x <-.prepare_data_feature(sce, "RNA", type, gene)
   
     .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
         xlab, ylab) 

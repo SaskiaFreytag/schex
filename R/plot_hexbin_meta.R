@@ -91,14 +91,7 @@ setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
     out <- sce@metadata$hexbin[[2]]
     cID <- sce@metadata$hexbin[[1]]
   
-    if (any(!col %in% colnames(colData(sce)))) {
-        stop("Column cannot be found in colData(sce).")
-    }
-  
-    name_s <- paste0("sce$", col)
-    func <- paste0("x <- ", name_s)
-  
-    eval(parse(text = func))
+    x <- .prepare_data_meta(sce, col)
   
     .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
         colors)
@@ -119,14 +112,7 @@ setMethod("plot_hexbin_meta", "Seurat", function(sce,
     out <- sce@misc$hexbin[[2]]
     cID <- sce@misc$hexbin[[1]]
   
-    if (any(!col %in% colnames(sce@meta.data))) {
-        stop("Column cannot be found in slot(sce, 'meta.data').")
-    }
-  
-    name_s <- paste0("sce$", col)
-    func <- paste0("x <- ", name_s)
-  
-    eval(parse(text = func))
+    x <- .prepare_data_meta(sce, col)
   
     .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
           colors)
