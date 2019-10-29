@@ -74,14 +74,6 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
     xlab=NULL,
     ylab=NULL) {
   
-    if(!mod %in% altExpNames(sce)){
-        stop("Specify a valid modularity.")
-    }
-  
-    if(!type %in% assayNames(altExp(sce))){
-       stop("Specify a valid assay type.")
-    }
-  
    out <- sce@metadata$hexbin[[2]]
    cID <- sce@metadata$hexbin[[1]]
   
@@ -89,8 +81,7 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
        stop("Compute hexbin representation before plotting.")
     }
   
-    x <- assays(altExp(sce, mod))
-    x <- x[[which(names(x)==type)]]
+    x <-.prepare_data_feature(sce, mod, type, feature)
   
     .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
         xlab, ylab)
@@ -109,14 +100,6 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
     xlab=NULL,
     ylab=NULL) {
   
-   if(!mod %in% names(sce)){
-        stop("Specify a valid modularity.")
-    }
-  
-    if(!type %in% slotNames(GetAssay(sce, mod))){
-        stop("Specify a valid assay type.")
-    }
-  
     out <- sce@misc$hexbin[[2]]
     cID <- sce@misc$hexbin[[1]]
     
@@ -124,7 +107,7 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
        stop("Compute hexbin representation before plotting.")
     }
   
-     x <- GetAssayData(sce, assay=mod, type)
+    x <-.prepare_data_feature(sce, mod, type, feature)
   
     .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
         xlab, ylab)
@@ -133,14 +116,6 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
 
 .plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
     xlab, ylab){
-  
-    ind <- match(feature, rownames(x))
-  
-    if (is.na(ind)) {
-        stop("Feature cannot be found.")
-    }
-  
-    x <- as.numeric(x[ind,])
   
     hh <- .make_hexbin_function(x, action, cID)
     out <- as_tibble(out)
