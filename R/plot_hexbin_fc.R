@@ -81,18 +81,7 @@ setMethod("plot_hexbin_fc", "SingleCellExperiment", function(sce,
   
     eval(parse(text = func))
   
-    ind <- match(gene, rownames(sce))
-    x_gene <- assays(sce)
-  
-    if(!"logcounts" %in% names(x_gene)){
-        stop("Logcounts not found.")
-    }
-  
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
-  
-    x_gene <- as.numeric(x[[which(names(x_gene)=="logcounts")]][ind,])
+    x_gene <-.prepare_data(sce, "RNA", "logcounts", gene)
   
     .plot_hexbin_fc_helper(x, x_gene, out, cID, col, title, 
          xlab, ylab, colors)
@@ -125,16 +114,7 @@ setMethod("plot_hexbin_fc", "Seurat", function(sce,
   
     eval(parse(text = func))
   
-    x_gene <- GetAssayData(sce, "scale.data")
-    
-    ind <- match(gene, rownames(x_gene))
-  
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
-  
-    x_gene <- as.numeric(x_gene[ind,])
-  
+    x_gene <-.prepare_data(sce, "RNA", "logcounts", gene)
   
     .plot_hexbin_fc_helper(x, x_gene, out, cID, col, title, 
           xlab, ylab, colors)
