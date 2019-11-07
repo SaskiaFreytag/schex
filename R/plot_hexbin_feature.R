@@ -13,6 +13,8 @@
 #' @param action A strings pecifying how meta data of observations in
 #'    binned  hexagon cells are to be summarized. Possible actions are
 #'    \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).
+#' @param lower.cutoff Remove expression values below this quantile. Expressed as decimal. Default: 0
+#' @param upper.cutoff Remove expression values above this quantile. Expressed as decimal. Default: 1
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
@@ -39,6 +41,7 @@
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @importFrom methods slotNames
+#' @importFrom stats quantile
 #' @export
 #'
 #' @examples
@@ -46,116 +49,144 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
-#' rownames(protein) <- paste0("A", seq(1,10,1))
+#' protein <- matrix(rnorm(10 * ncol(pbmc_small)), ncol = ncol(pbmc_small))
+#' rownames(protein) <- paste0("A", seq(1, 10, 1))
 #' colnames(protein) <- colnames(pbmc_small)
 #' pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
-#'     feature="A1", action="prop_0")
-setGeneric("plot_hexbin_feature", function(sce, 
-    mod, 
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) standardGeneric("plot_hexbin_feature"))
+#' plot_hexbin_feature(pbmc_small,
+#'   type = "counts", mod = "ADT",
+#'   feature = "A1", action = "prop_0"
+#' )
+setGeneric("plot_hexbin_feature", function(sce,
+                                           mod,
+                                           type,
+                                           feature,
+                                           action,
+                                           lower.cutoff = 0,
+                                           upper.cutoff = 1,
+                                           title = NULL,
+                                           xlab = NULL,
+                                           ylab = NULL) {
+  standardGeneric("plot_hexbin_feature")
+})
 
 #' @export
 #' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon
 #'   cell for SingleCellExperiment object.
-setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
-    mod,
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
-  
-    if(!mod %in% altExpNames(sce)){
-        stop("Specify a valid modularity.")
+setMethod(
+  "plot_hexbin_feature",
+  "SingleCellExperiment",
+  function(sce,
+           mod,
+           type,
+           feature,
+           action,
+           lower.cutoff = 0,
+           upper.cutoff = 1,
+           title = NULL,
+           xlab = NULL,
+           ylab = NULL) {
+    if (!mod %in% altExpNames(sce)) {
+      stop("Specify a valid modularity.")
     }
-  
-    if(!type %in% assayNames(altExp(sce))){
-       stop("Specify a valid assay type.")
+
+    if (!type %in% assayNames(altExp(sce))) {
+      stop("Specify a valid assay type.")
     }
-  
-   out <- sce@metadata$hexbin[[2]]
-   cID <- sce@metadata$hexbin[[1]]
-  
-   if(is.null(out)){
-       stop("Compute hexbin representation before plotting.")
+
+    out <- sce@metadata$hexbin[[2]]
+    cID <- sce@metadata$hexbin[[1]]
+
+    if (is.null(out)) {
+      stop("Compute hexbin representation before plotting.")
     }
-  
+
     x <- assays(altExp(sce, mod))
-    x <- x[[which(names(x)==type)]]
-  
-    .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
-        xlab, ylab)
-  
-})
+    x <- x[[which(names(x) == type)]]
+
+    .plot_hexbin_feature_helper(
+      x, feature, out, cID, action, title,
+      xlab, ylab
+    )
+  }
+)
 
 #' @export
 #' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell
 #'    for Seurat object.
-setMethod("plot_hexbin_feature", "Seurat", function(sce,
-    mod,
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
-  
-   if(!mod %in% names(sce)){
-        stop("Specify a valid modularity.")
+setMethod(
+  "plot_hexbin_feature",
+  "Seurat",
+  function(sce,
+           mod,
+           type,
+           feature,
+           action,
+           lower.cutoff = 0,
+           upper.cutoff = 1,
+           title = NULL,
+           xlab = NULL,
+           ylab = NULL) {
+    if (!mod %in% names(sce)) {
+      stop("Specify a valid modularity.")
     }
-  
-    if(!type %in% slotNames(GetAssay(sce, mod))){
-        stop("Specify a valid assay type.")
+
+    if (!type %in% slotNames(GetAssay(sce, mod))) {
+      stop("Specify a valid assay type.")
     }
-  
+
     out <- sce@misc$hexbin[[2]]
     cID <- sce@misc$hexbin[[1]]
-    
-    if(is.null(out)){
-       stop("Compute hexbin representation before plotting.")
-    }
-  
-     x <- GetAssayData(sce, assay=mod, type)
-  
-    .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
-        xlab, ylab)
-  
-})
 
-.plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
-    xlab, ylab){
-  
-    ind <- match(feature, rownames(x))
-  
-    if (is.na(ind)) {
-        stop("Feature cannot be found.")
+    if (is.null(out)) {
+      stop("Compute hexbin representation before plotting.")
     }
-  
-    x <- as.numeric(x[ind,])
-  
-    hh <- .make_hexbin_function(x, action, cID)
-    out <- as_tibble(out)
-  
-    if(grepl("^[[:digit:]]", feature )){
-        feature <- paste0("F_", feature)
-    }
-  
-    feature <- gsub("-", "_", feature)
-  
-    col_hh <- paste0(feature, "_", action)
-  
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
-  
-    .plot_hexbin(out, colour_by=col_hh,
-        title=title, xlab=xlab, ylab=ylab)
+
+    x <- GetAssayData(sce, assay = mod, type)
+
+    .plot_hexbin_feature_helper(
+      x, feature, out, cID, action, lower.cutoff, upper.cutoff, title,
+      xlab, ylab
+    )
+  }
+)
+
+.plot_hexbin_feature_helper <- function(x,
+                                        feature,
+                                        out,
+                                        cID, action, lower.cutoff, upper.cutoff, title,
+                                        xlab = NULL,
+                                        ylab = NULL) {
+  ind <- match(feature, rownames(x))
+
+  if (is.na(ind)) {
+    stop("Feature cannot be found.")
+  }
+
+  x <- as.numeric(x[ind, ])
+
+  lowend <- quantile(x[x > 0], lower.cutoff)
+  highend <- quantile(x[x > 0], upper.cutoff)
+  x[x < lowend] <- lowend
+  x[x > highend] <- highend
+
+  hh <- .make_hexbin_function(x, action, cID)
+  out <- as_tibble(out)
+
+  if (grepl("^[[:digit:]]", feature)) {
+    feature <- paste0("F_", feature)
+  }
+
+  feature <- gsub("-", "_", feature)
+
+  col_hh <- paste0(feature, "_", action)
+
+  func1 <- paste0("out$", col_hh, " <- hh")
+  eval(parse(text = func1))
+
+  .plot_hexbin(out,
+    colour_by = col_hh,
+    title = title, xlab = xlab, ylab = ylab
+  )
 }

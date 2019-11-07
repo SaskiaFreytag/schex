@@ -8,14 +8,16 @@
 \title{Plot of external feature expression of single cells in bivariate hexagon
    cells.}
 \usage{
-plot_hexbin_feature(sce, mod, type, feature, action, title = NULL,
-  xlab = NULL, ylab = NULL)
+plot_hexbin_feature(sce, mod, type, feature, action, lower.cutoff = 0,
+  upper.cutoff = 1, title = NULL, xlab = NULL, ylab = NULL)
 
 \S4method{plot_hexbin_feature}{SingleCellExperiment}(sce, mod, type,
-  feature, action, title = NULL, xlab = NULL, ylab = NULL)
+  feature, action, lower.cutoff = 0, upper.cutoff = 1, title = NULL,
+  xlab = NULL, ylab = NULL)
 
 \S4method{plot_hexbin_feature}{Seurat}(sce, mod, type, feature, action,
-  title = NULL, xlab = NULL, ylab = NULL)
+  lower.cutoff = 0, upper.cutoff = 1, title = NULL, xlab = NULL,
+  ylab = NULL)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -34,6 +36,10 @@ data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
 \item{action}{A strings pecifying how meta data of observations in
 binned  hexagon cells are to be summarized. Possible actions are
 \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).}
+
+\item{lower.cutoff}{Remove expression values below this quantile. Expressed as decimal. Default: 0}
+
+\item{upper.cutoff}{Remove expression values above this quantile. Expressed as decimal. Default: 1}
 
 \item{title}{A string containing the title of the plot.}
 
@@ -79,11 +85,13 @@ for Seurat object.
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
-rownames(protein) <- paste0("A", seq(1,10,1))
+protein <- matrix(rnorm(10 * ncol(pbmc_small)), ncol = ncol(pbmc_small))
+rownames(protein) <- paste0("A", seq(1, 10, 1))
 colnames(protein) <- colnames(pbmc_small)
 pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
-    feature="A1", action="prop_0")
+plot_hexbin_feature(pbmc_small,
+  type = "counts", mod = "ADT",
+  feature = "A1", action = "prop_0"
+)
 }
