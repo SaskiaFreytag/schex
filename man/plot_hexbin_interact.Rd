@@ -72,10 +72,12 @@ for Seurat object.
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
-rownames(protein) <- paste0("A", seq(1,10,1))
+protein <- matrix(rnorm(10 * ncol(pbmc_small)), ncol = ncol(pbmc_small))
+rownames(protein) <- paste0("A", seq(1, 10, 1))
 colnames(protein) <- colnames(pbmc_small)
 pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
-plot_hexbin_interact(pbmc_small, type=c("counts", "counts"),
-    mod=c("RNA", "ADT" ), feature=c("CD7", "A1"), interact="mi")
+plot_hexbin_interact(pbmc_small,
+  type = c("counts", "counts"),
+  mod = c("RNA", "ADT"), feature = c("CD7", "A1"), interact = "mi"
+)
 }

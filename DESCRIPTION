@@ -12,11 +12,11 @@ Depends: SingleCellExperiment (>= 1.7.4),
     Seurat,
     ggplot2
 Imports: hexbin,
-        stats,
-            methods,
-            cluster,
-            dplyr,
-            entropy
+  stats,
+  methods,
+  cluster,
+  dplyr,
+  entropy
 Suggests: 
     ggrepel,
     knitr,
@@ -28,7 +28,8 @@ Suggests:
     shinydashboard,
     iSEE,
     igraph, 
-    scran
+    scran,
+    qpdf
 URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
