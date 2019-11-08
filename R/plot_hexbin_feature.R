@@ -1,15 +1,16 @@
-#' Plot of external feature expression of single cells in bivariate hexagon
-#'    cells.
+#' Plot of feature expression of single cells in bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'    or \code{\link[Seurat]{Seurat-class}} object.
-#' @param mod A string referring to the name of the alternative object in a
-#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the assay in a
-#'    \code{\link[Seurat]{Seurat-class}} object that stores the protein information.
+#' @param mod A string referring to the name of the modality used for plotting.
+#'     For RNA modality use "RNA". For other modalities use name of alternative 
+#'     object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
+#'     or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
+#'     object.
 #' @param type A string referring to the type of assay in the
 #'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
 #'    data transformation in the \code{\link[Seurat]{Seurat-class}} object.
-#' @param feature A string referring to the name of one external feature.
+#' @param feature A string referring to the name of one feature.
 #' @param action A strings pecifying how meta data of observations in
 #'    binned  hexagon cells are to be summarized. Possible actions are
 #'    \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).
@@ -33,7 +34,7 @@
 #'       The associated meta data column needs to be numeric.}
 #'    }
 #'
-#' @return A \code{\link{ggplot2}{ggplot}} object.
+#' @return An object that represents the app. 
 #' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
@@ -46,6 +47,28 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", action="prop_0")
+#' # For SingleCellExperiment object
+#' \dontrun{
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
+#'    perCellQCMetrics(tenx_pbmc3k))
+#' tenx_pbmc3k <- normalize(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
+#' plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
+#'    feature="ENSG00000135250", action="mean")
+#' plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
+#'    feature="ENSG00000135250", action="mode")
+#' }
+#' # For other modalities in Seurat object
+#' library(Seurat)
+#' data("pbmc_small")
+#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
 #' rownames(protein) <- paste0("A", seq(1,10,1))
 #' colnames(protein) <- colnames(pbmc_small)
@@ -53,20 +76,8 @@
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
 #'     feature="A1", action="prop_0")
-setGeneric("plot_hexbin_feature", function(sce, 
-    mod, 
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) standardGeneric("plot_hexbin_feature"))
-
-#' @export
-#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon
-#'   cell for SingleCellExperiment object.
-setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
-    mod,
+plot_hexbin_feature <- function(sce, 
+    mod="RNA", 
     type,
     feature,
     action,
@@ -74,35 +85,9 @@ setMethod("plot_hexbin_feature", "SingleCellExperiment", function(sce,
     xlab=NULL,
     ylab=NULL) {
   
-   out <- sce@metadata$hexbin[[2]]
-   cID <- sce@metadata$hexbin[[1]]
+    out <- .extract_hexbin(sce)
+    cID <- .extract_cID(sce)
   
-   if(is.null(out)){
-       stop("Compute hexbin representation before plotting.")
-    }
-  
-    x <-.prepare_data_feature(sce, mod, type, feature)
-  
-    .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
-        xlab, ylab)
-  
-})
-
-#' @export
-#' @describeIn plot_hexbin_feature  Plot of gene expression into hexagon cell
-#'    for Seurat object.
-setMethod("plot_hexbin_feature", "Seurat", function(sce,
-    mod,
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
-  
-    out <- sce@misc$hexbin[[2]]
-    cID <- sce@misc$hexbin[[1]]
-    
     if(is.null(out)){
        stop("Compute hexbin representation before plotting.")
     }
@@ -110,9 +95,9 @@ setMethod("plot_hexbin_feature", "Seurat", function(sce,
     x <-.prepare_data_feature(sce, mod, type, feature)
   
     .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
-        xlab, ylab)
+                              xlab, ylab)
   
-})
+}
 
 .plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
     xlab, ylab){

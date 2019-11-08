@@ -11,7 +11,7 @@ setMethod(".prepare_data_feature", "SingleCellExperiment", function (sce,
   
     if(mod=="RNA"){
   
-        ind <- match(feature, rownames(sce))]
+        ind <- match(feature, rownames(sce))
 
         if (is.na(ind)) {
             stop("Gene cannot be found.")
@@ -35,6 +35,9 @@ setMethod(".prepare_data_feature", "SingleCellExperiment", function (sce,
             stop("Specify a valid assay type.")
         }
       
+        x <- assays(altExp(sce, mod))
+        x <- x[[which(names(x)==type)]]
+      
         ind <- match(feature, rownames(x))
       
         if (is.na(ind)) {
@@ -42,9 +45,6 @@ setMethod(".prepare_data_feature", "SingleCellExperiment", function (sce,
         }
       
         x <- as.numeric(x[ind,])
-      
-        x <- assays(altExp(sce, mod))
-        x <- x[[which(names(x)==type)]]
     
     }
   
