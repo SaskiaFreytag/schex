@@ -1,7 +1,7 @@
 #' @importFrom stats median
 .make_hexbin_fc_function <- function(x, x_gene, cID) {
     
-    if (length(levels(x))==2) {
+    if (length(levels(x))!=2) {
         stop("Col needs to be a factor with two levels.")
     }
   
@@ -11,10 +11,10 @@
     tmp <- lapply(seq(x_list), function(z) 
       data.frame(x_list[[z]], x_gene_list[[z]]))
     
-    lapply(tmp, function(z) fold_change_tapply(z))
+    lapply(tmp, function(z) .fold_change_tapply(z))
 }
 
-fold_change_tapply <- function(tmp){
+.fold_change_tapply <- function(tmp){
   
     if(any(table(tmp[,1])<1)){
         return(NULL)
