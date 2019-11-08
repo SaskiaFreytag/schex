@@ -1,9 +1,9 @@
 #' Plot of meta data with annotation of single cell data in
-#' bivariate hexagon cells.
+#'    bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'   or \code{\link[Seurat]{Seurat}} object.
-#' @param col A string referring to the name of one column in the meta data of
+#' @param col1 A string referring to the name of one column in the meta data of
 #'   sce by which to make the outlines. Note that this should be a factor or
 #'   a character.
 #' @param col2 A string referring to the name of one column in the meta data of
@@ -19,12 +19,12 @@
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
-#' @param exapnd_hull A numeric value determining the expansion of the line
+#' @param expand_hull A numeric value determining the expansion of the line
 #'   marking different clusters.
 #' @param ... Additional arguments passed on to
-#'    \code{\link[geom_mark_hull]{ggforce}}.
+#'    \code{\link{ggforce}{geom_mark_hull}}.
 #'
-#' @details This function plots any gene expresssion in the hexagon cell
+#' @details This function plots any meta data in the hexagon cell
 #'   representation calculated with \code{\link{make_hexbin}} as well as at the
 #'   same time representing outlines of clusters. The chosen gene
 #'   expression is summarized by one of four actions \code{prop_0},
@@ -55,164 +55,67 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_meta_plus(pbmc_small, col="RNA_snn_res.1",
-#' col2="nFeature_RNA", action="mean")
-setGeneric("plot_hexbin_meta_plus", function(sce,
-                                             col,
-                                             col2,
-                                             action,
-                                             no = 1,
-                                             colors=NULL,
-                                             title=NULL,
-                                             xlab=NULL,
-                                             ylab=NULL,
-                                             expand_hull=3,
-                                             ...) standardGeneric("plot_hexbin_meta_plus"))
-
-#' @export
-#' @describeIn plot_hexbin_meta_plus  Plot of gene expression and meta data
-#'   of single cell data into hexagon cell for  SingleCellExperiment object.
-setMethod("plot_hexbin_meta_plus", "SingleCellExperiment", function(sce,
-                                                                    col,
-                                                                    col2,
-                                                                    action,
-                                                                    no = 1,
-                                                                    colors=NULL,
-                                                                    title=NULL,
-                                                                    xlab=NULL,
-                                                                    ylab=NULL,
-                                                                    expand_hull=3,
-                                                                    ...) {
-
-  out <- sce@metadata$hexbin[[2]]
-  cID <- sce@metadata$hexbin[[1]]
-
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
-
-  if (any(!col %in% colnames(colData(sce)))) {
-    stop("Column cannot be found in colData(sce).")
-  }
-
-  if (any(!col2 %in% colnames(colData(sce)))) {
-    stop("Column cannot be found in colData(sce).")
-  }
-
-  name_s <- paste0("sce$", col2)
-  func_col2 <- paste0("x_col2 <- ", name_s)
-
-  eval(parse(text = func_col2))
-
-  name_s <- paste0("sce$", col)
-  func <- paste0("x <- ", name_s)
-
-  eval(parse(text = func))
-
-  hh <- schex:::.make_hexbin_function(x, 'majority', cID)
-  out <- as_tibble(out)
-
-  col_hh <-paste0(col, "_", "majority")
-
-  if(is.factor(x)){
-    func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
-                    "levels(x))")
-  } else {
-    func1 <- paste0("out$", col_hh, " <- hh")
-  }
-
-  eval(parse(text=func1))
-
-  if(action == "prop"){
-    col_hh_2 <- schex:::.make_hexbin_colnames(x_col2,col2)
-    func1_col2 <- paste0("out$", col_hh_2,
-                  " <- hh[,", seq(1,length(col_hh_2),1),"]")
-    for(i in seq_len(length(func1_col2))){
-      eval(parse(text=func1_col2[i]))
+#' pbmc_small$RNA_snn_res.0.8 <- as.factor(pbmc_small$RNA_snn_res.0.8)
+#' plot_hexbin_meta_plus(pbmc_small, col1="RNA_snn_res.0.8",
+#'   col2="nCount_RNA", action="mean")
+#' plot_hexbin_meta_plus(pbmc_small, col1="RNA_snn_res.0.8",
+#'   col2="groups", action="prop", no=1)
+plot_hexbin_meta_plus <- function(sce,
+    col1,
+    col2,
+    action,
+    no=1,
+    colors=NULL,
+    title=NULL,
+    xlab=NULL,
+    ylab=NULL,
+    expand_hull=3,
+    ...) {
+  
+    out <- .extract_hexbin(sce)
+    cID <- .extract_cID(sce)
+  
+    if(is.null(out)){
+        stop("Compute hexbin representation before plotting.")
     }
-  }
-  } else {
-    col_hh_2 <-paste0(col, "_", action)
-    func1_col2 <- paste0("out$", col_hh_2, " <- hh")
-    eval(parse(text=func1_col2))
-  }
-
-  .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_gene2,
-                    colors=colors, expand_hull=expand_hull, title=title,
-                    xlab=xlab, ylab=ylab, ...)
-
-})
-
-#' @export
-#' @describeIn plot_hexbin_meta_plus Plot of gene expression and meta data of
-#'   single cell data into hexagon cell for Seurat object.
-setMethod("plot_hexbin_meta_plus", "Seurat", function(sce,
-                                                      col,
-                                                      col2,
-                                                      action,
-                                                      no = 1,
-                                                      colors=NULL,
-                                                      title=NULL,
-                                                      xlab=NULL,
-                                                      ylab=NULL,
-                                                      expand_hull=3,
-                                                      ...) {
-
-  out <- sce@misc$hexbin[[2]]
-  cID <- sce@misc$hexbin[[1]]
-
-  if(is.null(out)){
-    stop("Compute hexbin representation before plotting.")
-  }
-
-  if (any(!col %in% colnames(sce@meta.data))) {
-    stop("Column cannot be found in slot(sce, 'meta.data').")
-  }
-
-  if (any(!col2 %in% colnames(sce@meta.data))) {
-    stop("Column cannot be found in slot(sce, 'meta.data').")
-  }
-
-  name_s <- paste0("sce$", col2)
-  func_col2 <- paste0("x_col2 <- ", name_s)
-
-  eval(parse(text = func_col2))
-
-  name_s <- paste0("sce$", col)
-  func <- paste0("x <- ", name_s)
-
-  eval(parse(text = func))
-
-  hh <- schex:::.make_hexbin_function(x, 'majority', cID)
-  out <- as_tibble(out)
-
-  col_hh <-paste0(col, "_", "majority")
-
-  if(is.factor(x)){
-    func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
+  
+    x_col2 <- .prepare_data_meta(sce, col2)
+    x <- .prepare_data_meta(sce, col1)
+  
+    hh <- .make_hexbin_function(x, 'majority', cID)
+    hh2 <- .make_hexbin_function(x_col2, action, cID)
+    out <- as_tibble(out)
+  
+    col_hh <-paste0(col1, "_", "majority")
+  
+    if(is.factor(x)){
+        func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
                     "levels(x))")
-  } else {
-    func1 <- paste0("out$", col_hh, " <- hh")
-  }
-
-  eval(parse(text=func1))
-
-  if(action == "prop"){
-    col_hh_2 <- .make_hexbin_colnames(x_col2,col2)
-    func1_col2 <- paste0("out$", col_hh_2,
-                         " <- hh[,", seq(1,length(col_hh_2),1),"]")
-    for(i in seq_len(length(func1))){
-      eval(parse(text=func1_col2[i]))
+      } else {
+        func1 <- paste0("out$", col_hh, " <- hh")
     }
-  }
-  } else {
-    col_hh_2 <-paste0(col, "_", action)
-    func1_col2 <- paste0("out$", col_hh_2, " <- hh")
-    eval(parse(text=func1_col2))
-  }
+  
+    eval(parse(text=func1))
+  
+    if(action == "prop"){
+        col_hh_2 <- .make_hexbin_colnames(x_col2, col2)
+        func1_col2 <- paste0("out$", col_hh_2,
+                         " <- hh2[,", seq(1,length(col_hh_2),1),"]")
+        eval(parse(text=func1_col2[no]))
+        
+        .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_2[no],
+                          colors=colors, expand_hull=expand_hull, title=title,
+                          xlab=xlab, ylab=ylab, ...)
+        
+    } else {
+        col_hh_2 <- paste0(col2, "_", action)
+        func1_col2 <- paste0("out$", col_hh_2, " <- hh2")
+        eval(parse(text=func1_col2))
+        
+        .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_2,
+                          colors=colors, expand_hull=expand_hull, title=title,
+                          xlab=xlab, ylab=ylab, ...)
+    }
+    
+}
 
-  .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_2,
-                  colors=colors, expand_hull=expand_hull, title=title,
-                  xlab=xlab, ylab=ylab, ...)
-
-})
