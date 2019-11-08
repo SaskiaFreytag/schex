@@ -13,8 +13,9 @@
 #' @param action A strings pecifying how meta data of observations in
 #'    binned  hexagon cells are to be summarized. Possible actions are
 #'    \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).
-#' @param lower.cutoff Remove expression values below this quantile. Expressed as decimal. Default: 0
-#' @param upper.cutoff Remove expression values above this quantile. Expressed as decimal. Default: 1
+#' @param lower.cutoff For \code{mode}, \code{mean} and \code{median} actions, remove expression values below this quantile. Expressed as decimal. Default: 0
+#' @param upper.cutoff For \code{mode}, \code{mean} and \code{median} actions, remove expression values above this quantile. Expressed as decimal. Default: 1
+#' @param threshold For the \code{prop_0} action, do not consider cells with fewer counts than this. Default: 0
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
@@ -65,6 +66,7 @@ setGeneric("plot_hexbin_feature", function(sce,
                                            action,
                                            lower.cutoff = 0,
                                            upper.cutoff = 1,
+                                           threshold = 0,
                                            title = NULL,
                                            xlab = NULL,
                                            ylab = NULL) {
@@ -84,6 +86,7 @@ setMethod(
            action,
            lower.cutoff = 0,
            upper.cutoff = 1,
+           threshold = 0,
            title = NULL,
            xlab = NULL,
            ylab = NULL) {
@@ -106,7 +109,7 @@ setMethod(
     x <- x[[which(names(x) == type)]]
 
     .plot_hexbin_feature_helper(
-      x, feature, out, cID, action, title,
+      x, feature, out, cID, action, lower.cutoff, upper.cutoff, threshold, title,
       xlab, ylab
     )
   }
@@ -125,6 +128,7 @@ setMethod(
            action,
            lower.cutoff = 0,
            upper.cutoff = 1,
+           threshold = 0,
            title = NULL,
            xlab = NULL,
            ylab = NULL) {
@@ -146,7 +150,7 @@ setMethod(
     x <- GetAssayData(sce, assay = mod, type)
 
     .plot_hexbin_feature_helper(
-      x, feature, out, cID, action, lower.cutoff, upper.cutoff, title,
+      x, feature, out, cID, action, lower.cutoff, upper.cutoff, threshold, title,
       xlab, ylab
     )
   }
@@ -155,7 +159,7 @@ setMethod(
 .plot_hexbin_feature_helper <- function(x,
                                         feature,
                                         out,
-                                        cID, action, lower.cutoff, upper.cutoff, title,
+                                        cID, action, lower.cutoff, upper.cutoff, threshold, title,
                                         xlab = NULL,
                                         ylab = NULL) {
   ind <- match(feature, rownames(x))
@@ -166,10 +170,20 @@ setMethod(
 
   x <- as.numeric(x[ind, ])
 
-  lowend <- quantile(x[x > 0], lower.cutoff)
-  highend <- quantile(x[x > 0], upper.cutoff)
-  x[x < lowend] <- lowend
-  x[x > highend] <- highend
+  if (action == "prop_0"){
+    x <- replace(x = x,
+                 list = x < threshold,
+                 values = 0)
+  } else if (action %in% c("mean", "median", "mode")) {
+    lowend <- quantile(x[x > 0], lower.cutoff)
+    highend <- quantile(x[x > 0], upper.cutoff)
+    x <- replace(x = x,
+                 list = x < lowend,
+                 values = lowend)
+    x <- replace(x = x,
+                 list = x > highend,
+                 values = highend)
+  }
 
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
