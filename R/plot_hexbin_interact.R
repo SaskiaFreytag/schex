@@ -30,8 +30,6 @@
 #' @return A \code{\link{ggplot2}{ggplot}} object.
 #' @import Seurat
 #' @import SingleCellExperiment
-#' @importFrom entropy mi.plugin
-#' @importFrom stats cor
 #' @importFrom methods slotNames
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
@@ -47,20 +45,8 @@
 #' colnames(protein) <- colnames(pbmc_small)
 #' pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
 #' plot_hexbin_interact(pbmc_small, type=c("counts", "counts"),
-#'     mod=c("RNA", "ADT" ), feature=c("CD7", "A1"), interact="mi")
-setGeneric("plot_hexbin_interact", function(sce,
-    mod,
-    type,
-    feature,
-    interact,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) standardGeneric("plot_hexbin_interact"))
-
-#' @export
-#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell
-#'   for SingleCellExperiment object.
-setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
+#'     mod=c("RNA", "ADT"), feature=c("CD7", "A1"), interact="mi")
+plot_hexbin_interact <- function(sce,
     mod,
     type,
     feature,
@@ -73,77 +59,22 @@ setMethod("plot_hexbin_interact", "SingleCellExperiment", function(sce,
         stop("Specify the same number of modularities, types and features.")
     }
   
-    out <- sce@metadata$hexbin[[2]]
-    cID <- sce@metadata$hexbin[[1]]
+    out <- .extract_hexbin(sce)
+    cID <- .extract_cID(sce)
   
-    if(is.null(out)){
-        stop("Compute hexbin representation before plotting.")
-    }  
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }  
   
-    if(mod[1]!="RNA"){
-        first_x <- .prepare_data(sce, "RNA", type, gene)
-    } else {
-        first_x <- .prepare_data(sce, mod, type, gene)
-    }
-  
-    if(mod[2]!="RNA"){
-        second_x <- .prepare_data(sce, "RNA", type, gene)
-    } else {
-        second_x <- .prepare_data(sce, mod, type, gene)
-    }
-  
-    .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
-        feature, title, xlab, ylab)
-})
 
-#' @export
-#' @describeIn plot_hexbin_interact  Plot of gene expression into hexagon cell
-#'   for Seurat object.
-setMethod("plot_hexbin_interact", "Seurat", function(sce,
-    mod,
-    type,
-    feature,
-    interact,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
+  first_x <- .prepare_data_feature(sce, mod[1], type[1], feature[1])
   
-    if(length(mod)!=length(feature)|length(feature)!=length(type)){
-        stop("Specify the same number of modularities, types and features.")
-    }
+  second_x <- .prepare_data_feature(sce, mod[2], type[2], feature[2])
   
-    if(!mod[1] %in% names(sce)|!mod[2] %in% names(sce)){
-        stop("Specify a valid modularity.")
-    }
+  .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
+                               feature, title, xlab, ylab)
+}  
   
-    if(!type[1] %in% slotNames(GetAssay(sce, mod[1]))|
-        !type[2] %in% slotNames(GetAssay(sce, mod[2]))){
-        stop("Specify a valid assay type.")
-    }
-  
-    out <- sce@misc$hexbin[[2]]
-    cID <- sce@misc$hexbin[[1]]
-  
-    if(is.null(out)){
-        stop("Compute hexbin representation before plotting.")
-    }
-  
-    if(mod[1]!="RNA"){
-      first_x <- .prepare_data(sce, "RNA", type, gene)
-    } else {
-      first_x <- .prepare_data(sce, mod, type, gene)
-    }
-    
-    if(mod[2]!="RNA"){
-      second_x <- .prepare_data(sce, "RNA", type, gene)
-    } else {
-      second_x <- .prepare_data(sce, mod, type, gene)
-    }
-  
-    .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
-        feature, title, xlab, ylab)
-})
-
 
 .plot_hexbin_interact_helper <- function(first_x, second_x,  out, cID, interact,
     feature, title, xlab, ylab) {

@@ -32,38 +32,16 @@
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_density(tenx_pbmc3k)
 #' }
-setGeneric("plot_hexbin_density", function(sce, title=NULL,
-    xlab=NULL,
-    ylab=NULL)
-    standardGeneric("plot_hexbin_density"))
-
-#' @export
-#' @describeIn plot_hexbin_density  Plot of cell density in hexagon cell for
-#'    SingleCellExperiment object.
-setMethod("plot_hexbin_density", "SingleCellExperiment", function(sce,
+plot_hexbin_density <- function(sce, 
     title=NULL,
     xlab=NULL,
-    ylab=NULL) {
-  
-    out <- sce@metadata$hexbin[[2]]
-  
+    ylab=NULL){
+    
+    out <- .extract_hexbin(sce)
     .plot_hexbin_density_helper(out, title, xlab, ylab)
 
-})
+}
 
-#' @export
-#' @describeIn plot_hexbin_density  Plot of cell density in hexagon cell for
-#'   Seurat object.
-setMethod("plot_hexbin_density", "Seurat", function(sce,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
-  
-    out <- sce@misc$hexbin[[2]]
-  
-    .plot_hexbin_density_helper(out, title, xlab, ylab)
-  
-})
 
 .plot_hexbin_density_helper <- function(out, title, xlab, ylab){
   

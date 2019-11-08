@@ -1,7 +1,7 @@
 Package: schex
 Type: Package
 Title: Hexbin plots for single cell omics data
-Version: 0.99.8
+Version: 1.1.1
 Author: Saskia Freytag
 Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
 Description: Builds hexbin plots for variables and dimension reduction stored
@@ -10,13 +10,16 @@ Description: Builds hexbin plots for variables and dimension reduction stored
     Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Depends: SingleCellExperiment (>= 1.7.4),
     Seurat,
-    ggplot2
+    ggplot2 (>= 3.2.1),
+    shiny
 Imports: hexbin,
         stats,
             methods,
             cluster,
             dplyr,
-            entropy
+            entropy,
+            ggforce,
+            scales
 Suggests: 
     ggrepel,
     knitr,

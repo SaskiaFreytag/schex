@@ -195,7 +195,7 @@ hexagon cell representation.
 
 ```{r plot-gene, fig.height=7, fig.width=7}
 gene_id <-"POMGNT1"
-schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
+plot_hexbin_feature(tenx_pbmc3k, type="logcounts", feature=gene_id, 
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
 ```
@@ -207,6 +207,14 @@ hexagon cell representation than the classic representation.
 plotUMAP(tenx_pbmc3k, by_exprs_values="logcounts", colour_by=gene_id)
 ```
 
+We can overlay the gene expression data with the clusters for convenience.
+
+```{r, message=FALSE, fig.height=7, fig.width=7}
+plot_hexbin_feature_plus(tenx_pbmc3k,
+    col="cluster", type="logcounts",
+    feature="POMGNT1", action="mean")
+```
+
 ### Understanding `schex` output as `ggplot` objects
 
 The `schex` packages renders ordinary `ggplot` objects and thus these can be 
@@ -216,7 +224,7 @@ components of the plots can be changed using the function `theme`.
 
 ```{r}
 gene_id <-"CD19"
-gg <- schex::plot_hexbin_gene(tenx_pbmc3k, type="logcounts", gene=gene_id, 
+gg <- schex::plot_hexbin_feature(tenx_pbmc3k, type="logcounts", feature=gene_id, 
     action="mean", xlab="UMAP1", ylab="UMAP2", 
     title=paste0("Mean of ", gene_id))
 gg + theme_void()
