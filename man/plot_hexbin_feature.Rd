@@ -9,15 +9,16 @@
    cells.}
 \usage{
 plot_hexbin_feature(sce, mod, type, feature, action, lower.cutoff = 0,
-  upper.cutoff = 1, title = NULL, xlab = NULL, ylab = NULL)
+  upper.cutoff = 1, threshold = 0, title = NULL, xlab = NULL,
+  ylab = NULL)
 
 \S4method{plot_hexbin_feature}{SingleCellExperiment}(sce, mod, type,
-  feature, action, lower.cutoff = 0, upper.cutoff = 1, title = NULL,
-  xlab = NULL, ylab = NULL)
+  feature, action, lower.cutoff = 0, upper.cutoff = 1, threshold = 0,
+  title = NULL, xlab = NULL, ylab = NULL)
 
 \S4method{plot_hexbin_feature}{Seurat}(sce, mod, type, feature, action,
-  lower.cutoff = 0, upper.cutoff = 1, title = NULL, xlab = NULL,
-  ylab = NULL)
+  lower.cutoff = 0, upper.cutoff = 1, threshold = 0, title = NULL,
+  xlab = NULL, ylab = NULL)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -37,9 +38,11 @@ data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
 binned  hexagon cells are to be summarized. Possible actions are
 \code{prop_0}, \code{mode}, \code{mean} and \code{median} (see details).}
 
-\item{lower.cutoff}{Remove expression values below this quantile. Expressed as decimal. Default: 0}
+\item{lower.cutoff}{For \code{mode}, \code{mean} and \code{median} actions, remove expression values below this quantile. Expressed as decimal. Default: 0}
 
-\item{upper.cutoff}{Remove expression values above this quantile. Expressed as decimal. Default: 1}
+\item{upper.cutoff}{For \code{mode}, \code{mean} and \code{median} actions, remove expression values above this quantile. Expressed as decimal. Default: 1}
+
+\item{threshold}{For the \code{prop_0} action, do not consider cells with fewer counts than this. Default: 0}
 
 \item{title}{A string containing the title of the plot.}
 
