@@ -87,58 +87,58 @@
 #' plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
 #'     feature="A1", action="prop_0")
 plot_hexbin_feature <- function(sce, 
-    mod="RNA", 
-    type,
-    feature,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL,
-    lower_cutoff = 0,
-    upper_cutoff = 1) {
+                                mod="RNA", 
+                                type,
+                                feature,
+                                action,
+                                title=NULL,
+                                xlab=NULL,
+                                ylab=NULL,
+                                lower_cutoff = 0,
+                                upper_cutoff = 1) {
   
-    out <- .extract_hexbin(sce)
-    cID <- .extract_cID(sce)
+  out <- .extract_hexbin(sce)
+  cID <- .extract_cID(sce)
   
-    if(is.null(out)){
-       stop("Compute hexbin representation before plotting.")
-    }
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }
   
-    x <-.prepare_data_feature(sce, mod, type, feature)
+  x <-.prepare_data_feature(sce, mod, type, feature)
   
-    .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
+  .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
                               xlab, ylab, lower_cutoff, upper_cutoff)
   
 }
 
 .plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
-    xlab, ylab, lower_cutoff, upper_cutoff){
+                                        xlab, ylab, lower_cutoff, upper_cutoff){
   
-   if (action %in% c("mean", "median", "mode")) {
-        lowend <- quantile(x[x > 0], lower_cutoff)
-        highend <- quantile(x[x > 0], upper_cutoff)
-        x <- replace(x = x,
-            list = x < lowend,
-            values = lowend)
-        x <- replace(x = x,
-            list = x > highend,
-            values = highend)
-    }
+  if (action %in% c("mean", "median", "mode")) {
+    lowend <- quantile(x[x > 0], lower_cutoff)
+    highend <- quantile(x[x > 0], upper_cutoff)
+    x <- replace(x = x,
+                 list = x < lowend,
+                 values = lowend)
+    x <- replace(x = x,
+                 list = x > highend,
+                 values = highend)
+  }
   
-    hh <- .make_hexbin_function(x, action, cID)
-    out <- as_tibble(out)
+  hh <- .make_hexbin_function(x, action, cID)
+  out <- as_tibble(out)
   
-    if(grepl("^[[:digit:]]", feature )){
-        feature <- paste0("F_", feature)
-    }
+  if(grepl("^[[:digit:]]", feature )){
+    feature <- paste0("F_", feature)
+  }
   
-    feature <- gsub("-", "_", feature)
+  feature <- gsub("-", "_", feature)
   
-    col_hh <- paste0(feature, "_", action)
+  col_hh <- paste0(feature, "_", action)
   
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
+  func1 <- paste0("out$", col_hh, " <- hh")
+  eval(parse(text=func1))
   
-    .plot_hexbin(out, colour_by=col_hh,
-        title=title, xlab=xlab, ylab=ylab)
+  .plot_hexbin(out, colour_by=col_hh,
+               title=title, xlab=xlab, ylab=ylab)
 }
