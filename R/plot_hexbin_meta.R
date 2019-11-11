@@ -52,7 +52,6 @@
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="prop", no=1)
-#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="prop", no=2)
 #' # For SingleCellExperiment object
 #' \dontrun{
 #' library(TENxPBMCData)
@@ -67,71 +66,23 @@
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_meta(tenx_pbmc3k, col="total", action="median")
 #' }
-setGeneric("plot_hexbin_meta", function(sce,
+plot_hexbin_meta <- function(sce,
     col,
     action,
     no = 1,
     colors=NULL,
     title=NULL,
     xlab=NULL,
-    ylab=NULL) standardGeneric("plot_hexbin_meta"))
-
-#' @export
-#' @describeIn plot_hexbin_meta  Plot of meta data into hexagon cell for
-#'   SingleCellExperiment object.
-setMethod("plot_hexbin_meta", "SingleCellExperiment", function(sce,
-    col,
-    action,
-    no = 1,
-    colors=NULL,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
+    ylab=NULL){
   
-    out <- sce@metadata$hexbin[[2]]
-    cID <- sce@metadata$hexbin[[1]]
+  out <- .extract_hexbin(sce)
+  cID <- .extract_cID(sce)
   
-    if (any(!col %in% colnames(colData(sce)))) {
-        stop("Column cannot be found in colData(sce).")
-    }
+  x <- .prepare_data_meta(sce, col)
   
-    name_s <- paste0("sce$", col)
-    func <- paste0("x <- ", name_s)
-  
-    eval(parse(text = func))
-  
-    .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
-        colors)
-})
-
-#' @export
-#' @describeIn plot_hexbin_meta  Plot of meta data into hexagon cell for
-#'   Seurat object.
-setMethod("plot_hexbin_meta", "Seurat", function(sce,
-    col,
-    action,
-    no = 1,
-    colors=NULL,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
-  
-    out <- sce@misc$hexbin[[2]]
-    cID <- sce@misc$hexbin[[1]]
-  
-    if (any(!col %in% colnames(sce@meta.data))) {
-        stop("Column cannot be found in slot(sce, 'meta.data').")
-    }
-  
-    name_s <- paste0("sce$", col)
-    func <- paste0("x <- ", name_s)
-  
-    eval(parse(text = func))
-  
-    .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
-          colors)
-  
-})
+  .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
+                           colors)
+}
 
 .plot_hexbin_meta_helper <- function(x, out, cID, col, action, no, title,
       xlab, ylab, colors) {
