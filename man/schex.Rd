@@ -15,7 +15,7 @@ Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Please see the help pages listed below:
    \itemize{
       \item{\code{\link{make_hexbin}}}
-      \item{\code{\link{plot_hexbin_gene}}}
+      \item{\code{\link{plot_hexbin_feature}}}
       \item{\code{\link{plot_hexbin_meta}}}
    }
  
