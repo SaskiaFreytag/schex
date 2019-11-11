@@ -66,12 +66,7 @@ This function plots any column of the meta data in the hexagon cell
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-<<<<<<< HEAD
 plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="prop", no=1)
-=======
-plot_hexbin_meta(pbmc_small, col = "RNA_snn_res.1", action = "prop", no = 1)
-plot_hexbin_meta(pbmc_small, col = "RNA_snn_res.1", action = "prop", no = 2)
->>>>>>> b226e927604e0a6e1183395885459a60cbf37fe7
 # For SingleCellExperiment object
 \dontrun{
 library(TENxPBMCData)
@@ -85,12 +80,7 @@ colData(tenx_pbmc3k) <- cbind(
 )
 tenx_pbmc3k <- normalize(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-<<<<<<< HEAD
-tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_meta(tenx_pbmc3k, col="total", action="median")
-=======
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 plot_hexbin_meta(tenx_pbmc3k, col = "total", action = "median")
->>>>>>> b226e927604e0a6e1183395885459a60cbf37fe7
 }
 }

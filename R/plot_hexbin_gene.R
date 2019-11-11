@@ -72,7 +72,6 @@ setGeneric("plot_hexbin_gene", function (sce,
                                          title=NULL,
                                          xlab=NULL,
                                          ylab=NULL) standardGeneric("plot_hexbin_gene"))
-=======
 
 #' @export
 #' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
