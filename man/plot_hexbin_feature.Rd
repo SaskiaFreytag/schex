@@ -5,7 +5,8 @@
 \title{Plot of feature expression of single cells in bivariate hexagon cells.}
 \usage{
 plot_hexbin_feature(sce, mod = "RNA", type, feature, action,
-  title = NULL, xlab = NULL, ylab = NULL)
+  title = NULL, xlab = NULL, ylab = NULL, lower_cutoff = 0,
+  upper_cutoff = 1)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -32,6 +33,14 @@ binned  hexagon cells are to be summarized. Possible actions are
 \item{xlab}{A string containing the title of the x axis.}
 
 \item{ylab}{A string containing the title of the y axis.}
+
+\item{lower_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
+remove expression values below this quantile. Expressed as decimal. 
+Default: 0}
+
+\item{upper_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
+remove expression values above this quantile. Expressed as decimal.
+Default: 1}
 }
 \value{
 An object that represents the app.
@@ -61,7 +70,10 @@ This function plots the expression of any feature in the hexagon
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", action="prop_0")
+plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+   action="median")
+plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+   action="median", lower_cutoff=0.2, upper_cutoff=0.5)
 # For SingleCellExperiment object
 \dontrun{
 library(TENxPBMCData)
