@@ -17,6 +17,12 @@
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
+#' @param lower_cutoff For \code{mode}, \code{mean} and \code{median} actions, 
+#'     remove expression values below this quantile. Expressed as decimal. 
+#'     Default: 0
+#' @param upper_cutoff For \code{mode}, \code{mean} and \code{median} actions, 
+#'     remove expression values above this quantile. Expressed as decimal.
+#'     Default: 1
 #'
 #' @details This function plots the expression of any feature in the hexagon
 #'    cell representation calculated with \code{\link{make_hexbin}}. The chosen
@@ -40,6 +46,7 @@
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @importFrom methods slotNames
+#' @importFrom stats quantile
 #' @export
 #'
 #' @examples
@@ -47,7 +54,10 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", action="prop_0")
+#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+#'    action="median")
+#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+#'    action="median", lower_cutoff=0.2, upper_cutoff=0.5)
 #' # For SingleCellExperiment object
 #' \dontrun{
 #' library(TENxPBMCData)
@@ -83,7 +93,9 @@ plot_hexbin_feature <- function(sce,
     action,
     title=NULL,
     xlab=NULL,
-    ylab=NULL) {
+    ylab=NULL,
+    lower_cutoff = 0,
+    upper_cutoff = 1) {
   
     out <- .extract_hexbin(sce)
     cID <- .extract_cID(sce)
@@ -95,12 +107,23 @@ plot_hexbin_feature <- function(sce,
     x <-.prepare_data_feature(sce, mod, type, feature)
   
     .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
-                              xlab, ylab)
+                              xlab, ylab, lower_cutoff, upper_cutoff)
   
 }
 
 .plot_hexbin_feature_helper <- function(x, feature, out, cID, action, title,
-    xlab, ylab){
+    xlab, ylab, lower_cutoff, upper_cutoff){
+  
+   if (action %in% c("mean", "median", "mode")) {
+        lowend <- quantile(x[x > 0], lower_cutoff)
+        highend <- quantile(x[x > 0], upper_cutoff)
+        x <- replace(x = x,
+            list = x < lowend,
+            values = lowend)
+        x <- replace(x = x,
+            list = x > highend,
+            values = highend)
+    }
   
     hh <- .make_hexbin_function(x, action, cID)
     out <- as_tibble(out)
