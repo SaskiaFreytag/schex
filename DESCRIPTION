@@ -31,8 +31,7 @@ Suggests:
     shinydashboard,
     iSEE,
     igraph, 
-    scran,
-    qpdf
+    scran
 URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
