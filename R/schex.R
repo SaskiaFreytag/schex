@@ -13,10 +13,10 @@
 #'       \item{\code{\link{plot_hexbin_feature}}}
 #'       \item{\code{\link{plot_hexbin_meta}}}
 #'    }
-#'  
+#'
 #'  Also see the vignettes for more usage examples.
-#'  
+#'
 #'  Please report issues and suggest improvements at Github:
-#'  
+#'
 #'  \url{https://github.com/SaskiaFreytag/schex}
 NULL

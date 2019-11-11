@@ -41,23 +41,29 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_gene(pbmc_small, type="counts", gene="TALDO1", action="prop_0")
+#' plot_hexbin_gene(pbmc_small, type = "counts", gene = "TALDO1", action = "prop_0")
 #' # For SingleCellExperiment object
 #' \dontrun{
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
-#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-#'    perCellQCMetrics(tenx_pbmc3k))
+#' rm_ind <- calcAverage(tenx_pbmc3k) < 0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+#' colData(tenx_pbmc3k) <- cbind(
+#'   colData(tenx_pbmc3k),
+#'   perCellQCMetrics(tenx_pbmc3k)
+#' )
 #' tenx_pbmc3k <- normalize(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
-#'    gene="ENSG00000135250", action="mean")
-#' plot_hexbin_gene(tenx_pbmc3k, type="logcounts",
-#'    gene="ENSG00000135250", action="mode")
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+#' plot_hexbin_gene(tenx_pbmc3k,
+#'   type = "logcounts",
+#'   gene = "ENSG00000135250", action = "mean"
+#' )
+#' plot_hexbin_gene(tenx_pbmc3k,
+#'   type = "logcounts",
+#'   gene = "ENSG00000135250", action = "mode"
+#' )
 #' }
 setGeneric("plot_hexbin_gene", function (sce, 
                                          type,
@@ -66,6 +72,7 @@ setGeneric("plot_hexbin_gene", function (sce,
                                          title=NULL,
                                          xlab=NULL,
                                          ylab=NULL) standardGeneric("plot_hexbin_gene"))
+=======
 
 #' @export
 #' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
@@ -158,3 +165,4 @@ setMethod("plot_hexbin_gene", "Seurat", function (sce,
   .plot_hexbin(out, colour_by=col_hh,
                title=title, xlab=xlab, ylab=ylab)
 }
+
