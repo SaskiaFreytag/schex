@@ -60,46 +60,47 @@
 #'    gene="ENSG00000135250", action="mode")
 #' }
 setGeneric("plot_hexbin_gene", function (sce, 
-    type,
-    gene,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) standardGeneric("plot_hexbin_gene"))
-  
+                                         type,
+                                         gene,
+                                         action,
+                                         title=NULL,
+                                         xlab=NULL,
+                                         ylab=NULL) standardGeneric("plot_hexbin_gene"))
+
 #' @export
 #' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
 #'   SingleCellExperiment object.
 setMethod("plot_hexbin_gene", "SingleCellExperiment", function (sce,
-    type,
-    gene,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
+                                                                type,
+                                                                gene,
+                                                                action,
+                                                                title=NULL,
+                                                                xlab=NULL,
+                                                                ylab=NULL) {
+  .Deprecated("plot_hexbin_feature")
   
-    out <- sce@metadata$hexbin[[2]]
-    cID <- sce@metadata$hexbin[[1]]
-    
-    if(is.null(out)){
-       stop("Compute hexbin representation before plotting.")
-    }
+  out <- sce@metadata$hexbin[[2]]
+  cID <- sce@metadata$hexbin[[1]]
   
-    ind <- match(gene, rownames(sce))
-    x <- assays(sce)
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }
   
-    if(!type %in% names(x)){
-        stop("Specify a valid assay type.")
-    }
+  ind <- match(gene, rownames(sce))
+  x <- assays(sce)
   
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
+  if(!type %in% names(x)){
+    stop("Specify a valid assay type.")
+  }
   
-    x <- as.numeric(x[[which(names(x)==type)]][ind,])
+  if (is.na(ind)) {
+    stop("Gene cannot be found.")
+  }
   
-    .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
-        xlab, ylab) 
+  x <- as.numeric(x[[which(names(x)==type)]][ind,])
+  
+  .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
+                           xlab, ylab) 
   
 })
 
@@ -107,53 +108,53 @@ setMethod("plot_hexbin_gene", "SingleCellExperiment", function (sce,
 #' @describeIn plot_hexbin_gene  Plot of gene expression into hexagon cell for
 #'   Seurat object.
 setMethod("plot_hexbin_gene", "Seurat", function (sce,
-    type,
-    gene,
-    action,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL) {
+                                                  type,
+                                                  gene,
+                                                  action,
+                                                  title=NULL,
+                                                  xlab=NULL,
+                                                  ylab=NULL) {
   
-    out <- sce@misc$hexbin[[2]]
-    cID <- sce@misc$hexbin[[1]]
+  out <- sce@misc$hexbin[[2]]
+  cID <- sce@misc$hexbin[[1]]
   
-    if(is.null(out)){
-        stop("Compute hexbin representation before plotting.")
-    }
+  if(is.null(out)){
+    stop("Compute hexbin representation before plotting.")
+  }
   
-    x <- GetAssayData(sce, type)
+  x <- GetAssayData(sce, type)
   
-    ind <- match(gene, rownames(x))
+  ind <- match(gene, rownames(x))
   
-    if (is.na(ind)) {
-        stop("Gene cannot be found.")
-    }
+  if (is.na(ind)) {
+    stop("Gene cannot be found.")
+  }
   
-    x <- as.numeric(x[ind,])
+  x <- as.numeric(x[ind,])
   
-    .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
-        xlab, ylab) 
+  .plot_hexbin_gene_helper(x, action, cID, out, gene, title,
+                           xlab, ylab) 
   
 })
 
 
 .plot_hexbin_gene_helper <- function(x, action, cID, out, gene, title,
-      xlab, ylab) {
+                                     xlab, ylab) {
   
-    hh <- .make_hexbin_function(x, action, cID)
-    out <- as_tibble(out)
+  hh <- .make_hexbin_function(x, action, cID)
+  out <- as_tibble(out)
   
-    if(grepl("^[[:digit:]]", gene )){
-        gene <- paste0("G_", gene)
-    }
+  if(grepl("^[[:digit:]]", gene )){
+    gene <- paste0("G_", gene)
+  }
   
-    gene <- gsub("-", "_", gene)
+  gene <- gsub("-", "_", gene)
   
-    col_hh <- paste0(gene, "_", action)
+  col_hh <- paste0(gene, "_", action)
   
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
+  func1 <- paste0("out$", col_hh, " <- hh")
+  eval(parse(text=func1))
   
-    .plot_hexbin(out, colour_by=col_hh,
-        title=title, xlab=xlab, ylab=ylab)
+  .plot_hexbin(out, colour_by=col_hh,
+               title=title, xlab=xlab, ylab=ylab)
 }

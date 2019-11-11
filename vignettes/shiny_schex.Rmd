@@ -64,7 +64,7 @@ app <- shinyApp(
         })
       
         output$plot2 <- renderPlot({ 
-            plot_hexbin_gene(pbmc_small, input$type, input$gene, 
+            plot_hexbin_feature(pbmc_small, type=input$type, feature=input$gene, 
                 action=input$action, title=input$gene) 
         })
     
@@ -119,7 +119,7 @@ pbmc_small <- make_hexbin(pbmc_small, nbins=10, dimension_reduction = "PCA")
 plot_hexbin_gene_new <- function(sce, rows=NULL, rownames=character(0), 
     columns=NULL, type="logcounts", action="prop_0"){
 
-      plot_hexbin_gene(sce, type=type, gene=rownames, action=action)
+      plot_hexbin_feature(sce, type=type, feature=rownames, action=action)
 }
 ```
 

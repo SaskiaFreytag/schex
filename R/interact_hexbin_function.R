@@ -1,3 +1,5 @@
+#' @importFrom entropy mi.plugin
+#' @importFrom stats cor
 .interact_hexbin_function <- function(first_x, second_x, interact, cID) {
     if (interact == "corr_spearman") {
         func_if <- !(is.numeric(first_x) | is.numeric(second_x))
