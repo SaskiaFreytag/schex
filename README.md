@@ -1,17 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-schex
-=====
+
+# schex
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/SaskiaFreytag/schex.svg?branch=master)](https://travis-ci.org/SaskiaFreytag/schex) [![Codecov test coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master) <!-- badges: end --> <img src='man/figures/logo.png' align="right" height="139" />
 
-The goal of schex is to provide easy plotting of hexagon cell representations of single cell data stored in `SingleCellExperiment` or `Seurat` objects.
+[![](https://img.shields.io/badge/download-129/total-blue.svg)](https://bioconductor.org/packages/stats/bioc/schex)
+[![](https://img.shields.io/badge/download-81/total-yellow.svg)](https://bioconductor.org/packages/stats/bioc/schex)
+[![Codecov test
+coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master)
+<!-- badges: end -->
+<img src='man/figures/logo.png' align="right" height="139" />
 
-Installation
-------------
+The goal of schex is to provide easy plotting of hexagon cell
+representations of single cell data stored in `SingleCellExperiment` or
+`Seurat` objects.
 
-You can install schex using the [Bioconductor project](https://bioconductor.org/):
+## Installation
+
+You can install schex using the [Bioconductor
+project](https://bioconductor.org/):
 
 ``` r
 # install.packages("BiocManager")
@@ -25,33 +33,45 @@ You can install the development version of schex with:
 devtools::install_github("SaskiaFreytag/schex")
 ```
 
-Note that you may need to install several Bioconductor packages if you haven't done so manually.
+## Why you need schex?
 
-``` r
-# install.packages("BiocManager")
-BiocManager::install(version='devel')
-BiocManager::install("SingleCellExperiment")
-```
+Did you know that the order in which points are plotted depends on their
+location in the data frame? For example when plotting the expression of
+CD19, a B-cell maker, you may get the following three plots depending on
+how you order your observations.
 
-Why you need schex?
--------------------
+![Observations in decreasing order with regrads to their CD19
+expression](man/figures/figure-html/ggplot-decreasing-1.png)
+![Observations in increasing order with regrads to their CD19
+expression](man/figures/figure-html/ggplot-increasing-1.png)
+![Observation in random
+order](man/figures/figure-html/ggplot-random-1.png)
 
-Did you know that order in which points are plotted depends on their location in the data frame? For example when plotting the expression of CD19, a B-cell maker, you may get the following three plots depending on how you order your observations.
+Using the first plot you would not decide to call the central cluster a
+B-cell population. Using the second plot you would probably decide to
+call the same cluster a B-cell population. Using the last plot you might
+be undecided.
 
-<img src="man/figures/figure-html/ggplot-decreasing-1.png" alt="Observations in decreasing order with regrads to their CD19 expression" style="width:49.0%" /> <img src="man/figures/figure-html/ggplot-increasing-1.png" alt="Observations in increasing order with regrads to their CD19 expression" style="width:49.0%" /> <img src="man/figures/figure-html/ggplot-random-1.png" alt="Observation in random order" style="width:49.0%" />
+## The solution
 
-Using the first plot you would not decide to call the central cluster a B-cell population. Using the second plot you would probably decide to call the same cluster a B-cell population. Using the last plot you might be undecided.
+Instead of plotting points on top of each other, schex summarizes points
+into hexagon cells. Hence avoiding confusion due to observation order.
 
-The solution
-------------
+![schex plotting](man/figures/figure-html/schex-1.png)
 
-Instead of plotting points on top of each other, schex summarizes points into hexagon cells. Hence avoiding confusion due to observation order.
+Check out the vignettes to learn about how to get started. Or for a
+quick start, use the following code.
 
-<img src="man/figures/figure-html/schex-1.png" alt="schex plotting" style="width:49.0%" />
+    library(schex)
+    library(Seurat)
+    data("pbmc_small")
+    pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+    plot_hexbin_density(pbmc_small)
 
-How schex works?
-----------------
+## How schex works?
 
-Points in the same neighbourhood are summarized using one of many different summary statistics. The animation below shows how this works when using the mean to summarize the expression of CD19.
+Points in the same neighbourhood are summarized using one of many
+different summary statistics. The animation below shows how this works
+when using the mean to summarize the expression of CD19.
 
 ![animation](man/figures/myanimation.gif)
