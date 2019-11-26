@@ -27,4 +27,20 @@
 
 # 0.99.8
 
-* Fixed typos in vignettes. 
+* Fixed typos in vignettes.
+
+# 1.1.1
+
+* Deprecated plot_hexbin_gene.
+* Updated plot_hexbin_feature to use all features, including genes.
+* Introduced plot_hexbin_fc for fold change visualization.
+* Introduced plot_hexbin_meta_plus and plot_hexbin_feature_plus to plot cluster 
+  outlines.
+* Introduced plot_hexbin_meta_shiny, plot_hexbin_feature_shiny and 
+  plot_hexbin_density_shiny for interactive visualization.
+* Changed internal structure.
+* Updated vignettes.
+* Included two new vignettes.
+* New README.
+
+
