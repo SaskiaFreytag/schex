@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
 # schex
 
 <!-- badges: start -->
-  [![Travis build status](https://travis-ci.org/SaskiaFreytag/schex.svg?branch=master)](https://travis-ci.org/SaskiaFreytag/schex)
+  [![](https://img.shields.io/badge/download-129/total-blue.svg)](https://bioconductor.org/packages/stats/bioc/schex)
+  [![](https://img.shields.io/badge/download-81/total-yellow.svg)](https://bioconductor.org/packages/stats/bioc/schex)
     [![Codecov test coverage](https://codecov.io/gh/SaskiaFreytag/schex/branch/master/graph/badge.svg)](https://codecov.io/gh/SaskiaFreytag/schex?branch=master)
 <!-- badges: end -->
 <img src='man/figures/logo.png' align="right" height="139" />
@@ -40,18 +41,9 @@ You can install the development version of schex with:
 devtools::install_github("SaskiaFreytag/schex")
 ```
 
-Note that you may need to install several Bioconductor packages if 
-you haven't done so manually.
-
-``` r
-# install.packages("BiocManager")
-BiocManager::install(version='devel')
-BiocManager::install("SingleCellExperiment")
-```
-
 ## Why you need schex?
 
-Did you know that order in which points are plotted depends on their location
+Did you know that the order in which points are plotted depends on their location
 in the data frame? 
 For example when plotting the expression of CD19, a B-cell maker, you may 
 get the following three plots depending on how you order your observations.
@@ -70,6 +62,17 @@ Instead of plotting points on top of each other, schex summarizes points into
 hexagon cells. Hence avoiding confusion due to observation order.
 
 ![schex plotting](man/figures/figure-html/schex-1.png){width=49%}
+
+Check out the vignettes to learn about how to get started. Or for a quick start,
+use the following code.
+
+```
+library(schex)
+library(Seurat)
+data("pbmc_small")
+pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+plot_hexbin_density(pbmc_small)
+```
 
 ## How schex works?
 
