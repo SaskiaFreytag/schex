@@ -27,6 +27,9 @@
 #'    the effect of the resolution parameter. The user can change the resolution
 #'    using the slider. Each hexagon is clickable, which will plot the 
 #'    observations in the chosen hexagons in a histograms below. 
+#'    
+#'    To access the data that has been integrated in the 
+#'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 #'
 #' @seealso \code{\link{plot_hexbin_feature}}
 #' @return An object that represents the app. 
