@@ -42,9 +42,9 @@ test_that("make_hexbin_function mean", {
 
 test_that("make_hexbin_function median", {
   x <- rep(c(2, 3, 1), 3)
-  action <- "mean"
+  action <- "median"
   cID <- c(1, 1, 1, 2, 2, 2, 3, 3, 3)
-  expect_equal(schex:::.make_hexbin_function(x, action, cID), c(2, 2, 2))
+  expect_equal(.make_hexbin_function(x, action, cID), c(2, 2, 2))
 })
 
 test_that("make_hexbin_function prop_0", {

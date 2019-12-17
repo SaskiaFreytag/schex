@@ -52,7 +52,7 @@
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop("For action 'median' x needs to be numeric")
+      stop("For action 'mode' x needs to be numeric")
     } else {
       res <- tapply(x, cID, FUN = function(z) .get_mode(z))
       res <- as.numeric(res)
@@ -71,12 +71,24 @@
       return(res)
     }
   }
+  
+  if (action == "sd") {
+    func_if <- !is.numeric(x)
+    
+    if (func_if) {
+      stop("For action 'prop_0' x needs to be numeric")
+    } else {
+      res <- tapply(x, cID, FUN = function(z) sd(z))
+      res <- as.numeric(res)
+      return(res)
+    }
+  }
 
   if (action == "mean") {
     func_if <- !is.numeric(x)
 
     if (func_if) {
-      stop("For action 'median' x needs to be numeric")
+      stop("For action 'mean' x needs to be numeric")
     } else {
       res <- tapply(x, cID, FUN = function(z) mean(z))
       res <- as.numeric(res)

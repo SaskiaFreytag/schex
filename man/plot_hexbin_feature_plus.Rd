@@ -72,6 +72,9 @@ This function plots any gene expresssion in the hexagon cell
      \item{\code{median}}{Returns the median of the observations in the bin.
      The associated meta data column needs to be numeric.}
   }
+  
+   To access the data that has been integrated in the 
+   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
 #' # For Seurat object

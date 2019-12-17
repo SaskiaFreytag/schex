@@ -43,7 +43,7 @@ remove expression values above this quantile. Expressed as decimal.
 Default: 1}
 }
 \value{
-An object that represents the app.
+A \code{\link{ggplot2}{ggplot}} object.
 }
 \description{
 Plot of feature expression of single cells in bivariate hexagon cells.
@@ -64,6 +64,9 @@ This function plots the expression of any feature in the hexagon
       \item{\code{median}}{Returns the median of the observations in the bin.
       The associated meta data column needs to be numeric.}
    }
+   
+   To access the data that has been integrated in the 
+   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
 # For Seurat object
@@ -87,7 +90,7 @@ tenx_pbmc3k <- normalize(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-   feature="ENSG00000135250", action="mean")
+   feature="ENSG00000135250", action="median")
 plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
    feature="ENSG00000135250", action="mode")
 }

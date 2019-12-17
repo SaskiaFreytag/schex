@@ -19,7 +19,8 @@ Imports: hexbin,
         dplyr,
         entropy,
         ggforce,
-        scales
+        scales,
+        cowplot
 Suggests: 
     ggrepel,
     knitr,
