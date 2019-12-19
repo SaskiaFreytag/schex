@@ -5,8 +5,17 @@
 \title{Plot of fold change of selected gene in single cell data using 
    bivariate hexagon cells.}
 \usage{
-plot_hexbin_fc(sce, col, mod = "RNA", type, feature, title = NULL,
-  xlab = NULL, ylab = NULL, colors)
+plot_hexbin_fc(
+  sce,
+  col,
+  mod = "RNA",
+  type,
+  feature,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  colors
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
