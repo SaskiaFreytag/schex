@@ -3,7 +3,6 @@
 \docType{package}
 \name{schex}
 \alias{schex}
-\alias{schex-package}
 \title{schex: A package for plotting hexbin plots for single cell omics data.}
 \description{
 Builds hexbin plots for variables and dimension reduction stored

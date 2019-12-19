@@ -25,3 +25,10 @@
 
 * Changed sapply to vapply in utility-function.
 
+# 1.0.0
+
+* Biconductor release
+
+# 1.0.55
+
+* Changes to vignettes to comply with changes in Seurat
