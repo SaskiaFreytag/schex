@@ -29,6 +29,6 @@
 
 * Biconductor release
 
-# 1.0.55
+# 1.0.56
 
 * Changes to vignettes to comply with changes in Seurat
