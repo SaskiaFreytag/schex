@@ -5,8 +5,16 @@
 \title{Plot of feature expression of single cell data in bivariate hexagon cells as
     shiny instance.}
 \usage{
-plot_hexbin_feature_shiny(sce, mod = "RNA", type, feature, action,
-  min_nbins, max_nbins, dimension_reduction)
+plot_hexbin_feature_shiny(
+  sce,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  min_nbins,
+  max_nbins,
+  dimension_reduction
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -49,7 +57,10 @@ Plot of feature expression of single cell data in bivariate hexagon cells as
 This function opens a shiny instance, which allows to investigate 
    the effect of the resolution parameter. The user can change the resolution
    using the slider. Each hexagon is clickable, which will plot the 
-   observations in the chosen hexagons in a histograms below.
+   observations in the chosen hexagons in a histograms below. 
+   
+   To access the data that has been integrated in the 
+   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
 # For Seurat object

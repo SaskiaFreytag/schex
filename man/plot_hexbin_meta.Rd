@@ -4,8 +4,16 @@
 \alias{plot_hexbin_meta}
 \title{Plot of meta data of single cell data in bivariate hexagon cells.}
 \usage{
-plot_hexbin_meta(sce, col, action, no = 1, colors = NULL,
-  title = NULL, xlab = NULL, ylab = NULL)
+plot_hexbin_meta(
+  sce,
+  col,
+  action,
+  no = 1,
+  colors = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}

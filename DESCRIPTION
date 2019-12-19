@@ -1,7 +1,7 @@
 Package: schex
 Type: Package
 Title: Hexbin plots for single cell omics data
-Version: 1.1.1
+Version: 1.1.2
 Author: Saskia Freytag
 Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
 Description: Builds hexbin plots for variables and dimension reduction stored
@@ -36,7 +36,7 @@ URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 biocViews: Software, Sequencing,
       SingleCell, DimensionReduction, Visualization
 VignetteBuilder: knitr
