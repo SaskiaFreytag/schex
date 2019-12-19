@@ -50,7 +50,7 @@ This function plots the interaction between any features in the
       \item{\code{fc}}{Return the log fold change between the features.}
    }
    
-   Note that type needs to be \code{logcounts} or \code{scale.data} for fc.
+   Note that \code{fc} should be applied to log normalized values.
 }
 \examples{
 # For Seurat object

@@ -1,4 +1,5 @@
 #' @importFrom stats median
+#' @importFrom stats sd
 .make_hexbin_fc_function <- function(x, x_gene, cID) {
     
     if (length(levels(x))!=2) {

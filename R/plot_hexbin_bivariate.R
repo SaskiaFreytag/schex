@@ -62,14 +62,14 @@ plot_hexbin_bivariate <- function(sce,
                                 xlab=NULL,
                                 ylab=NULL) {
   
-  out <- schex:::.extract_hexbin(sce)
-  cID <- schex:::.extract_cID(sce)
+  out <- .extract_hexbin(sce)
+  cID <- .extract_cID(sce)
   
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
   }
   
-  x <- schex:::.prepare_data_feature(sce, mod, type, feature) 
+  x <- .prepare_data_feature(sce, mod, type, feature) 
   
   .plot_hexbin_bivariate_helper(x, feature, out, cID, title,
                               xlab, ylab)
@@ -79,8 +79,8 @@ plot_hexbin_bivariate <- function(sce,
 .plot_hexbin_bivariate_helper <- function(x, feature, out, cID, title,
                                         xlab, ylab){
   
-  hh <- schex:::.make_hexbin_function(x, "mean", cID)
-  hh_sd <- schex:::.make_hexbin_function(x, "sd", cID)
+  hh <- .make_hexbin_function(x, "mean", cID)
+  hh_sd <- .make_hexbin_function(x, "sd", cID)
   out <- as_tibble(out)
   
   if(grepl("^[[:digit:]]", feature )){

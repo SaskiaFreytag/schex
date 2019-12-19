@@ -1,9 +1,8 @@
 ---
 title: "Exploring multi-modal single cell data with schex"
-author: "Saskia Freytag"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{multi_modal}
+  %\VignetteIndexEntry{multi_modal_schex}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

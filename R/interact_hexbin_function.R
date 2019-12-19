@@ -53,7 +53,7 @@
       })
       
       res <- unlist(lapply(res, function(x) {
-        x[,1]-x[,2]
+        mean(x[1,]-x[2,])
       }))
       
       return(res)

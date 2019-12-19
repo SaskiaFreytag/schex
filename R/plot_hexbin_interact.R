@@ -28,7 +28,7 @@
 #'       \item{\code{fc}}{Return the log fold change between the features.}
 #'    }
 #'    
-#'    Note that type needs to be \code{logcounts} or \code{scale.data} for fc.
+#'    Note that \code{fc} should be applied to log normalized values.
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
 #' @import Seurat
@@ -67,12 +67,6 @@ plot_hexbin_interact <- function(sce,
   
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
-  }  
-  
-  if(interact=="fc") {
-    if(!is.element(type, c("logcounts", "scale.data"))){
-      stop("Use log normalized values.")
-    } 
   }  
 
   first_x <- .prepare_data_feature(sce, mod[1], type[1], feature[1])
