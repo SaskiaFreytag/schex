@@ -101,7 +101,7 @@ tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 I normalize the data by using a simple library size normalization.
 
 ```{r norm, message=FALSE, warning=FALSE}
-tenx_pbmc3k <- scater::normalize(tenx_pbmc3k)
+tenx_pbmc3k <- scater::logNormCounts(tenx_pbmc3k)
 ```
 
 ### Dimension reduction

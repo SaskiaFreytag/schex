@@ -4,9 +4,18 @@
 \alias{plot_hexbin_feature}
 \title{Plot of feature expression of single cells in bivariate hexagon cells.}
 \usage{
-plot_hexbin_feature(sce, mod = "RNA", type, feature, action,
-  title = NULL, xlab = NULL, ylab = NULL, lower_cutoff = 0,
-  upper_cutoff = 1)
+plot_hexbin_feature(
+  sce,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  lower_cutoff = 0,
+  upper_cutoff = 1
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -64,6 +73,9 @@ This function plots the expression of any feature in the hexagon
       \item{\code{median}}{Returns the median of the observations in the bin.
       The associated meta data column needs to be numeric.}
    }
+   
+   To access the data that has been integrated in the 
+   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
 # For Seurat object

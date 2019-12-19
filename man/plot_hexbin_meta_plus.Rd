@@ -5,8 +5,19 @@
 \title{Plot of meta data with annotation of single cell data in
    bivariate hexagon cells.}
 \usage{
-plot_hexbin_meta_plus(sce, col1, col2, action, no = 1, colors = NULL,
-  title = NULL, xlab = NULL, ylab = NULL, expand_hull = 3, ...)
+plot_hexbin_meta_plus(
+  sce,
+  col1,
+  col2,
+  action,
+  no = 1,
+  colors = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  expand_hull = 3,
+  ...
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}

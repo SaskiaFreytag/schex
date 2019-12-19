@@ -5,9 +5,20 @@
 \title{Plot of gene expression and meta data of single cell data in
 bivariate hexagon cells.}
 \usage{
-plot_hexbin_feature_plus(sce, col, mod = "RNA", type, feature, action,
-  colors = NULL, title = NULL, xlab = NULL, ylab = NULL,
-  expand_hull = 3, ...)
+plot_hexbin_feature_plus(
+  sce,
+  col,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  colors = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  expand_hull = 3,
+  ...
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -72,6 +83,9 @@ This function plots any gene expresssion in the hexagon cell
      \item{\code{median}}{Returns the median of the observations in the bin.
      The associated meta data column needs to be numeric.}
   }
+  
+   To access the data that has been integrated in the 
+   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
 #' # For Seurat object
