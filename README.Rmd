@@ -71,11 +71,3 @@ hexagon cells. Hence avoiding confusion due to observation order.
 
 ![schex plotting](man/figures/figure-html/schex-1.png){width=49%}
 
-## How schex works?
-
-Points in the same neighbourhood are summarized using one of many different
-summary statistics. The animation below shows how this works when using
-the mean to summarize the expression of CD19.
-
-![animation](man/figures/myanimation.gif)
-
