@@ -67,11 +67,3 @@ quick start, use the following code.
     data("pbmc_small")
     pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
     plot_hexbin_density(pbmc_small)
-
-## How schex works?
-
-Points in the same neighbourhood are summarized using one of many
-different summary statistics. The animation below shows how this works
-when using the mean to summarize the expression of CD19.
-
-![animation](man/figures/myanimation.gif)
