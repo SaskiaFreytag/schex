@@ -151,6 +151,7 @@ Next I colour the hexagon cells by some meta information, such as the median
 total count in each hexagon cell.
 
 ```{r plot-meta-1, fig.height=7, fig.width=7}
+pbmc$nCount_RNA <- colSums(GetAssayData(pbmc, assay="RNA", "data"))
 plot_hexbin_meta(pbmc, col="nCount_RNA", action="median")
 ```
 
