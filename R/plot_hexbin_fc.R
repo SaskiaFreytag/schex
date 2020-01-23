@@ -46,7 +46,7 @@
 #' tenx_pbmc3k <- tenx_pbmc3k[-rm_ind,]
 #' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
 #'      perCellQCMetrics(tenx_pbmc3k))
-#' tenx_pbmc3k <- normalize(tenx_pbmc3k)
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k$test <- as.factor(sample(1:2, dim(tenx_pbmc3k)[2], replace=TRUE))
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")

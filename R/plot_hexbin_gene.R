@@ -53,7 +53,7 @@
 #'   colData(tenx_pbmc3k),
 #'   perCellQCMetrics(tenx_pbmc3k)
 #' )
-#' tenx_pbmc3k <- normalize(tenx_pbmc3k)
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_gene(tenx_pbmc3k,

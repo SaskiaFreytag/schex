@@ -20,7 +20,7 @@ Imports: hexbin,
         entropy,
         ggforce,
         scales,
-        cowplot
+        grid
 Suggests: 
     ggrepel,
     knitr,
