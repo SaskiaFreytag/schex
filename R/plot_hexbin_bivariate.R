@@ -21,8 +21,11 @@
 #'    of any feature in the hexagon cell representation calculated with 
 #'    \code{\link{make_hexbin}} using a bivariate scale. When \code{fan=FALSE}, 
 #'    the standard deviation and the mean expression are plotted. When 
-#'    \code{fan=TRUE}, the mean expression of  The colour of the hexagon represents a 
-#'    combination of both standard deviation and mean expression.
+#'    \code{fan=TRUE}, the mean expression and coefficient of variation are
+#'    calculated. The coefficient of variation is converted to a percentage of
+#'    uncertainty. When using \code{fan=TRUE} the raw count data should be used. 
+#'    In order to enable the calculation of the coefficient of variation a 
+#'    pseduo-count of 1 is added to every count.
 #'
 #'    To access the data that has been integrated in the 
 #'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
@@ -56,7 +59,7 @@
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_bivariate(tenx_pbmc3k, type="counts",
-#'    feature="ENSG00000135250", fan=TRUE)
+#'    feature="ENSG00000135250", fan=FALSE)
 #' }
 plot_hexbin_bivariate <- function(sce, 
                                 mod="RNA", 

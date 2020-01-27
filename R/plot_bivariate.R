@@ -74,12 +74,10 @@
     
     dat_leg <- data.frame(y=rep(1:4, 4), x=rep(1:4,each=4), col=
                             .bivariate_colour_scheme(fan)[,2])
-    breaks_x <- seq(range(out[[xx]], na.rm=TRUE)[1], 
-                    range(out[[xx]], na.rm=TRUE)[2], length.out=5)
+    breaks_x <- seq(0, max(out[[xx]], na.rm=TRUE), length.out=5)
     new_x <- vapply(seq_len(length(breaks_x)-1), function(xxx) 
       (breaks_x[xxx]+breaks_x[xxx+1])/2,double(1))
-    breaks_y <- seq(range(out[[yy]], na.rm=TRUE)[1],
-                    range(out[[yy]], na.rm=TRUE)[2], length.out=5)
+    breaks_y <- seq(0, max(out[[yy]], na.rm=TRUE), length.out=5)
     new_y <- vapply(seq_len(length(breaks_y)-1), function(xxx) 
       (breaks_y[xxx]+breaks_y[xxx+1])/2,double(1))
     dat_leg$y <- new_y[dat_leg$y]
