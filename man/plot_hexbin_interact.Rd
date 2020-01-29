@@ -4,8 +4,16 @@
 \alias{plot_hexbin_interact}
 \title{Plot of interaction of expression of single cells in bivariate hexagon cells.}
 \usage{
-plot_hexbin_interact(sce, mod, type, feature, interact, title = NULL,
-  xlab = NULL, ylab = NULL)
+plot_hexbin_interact(
+  sce,
+  mod,
+  type,
+  feature,
+  interact,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}

@@ -38,21 +38,7 @@
 #' pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
 #' plot_hexbin_fc(pbmc_small, col="test", 
 #' feature="CA2", type="scale.data")
-#' \dontrun{
-#' library(TENxPBMCData)
-#' library(scater)
-#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
-#' tenx_pbmc3k <- tenx_pbmc3k[-rm_ind,]
-#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-#'      perCellQCMetrics(tenx_pbmc3k))
-#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
-#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' tenx_pbmc3k$test <- as.factor(sample(1:2, dim(tenx_pbmc3k)[2], replace=TRUE))
-#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' plot_hexbin_fc(tenx_pbmc3k, col="test", 
-#' feature="ENSG00000135250", type="logcounts")
-#' }
+
 plot_hexbin_fc <- function(sce,
     col,
     mod="RNA",

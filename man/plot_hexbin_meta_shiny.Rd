@@ -5,8 +5,14 @@
 \title{Plot of meta data of single cell data in bivariate hexagon cells as
     shiny instance.}
 \usage{
-plot_hexbin_meta_shiny(sce, col, action, min_nbins, max_nbins,
-  dimension_reduction)
+plot_hexbin_meta_shiny(
+  sce,
+  col,
+  action,
+  min_nbins,
+  max_nbins,
+  dimension_reduction
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}

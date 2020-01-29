@@ -30,16 +30,4 @@ library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 plot_hexbin_density(pbmc_small)
-\dontrun{
-library(TENxPBMCData)
-library(scater)
-tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calcAverage(tenx_pbmc3k) < 0.1
-tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
-tenx_pbmc3k <- calculateQCMetrics(tenx_pbmc3k)
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
-tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_density(tenx_pbmc3k)
-}
 }

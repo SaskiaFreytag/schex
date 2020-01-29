@@ -5,9 +5,20 @@
 \title{Plot of gene expression and meta data of single cell data in
 bivariate hexagon cells.}
 \usage{
-plot_hexbin_feature_plus(sce, col, mod = "RNA", type, feature, action,
-  colors = NULL, title = NULL, xlab = NULL, ylab = NULL,
-  expand_hull = 3, ...)
+plot_hexbin_feature_plus(
+  sce,
+  col,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  colors = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  expand_hull = 3,
+  ...
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}

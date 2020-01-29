@@ -112,4 +112,4 @@
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
-utils::globalVariables(c("dr", "x", "assayNames", "assays", "groups"))
+utils::globalVariables(c("dr", "x", "assayNames", "assays", "groups", "y"))

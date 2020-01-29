@@ -37,7 +37,7 @@
 #' @importFrom dplyr as_tibble
 #' @importFrom methods slotNames
 #' @importFrom stats quantile
-#' @importFrom cowplot ggdraw draw_plot
+#' @import grid
 #' @export
 #'
 #' @examples
@@ -47,20 +47,6 @@
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' plot_hexbin_bivariate(pbmc_small, type="counts", feature="CD3D")
 #' plot_hexbin_bivariate(pbmc_small, type="counts", feature="CD3D", fan=TRUE)
-#' \dontrun{
-#' library(TENxPBMCData)
-#' library(scater)
-#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
-#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-#'    perCellQCMetrics(tenx_pbmc3k))
-#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
-#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' plot_hexbin_bivariate(tenx_pbmc3k, type="counts",
-#'    feature="ENSG00000135250", fan=FALSE)
-#' }
 plot_hexbin_bivariate <- function(sce, 
                                 mod="RNA", 
                                 type,
@@ -70,8 +56,8 @@ plot_hexbin_bivariate <- function(sce,
                                 xlab=NULL,
                                 ylab=NULL) {
   
-  out <- schex:::.extract_hexbin(sce)
-  cID <- schex:::.extract_cID(sce)
+  out <- .extract_hexbin(sce)
+  cID <- .extract_cID(sce)
   
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
@@ -81,7 +67,7 @@ plot_hexbin_bivariate <- function(sce,
     warning("When fan=TRUE the raw count data should be used.")
   }
   
-  x <- schex:::.prepare_data_feature(sce, mod, type, feature) 
+  x <- .prepare_data_feature(sce, mod, type, feature) 
   
   out <- .plot_hexbin_bivariate_helper_1(x, feature, out, cID, fan)
   

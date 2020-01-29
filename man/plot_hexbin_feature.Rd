@@ -4,9 +4,18 @@
 \alias{plot_hexbin_feature}
 \title{Plot of feature expression of single cells in bivariate hexagon cells.}
 \usage{
-plot_hexbin_feature(sce, mod = "RNA", type, feature, action,
-  title = NULL, xlab = NULL, ylab = NULL, lower_cutoff = 0,
-  upper_cutoff = 1)
+plot_hexbin_feature(
+  sce,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  lower_cutoff = 0,
+  upper_cutoff = 1
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -86,7 +95,7 @@ rm_ind <- calcAverage(tenx_pbmc3k)<0.1
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
    perCellQCMetrics(tenx_pbmc3k))
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 plot_hexbin_feature(tenx_pbmc3k, type="logcounts",

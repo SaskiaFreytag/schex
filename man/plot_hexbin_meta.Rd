@@ -4,8 +4,16 @@
 \alias{plot_hexbin_meta}
 \title{Plot of meta data of single cell data in bivariate hexagon cells.}
 \usage{
-plot_hexbin_meta(sce, col, action, no = 1, colors = NULL,
-  title = NULL, xlab = NULL, ylab = NULL)
+plot_hexbin_meta(
+  sce,
+  col,
+  action,
+  no = 1,
+  colors = NULL,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
@@ -78,7 +86,7 @@ colData(tenx_pbmc3k) <- cbind(
   colData(tenx_pbmc3k),
   perCellQCMetrics(tenx_pbmc3k)
 )
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 plot_hexbin_meta(tenx_pbmc3k, col = "total", action = "median")

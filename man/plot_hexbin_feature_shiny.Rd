@@ -5,8 +5,16 @@
 \title{Plot of feature expression of single cell data in bivariate hexagon cells as
     shiny instance.}
 \usage{
-plot_hexbin_feature_shiny(sce, mod = "RNA", type, feature, action,
-  min_nbins, max_nbins, dimension_reduction)
+plot_hexbin_feature_shiny(
+  sce,
+  mod = "RNA",
+  type,
+  feature,
+  action,
+  min_nbins,
+  max_nbins,
+  dimension_reduction
+)
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
