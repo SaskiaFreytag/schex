@@ -19,8 +19,12 @@ Imports: hexbin,
         dplyr,
         entropy,
         ggforce,
+<<<<<<< HEAD
         scales,
         grid
+=======
+        scales
+>>>>>>> e53ec25bab25d28d5a9d4648ac37545d90a0e669
 Suggests: 
     ggrepel,
     knitr,
