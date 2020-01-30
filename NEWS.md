@@ -29,6 +29,10 @@
 
 * Fixed typos in vignettes.
 
+# 1.0.0
+
+* Bioconductor release
+
 # 1.1.1
 
 * Deprecated plot_hexbin_gene.
@@ -49,3 +53,6 @@
 * Added bivariate plotting feature.
 
 
+# 1.1.2
+
+* Changes to vignettes to comply with changes in Seurat
