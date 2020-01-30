@@ -50,12 +50,15 @@ Plot of interaction of expression of single cells in bivariate hexagon cells.
 This function plots the interaction between any features in the
    hexagon cell representation calculated with \code{\link{make_hexbin}}. The
    interaction between the chosen features is calculated by one of two
-   measurers \code{corr_spearman}, and \code{mi}:
+   measurers \code{corr_spearman}, \code{ratio} and \code{mi}:
 
    \describe{
       \item{\code{mi}}{Returns the mutual information coefficient.}
       \item{\code{corr_spearman}}{Returns the Spearman correlation.}
+      \item{\code{fc}}{Return the log fold change between the features.}
    }
+   
+   Note that \code{fc} should be applied to log normalized values.
 }
 \examples{
 # For Seurat object

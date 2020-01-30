@@ -64,7 +64,7 @@ library(scater)
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
-tenx_pbmc3k <- normalize(tenx_pbmc3k)
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
 }

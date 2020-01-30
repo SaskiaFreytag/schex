@@ -20,12 +20,15 @@
 #' @details This function plots the interaction between any features in the
 #'    hexagon cell representation calculated with \code{\link{make_hexbin}}. The
 #'    interaction between the chosen features is calculated by one of two
-#'    measurers \code{corr_spearman}, and \code{mi}:
+#'    measurers \code{corr_spearman}, \code{ratio} and \code{mi}:
 #'
 #'    \describe{
 #'       \item{\code{mi}}{Returns the mutual information coefficient.}
 #'       \item{\code{corr_spearman}}{Returns the Spearman correlation.}
+#'       \item{\code{fc}}{Return the log fold change between the features.}
 #'    }
+#'    
+#'    Note that \code{fc} should be applied to log normalized values.
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
 #' @import Seurat
@@ -65,7 +68,6 @@ plot_hexbin_interact <- function(sce,
   if(is.null(out)){
     stop("Compute hexbin representation before plotting.")
   }  
-  
 
   first_x <- .prepare_data_feature(sce, mod[1], type[1], feature[1])
   

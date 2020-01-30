@@ -47,6 +47,11 @@
 * Included two new vignettes.
 * New README.
 
+# 1.2.1
+
+* Updated the vignettes and example code to incorporate changes.
+* Added bivariate plotting feature.
+
 
 # 1.1.2
 

@@ -2,7 +2,7 @@
 title: "Picking the right resolution"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{resolution_schex}
+  %\VignetteIndexEntry{picking_the_right_resolution}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -63,6 +63,14 @@ test_that("correct class sce", {
   ))[2], "ggplot")
 })
 
+test_that("correct class fc sce", {
+  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+  expect_equal(class(plot_hexbin_interact(pbmc_small,
+    type = c("counts", "counts"), mod = c("RNA", "RNA"),
+    feature = c("SAT1", "CD68"), interact = "fc"))[2], "ggplot")
+})
+
 test_that("error feature not found sce", {
   pbmc_small <- as.SingleCellExperiment(pbmc_small)
   protein <- matrix(rnorm(10 * ncol(pbmc_small)), ncol = ncol(pbmc_small))

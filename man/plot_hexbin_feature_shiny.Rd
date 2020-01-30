@@ -68,7 +68,7 @@ This function opens a shiny instance, which allows to investigate
 library(Seurat)
 data("pbmc_small")
 plot_hexbin_feature_shiny(pbmc_small, type="counts", feature="TALDO1", 
-   action="prop_0", min_nbins=2, max_nbins=10, dimension_reduction="PCA",
+   action="median", min_nbins=2, max_nbins=10, dimension_reduction="PCA",
    mod="RNA")
 }
 }

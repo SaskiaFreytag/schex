@@ -43,7 +43,7 @@
 #'    To access the data that has been integrated in the 
 #'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 #'
-#' @return An object that represents the app. 
+#' @return A \code{\link{ggplot2}{ggplot}} object. 
 #' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
@@ -70,11 +70,11 @@
 #' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 #' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
 #'    perCellQCMetrics(tenx_pbmc3k))
-#' tenx_pbmc3k <- normalize(tenx_pbmc3k)
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-#'    feature="ENSG00000135250", action="mean")
+#'    feature="ENSG00000135250", action="median")
 #' plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
 #'    feature="ENSG00000135250", action="mode")
 #' }
@@ -107,7 +107,7 @@ plot_hexbin_feature <- function(sce,
     stop("Compute hexbin representation before plotting.")
   }
   
-  x <-.prepare_data_feature(sce, mod, type, feature)
+  x <- .prepare_data_feature(sce, mod, type, feature)
   
   .plot_hexbin_feature_helper(x, feature, out, cID, action, title,
                               xlab, ylab, lower_cutoff, upper_cutoff)
