@@ -51,7 +51,7 @@
 
 * Changes to vignettes to comply with changes in Seurat
 
-# 1.3.0
+# 1.1.3
 
 * Updated the vignettes and example code to incorporate changes.
 * Added bivariate plotting feature.
