@@ -41,3 +41,4 @@ RoxygenNote: 7.0.2
 biocViews: Software, Sequencing,
       SingleCell, DimensionReduction, Visualization
 VignetteBuilder: knitr
+PackageStatus: Deprecated
