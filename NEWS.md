@@ -47,12 +47,11 @@
 * Included two new vignettes.
 * New README.
 
-# 1.2.1
-
-* Updated the vignettes and example code to incorporate changes.
-* Added bivariate plotting feature.
-
-
 # 1.1.2
 
 * Changes to vignettes to comply with changes in Seurat
+
+# 1.3.1
+
+* Updated the vignettes and example code to incorporate changes.
+* Added bivariate plotting feature.
