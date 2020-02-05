@@ -15,6 +15,7 @@
 #'    first component of the chosen dimension reduction. 
 #' @param dimension_reduction A string indicating the reduced dimension
 #'    result to calculate hexagon cell representation of.
+#' @param na.rm Logical indicating whether NA values should be removed.
 #'
 #' @details This function opens a shiny instance, which allows to investigate 
 #'    the effect of the resolution parameter. The user can change the resolution
@@ -45,14 +46,15 @@ plot_hexbin_meta_shiny <- function(sce,
     action, 
     min_nbins,
     max_nbins,
-    dimension_reduction){
+    dimension_reduction,
+    na.rm){
   
   if(action=="prop"){
       stop("prop is not a valid action for shiny instances.")
   }
   
   sce <- make_hexbin(sce, min_nbins, dimension_reduction)
-  gg <- plot_hexbin_meta(sce, col, action)
+  gg <- plot_hexbin_meta(sce, col, action, na.rm)
   cID <- .extract_cID(sce)
   gg$data$index <- sort(unique(cID))
   x <- .prepare_data_meta(sce, col)
@@ -80,14 +82,14 @@ plot_hexbin_meta_shiny <- function(sce,
     
       output$plot1 <- renderPlot({
           sce <- make_hexbin(sce, input$slider, dimension_reduction)
-          gg <- plot_hexbin_meta(sce, col, action)
+          gg <- plot_hexbin_meta(sce, col, action, na.rm)
           gg
       })
     
     
       output$click_info <- renderPlot({
           sce <- make_hexbin(sce, input$slider, dimension_reduction)
-          gg <- plot_hexbin_meta(sce, col, action)
+          gg <- plot_hexbin_meta(sce, col, action, na.rm)
           cID <- .extract_cID(sce)
           gg$data$index <- sort(unique(cID))
           x <-  .prepare_data_meta(sce, col)

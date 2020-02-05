@@ -21,6 +21,7 @@
 #' @param ylab A string containing the title of the y axis.
 #' @param expand_hull A numeric value determining the expansion of the line
 #'   marking different clusters.
+#' @param na.rm Logical indicating whether NA values should be removed.
 #' @param ... Additional arguments passed on to
 #'    \code{\link{ggforce}{geom_mark_hull}}.
 #'
@@ -48,6 +49,7 @@
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @importFrom ggforce geom_mark_hull
+#' @import concaveman
 #' @export
 #'
 #' @examples
@@ -70,6 +72,7 @@ plot_hexbin_meta_plus <- function(sce,
     xlab=NULL,
     ylab=NULL,
     expand_hull=3,
+    na.rm=FALSE,
     ...) {
   
     out <- .extract_hexbin(sce)
@@ -82,8 +85,8 @@ plot_hexbin_meta_plus <- function(sce,
     x_col2 <- .prepare_data_meta(sce, col2)
     x <- .prepare_data_meta(sce, col1)
   
-    hh <- .make_hexbin_function(x, 'majority', cID)
-    hh2 <- .make_hexbin_function(x_col2, action, cID)
+    hh <- .make_hexbin_function(x, 'majority', cID, na.rm)
+    hh2 <- .make_hexbin_function(x_col2, action, cID, na.rm)
     out <- as_tibble(out)
   
     col_hh <-paste0(col1, "_", "majority")

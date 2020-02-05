@@ -1,5 +1,5 @@
 #' @importFrom stats median
-.make_hexbin_function <- function(x, action, cID) {
+.make_hexbin_function <- function(x, action, cID, na.rm=FALSE) {
   if (action == "majority") {
     func_if <- !(is.factor(x) | is.character(x))
 
@@ -27,7 +27,7 @@
         FUN.VALUE = rep(0, length = nrows),
         function(y) {
           tapply(x, cID, FUN = function(z) {
-            sum(z == y) / length(z)
+            sum(z == y, na.rm = na.rm) / sum(!is.na(z))
           })
         }
       )
@@ -42,7 +42,7 @@
     if (func_if) {
       stop("For action 'median' x needs to be numeric")
     } else {
-      res <- tapply(x, cID, FUN = function(z) median(z))
+      res <- tapply(x, cID, FUN = function(z) median(z, na.rm = na.rm))
       res <- as.numeric(res)
       return(res)
     }
@@ -66,7 +66,8 @@
     if (func_if) {
       stop("For action 'prop_0' x needs to be numeric")
     } else {
-      res <- tapply(x, cID, FUN = function(z) sum(z > 0) / length(z))
+      res <- tapply(x, cID, FUN = function(z) sum(z > 0, na.rm = na.rm) / 
+          sum(!is.na(z)))
       res <- as.numeric(res)
       return(res)
     }
@@ -78,7 +79,7 @@
     if (func_if) {
       stop("For action 'prop_0' x needs to be numeric")
     } else {
-      res <- tapply(x, cID, FUN = function(z) sd(z))
+      res <- tapply(x, cID, FUN = function(z) sd(z, na.rm = na.rm))
       res <- as.numeric(res)
       return(res)
     }
@@ -90,7 +91,7 @@
     if (func_if) {
       stop("For action 'mean' x needs to be numeric")
     } else {
-      res <- tapply(x, cID, FUN = function(z) mean(z))
+      res <- tapply(x, cID, FUN = function(z) mean(z, na.rm = na.rm))
       res <- as.numeric(res)
       return(res)
     }

@@ -16,6 +16,7 @@
 #' @param title A string containing the title of the plot.
 #' @param xlab A string containing the title of the x axis.
 #' @param ylab A string containing the title of the y axis.
+#' @param na.rm Logical indicating whether NA values should be removed.
 #'
 #' @details This function plots any column of the meta data in the hexagon cell
 #'    representation calculated with \code{\link{make_hexbin}}. The chosen meta
@@ -75,7 +76,8 @@ plot_hexbin_meta <- function(sce,
     colors=NULL,
     title=NULL,
     xlab=NULL,
-    ylab=NULL){
+    ylab=NULL,
+    na.rm=FALSE){
   
   out <- .extract_hexbin(sce)
   cID <- .extract_cID(sce)
@@ -83,17 +85,17 @@ plot_hexbin_meta <- function(sce,
   x <- .prepare_data_meta(sce, col)
   
   .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
-                           colors)
+                           colors, na.rm)
 }
 
 
 .plot_hexbin_meta_helper <- function(x, out, cID, col, action, no, title,
-                                     xlab, ylab, colors) {
+                                     xlab, ylab, colors, na.rm) {
   if (is.null(out)) {
     stop("Compute hexbin representation before plotting.")
   }
 
-  hh <- .make_hexbin_function(x, action, cID)
+  hh <- .make_hexbin_function(x, action, cID, na.rm)
   out <- as_tibble(out)
 
   if (action == "prop" | action == "majority") {

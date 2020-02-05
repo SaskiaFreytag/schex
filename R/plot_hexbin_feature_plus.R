@@ -54,6 +54,7 @@
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @importFrom ggforce geom_mark_hull
+#' @import concaveman
 #' @export
 #'
 #' @examples

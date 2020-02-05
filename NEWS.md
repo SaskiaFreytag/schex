@@ -55,3 +55,8 @@
 
 * Updated the vignettes and example code to incorporate changes.
 * Added bivariate plotting feature.
+
+# 1.1.4
+
+* Option to remove NAs for plot_hexbin_meta*.
+

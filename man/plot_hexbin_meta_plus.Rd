@@ -16,6 +16,7 @@ plot_hexbin_meta_plus(
   xlab = NULL,
   ylab = NULL,
   expand_hull = 3,
+  na.rm = FALSE,
   ...
 )
 }
@@ -49,6 +50,8 @@ the different levels in the selected column of the meta data.}
 
 \item{expand_hull}{A numeric value determining the expansion of the line
 marking different clusters.}
+
+\item{na.rm}{Logical indicating whether NA values should be removed.}
 
 \item{...}{Additional arguments passed on to
 \code{\link{ggforce}{geom_mark_hull}}.}

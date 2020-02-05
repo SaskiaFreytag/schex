@@ -11,7 +11,8 @@ plot_hexbin_meta_shiny(
   action,
   min_nbins,
   max_nbins,
-  dimension_reduction
+  dimension_reduction,
+  na.rm
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ first component of the chosen dimension reduction.}
 
 \item{dimension_reduction}{A string indicating the reduced dimension
 result to calculate hexagon cell representation of.}
+
+\item{na.rm}{Logical indicating whether NA values should be removed.}
 }
 \value{
 An object that represents the app.

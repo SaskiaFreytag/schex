@@ -12,7 +12,8 @@ plot_hexbin_meta(
   colors = NULL,
   title = NULL,
   xlab = NULL,
-  ylab = NULL
+  ylab = NULL,
+  na.rm = FALSE
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ effect when the selected \code{action="majority"}.}
 \item{xlab}{A string containing the title of the x axis.}
 
 \item{ylab}{A string containing the title of the y axis.}
+
+\item{na.rm}{Logical indicating whether NA values should be removed.}
 }
 \value{
 A \code{\link{ggplot2}{ggplot}} object.

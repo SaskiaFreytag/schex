@@ -28,8 +28,8 @@ test_that("make_hexbin_function prop", {
   action <- "prop"
   cID <- c(1, 1, 1, 2, 2, 2, 3, 3, 3)
   expect_equal(
-    class(schex:::.make_hexbin_function(x, action, cID)),
-    "matrix"
+    schex:::.make_hexbin_function(x, action, cID),
+    matrix(c(rep(2/3,3), rep(1/3,3)), nrow=3)
   )
 })
 
