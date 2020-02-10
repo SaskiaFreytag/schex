@@ -22,7 +22,7 @@ plot_hexbin_feature_plus(
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat}} object.}
+or \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{col}{A string referring to the name of one column in the meta data of
 sce by which to colour the hexagons.}
@@ -35,7 +35,7 @@ object.}
 
 \item{type}{A string referring to the type of assay in the
 \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-data transformation in the \code{\link[Seurat]{Seurat}} object.}
+data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
 
 \item{feature}{A string referring to the name of one feature.}
 

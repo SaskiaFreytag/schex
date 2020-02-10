@@ -2,7 +2,7 @@
 #'    bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   or \code{\link[Seurat]{Seurat}} object.
+#'   or \code{\link[Seurat]{Seurat-class}} object.
 #' @param col1 A string referring to the name of one column in the meta data of
 #'   sce by which to make the outlines. Note that this should be a factor or
 #'   a character.
