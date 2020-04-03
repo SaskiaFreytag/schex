@@ -83,18 +83,13 @@ plot_hexbin_interact <- function(sce,
   
     hh <- .interact_hexbin_function(first_x, second_x, interact, cID)
     out <- as_tibble(out)
-  
-    if(any(grepl("^[[:digit:]]", feature))){
-        feature <- paste0("F_", feature)
+    
+    if(is.null(title)){
+      title <- paste0(interact, "_", feature[1], "_", feature[2])
     }
+    
+    out$interact <- hh
   
-    feature <- gsub("-", "_", feature)
-  
-    col_hh <- paste0(interact, "_", feature[1], "_", feature[2])
-  
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
-  
-    .plot_hexbin(out, colour_by=col_hh,
+    .plot_hexbin(out, colour_by="interact", action="interact",
         title=title, xlab=xlab, ylab=ylab)
 }

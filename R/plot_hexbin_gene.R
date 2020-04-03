@@ -139,7 +139,7 @@ setMethod("plot_hexbin_gene", "Seurat", function (sce,
   func1 <- paste0("out$", col_hh, " <- hh")
   eval(parse(text=func1))
   
-  .plot_hexbin(out, colour_by=col_hh,
+  .plot_hexbin(out, colour_by=col_hh, action=action,
                title=title, xlab=xlab, ylab=ylab)
 }
 

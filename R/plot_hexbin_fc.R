@@ -73,18 +73,13 @@ plot_hexbin_fc <- function(sce,
     hh <- unlist(hh)
     out <- as_tibble(out)
   
-    if(grepl("^[[:digit:]]", feature )){
-        feature <- paste0("G_", feature)
+    if(is.null(title)){
+      title <- paste0(feature, "_", "fc")
     }
+    
+    out$feature <- hh
   
-    feature <- gsub("-", "_", feature)
-  
-    col_hh <- paste0(feature, "_", "fc")
-  
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text=func1))
-  
-    .plot_hexbin(out, colour_by=col_hh,
+    .plot_hexbin(out, colour_by="feature", action="fc",
         title=title, xlab=xlab, ylab=ylab)
 }
 

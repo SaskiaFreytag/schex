@@ -33,7 +33,8 @@ test_that("correct plot_hexbin majority", {
   drhex <- as_tibble(drhex)
   drhex$lab_majority <- c(rep(c("A", "B"), dim(drhex)[1] / 2))
   expect_equal(
-    class(schex:::.plot_hexbin(drhex, colour_by = "lab_majority"))[2],
+    class(.plot_hexbin(drhex, colour_by = "lab_majority",
+                               action="majority"))[2],
     "ggplot"
   )
 })
@@ -44,7 +45,8 @@ test_that("correct plot_hexbin prop", {
   drhex <- as_tibble(drhex)
   drhex$lab_prop_2 <- c(rep(c("A", "B"), dim(drhex)[1] / 2))
   expect_equal(
-    class(schex:::.plot_hexbin(drhex, colour_by = "lab_prop_2"))[2],
+    class(.plot_hexbin(drhex, colour_by = "lab_prop_2",
+                       action="prop"))[2],
     "ggplot"
   )
 })
@@ -55,7 +57,8 @@ test_that("correct plot_hexbin numeric", {
   drhex <- as_tibble(drhex)
   drhex$lab_mean <- c(rep(c(1, 2), dim(drhex)[1] / 2))
   expect_equal(
-    class(schex:::.plot_hexbin(drhex, colour_by = "lab_mean"))[2],
+    class(.plot_hexbin(drhex, colour_by = "lab_mean",
+        action="mean"))[2],
     "ggplot"
   )
 })
