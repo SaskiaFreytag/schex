@@ -52,7 +52,7 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="prop", no=1)
+#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority", no=1)
 #' # For SingleCellExperiment object
 #' \dontrun{
 #' library(TENxPBMCData)
@@ -100,49 +100,36 @@ plot_hexbin_meta <- function(sce,
 
   if (action == "prop" | action == "majority") {
     if (action == "prop") {
-      col_hh <- .make_hexbin_colnames(x, col)
-      func1 <- paste0(
-        "out$", col_hh, " <- hh[,",
-        seq(1, length(col_hh), 1), "]"
-      )
-      for (i in seq_len(length(func1))) {
-        eval(parse(text = func1[i]))
-      }
+      nncol <- dim(out)[2]
+      out <- cbind(out, hh)
+      colnames(out)[seq(nncol+1, dim(out)[2], 1)] <- 
+        paste0("meta_", seq(1, dim(hh)[2],1))
     }
     if (action == "majority") {
-      col_hh <- paste0(col, "_", action)
       if (is.factor(x)) {
-        func1 <- paste0(
-          "out$", col_hh, " <- factor(hh, levels=",
-          "levels(x))"
-        )
+        out$meta <- factor(hh, levels=levels(x))
       } else {
-        func1 <- paste0("out$", col_hh, " <- hh")
+        out$meta <- hh
       }
-      eval(parse(text = func1))
     }
   } else {
-    col_hh <- paste0(col, "_", action)
-    func1 <- paste0("out$", col_hh, " <- hh")
-    eval(parse(text = func1))
+    out$meta <- hh
+  }
+  
+  if (is.null(title)) {
+    if(action == "prop"){
+      title <- paste0(col, "_", action, "_", unique(x))
+    } else {
+      title <- paste0(col, "_", action)
+    }
   }
 
-  if (action != "prop") {
-    if (action == "majority") {
-      .plot_hexbin(out,
-        colour_by = col_hh, colors = colors,
-        title = title, xlab = xlab, ylab = ylab
-      )
-    } else {
-      .plot_hexbin(out,
-        colour_by = col_hh, colors = NULL,
-        title = title, xlab = xlab, ylab = ylab
-      )
-    }
+  if (action == "prop") {
+    .plot_hexbin(out, colour_by = paste0("meta_", no), 
+                 action=action, colors = NULL,
+                 title = title, xlab = xlab, ylab = ylab)
   } else {
-    .plot_hexbin(out,
-      colour_by = col_hh[no], colors = NULL,
-      title = title, xlab = xlab, ylab = ylab
-    )
+    .plot_hexbin(out, colour_by = "meta", action=action,
+        colors = colors, title = title, xlab = xlab, ylab = ylab)
   }
 }

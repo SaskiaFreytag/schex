@@ -131,17 +131,12 @@ plot_hexbin_feature <- function(sce,
   hh <- .make_hexbin_function(x, action, cID)
   out <- as_tibble(out)
   
-  if(grepl("^[[:digit:]]", feature )){
-    feature <- paste0("F_", feature)
+  out$feature <- hh
+  
+  if (is.null(title)) {
+    title <- paste0(feature, "_", action)
   }
   
-  feature <- gsub("-", "_", feature)
-  
-  col_hh <- paste0(feature, "_", action)
-  
-  func1 <- paste0("out$", col_hh, " <- hh")
-  eval(parse(text=func1))
-  
-  .plot_hexbin(out, colour_by=col_hh,
+  .plot_hexbin(out, colour_by="feature", action=action,
                title=title, xlab=xlab, ylab=ylab)
 }

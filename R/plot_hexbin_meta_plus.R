@@ -81,6 +81,10 @@ plot_hexbin_meta_plus <- function(sce,
     if(is.null(out)){
         stop("Compute hexbin representation before plotting.")
     }
+    
+    if(is.null(title)) {
+      title <- paste0(col1, "_majority", "_", col2, "_", action)
+    }
   
     x_col2 <- .prepare_data_meta(sce, col2)
     x <- .prepare_data_meta(sce, col1)
@@ -89,33 +93,28 @@ plot_hexbin_meta_plus <- function(sce,
     hh2 <- .make_hexbin_function(x_col2, action, cID, na.rm)
     out <- as_tibble(out)
   
-    col_hh <-paste0(col1, "_", "majority")
-  
     if(is.factor(x)){
-        func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
-                    "levels(x))")
+        out$meta <- factor(hh, levels=levels(x))
       } else {
-        func1 <- paste0("out$", col_hh, " <- hh")
+        out$meta <- hh
     }
-  
-    eval(parse(text=func1))
   
     if(action == "prop"){
         col_hh_2 <- .make_hexbin_colnames(x_col2, col2)
-        func1_col2 <- paste0("out$", col_hh_2,
-                         " <- hh2[,", seq(1,length(col_hh_2),1),"]")
-        eval(parse(text=func1_col2[no]))
+        nncol <- dim(out)[2]
+        out <- cbind(out, hh2)
+        colnames(out)[seq(nncol+1, dim(out)[2], 1)] <- 
+          paste0("meta2_", seq(1, dim(hh2)[2],1))
         
-        .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_2[no],
+        .plot_hexbin_plus(out, colour_by = "meta", 
+                          fill_by_gene = paste0("meta2_", no),
                           colors=colors, expand_hull=expand_hull, title=title,
                           xlab=xlab, ylab=ylab, ...)
         
     } else {
-        col_hh_2 <- paste0(col2, "_", action)
-        func1_col2 <- paste0("out$", col_hh_2, " <- hh2")
-        eval(parse(text=func1_col2))
+        out$meta2 <- hh2
         
-        .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_2,
+        .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "meta2",
                           colors=colors, expand_hull=expand_hull, title=title,
                           xlab=xlab, ylab=ylab, ...)
     }

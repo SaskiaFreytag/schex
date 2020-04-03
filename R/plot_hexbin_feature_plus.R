@@ -63,7 +63,7 @@
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 #' plot_hexbin_feature_plus(pbmc_small, col="RNA_snn_res.1", type="counts",
-#'    feature="NRBP1",action="mean")
+#'    feature="NRBP1", action="mean")
 plot_hexbin_feature_plus <- function(sce,
     col,
     mod="RNA",
@@ -93,44 +93,30 @@ plot_hexbin_feature_plus <- function(sce,
     hh <- .make_hexbin_function(x, 'majority', cID)
     out <- as_tibble(out)
   
-    col_hh <-paste0(col, "_", "majority")
-  
     if(is.factor(x)){
-        func1 <- paste0("out$", col_hh, " <- factor(hh, levels=",
-                    "levels(x))")
+        out$meta <- factor(hh, levels=levels(x))
     } else {
-        func1 <- paste0("out$", col_hh, " <- hh")
+        out$meta <- hh
     }
-  
-    eval(parse(text=func1))
-  
-    if(grepl("^[[:digit:]]", feature )){
-        feature <- paste0("G_", feature)
+
+    out$feature <- hh_gene
+    
+    if(is.null(title)) {
+      title <- paste0(col, "_majority_", feature, "_", action)
     }
-  
-    feature <- gsub("-", "_", feature)
-  
-    col_hh_gene <- paste0(feature, "_", action)
-  
-    func2 <- paste0("out$", col_hh_gene, " <- hh_gene")
-    eval(parse(text=func2))
-  
-    .plot_hexbin_plus(out, colour_by = col_hh, fill_by_gene = col_hh_gene,
+    
+    .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "feature",
         colors=colors, expand_hull=expand_hull, title=title,
         xlab=xlab, ylab=ylab, ...)  
 }
 
 
-.plot_hexbin_plus <- function(drhex, colour_by="Cluster_majority", fill_by_gene,
+.plot_hexbin_plus <- function(drhex, colour_by="meta", fill_by_gene,
                             colors=NULL, expand_hull=3, legend=legend,
                          title=NULL, xlab=NULL, ylab=NULL, ...) {
 
   if (any(!c("x", "y", colour_by) %in% colnames(drhex))) {
     stop("The dataframe must contain columns named 'x', 'y' and col.")
-  }
-
-  if(is.null(title)) {
-    title <- colour_by
   }
 
   if(is.null(xlab)) {

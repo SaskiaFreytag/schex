@@ -60,3 +60,7 @@
 
 * Option to remove NAs for plot_hexbin_meta*.
 
+# 1.1.5
+
+* Fix issues for feature names and col names with non-standard characters
+
