@@ -1,7 +1,7 @@
 Package: schex
 Type: Package
 Title: Hexbin plots for single cell omics data
-Version: 1.3.0
+Version: 1.4.0
 Author: Saskia Freytag
 Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
 Description: Builds hexbin plots for variables and dimension reduction stored
