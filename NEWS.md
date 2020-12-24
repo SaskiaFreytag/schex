@@ -64,3 +64,7 @@
 
 * Fix issues for feature names and col names with non-standard characters
 
+# 1.2.0
+
+* Changed handling of prop action
+
