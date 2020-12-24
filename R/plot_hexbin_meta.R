@@ -52,7 +52,8 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority", no=1)
+#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority")
+#' plot_hexbin_meta(pbmc_small, col="groups", action="prop", no=1)
 #' # For SingleCellExperiment object
 #' \dontrun{
 #' library(TENxPBMCData)
@@ -95,22 +96,14 @@ plot_hexbin_meta <- function(sce,
     stop("Compute hexbin representation before plotting.")
   }
 
-  hh <- .make_hexbin_function(x, action, cID, na.rm)
+  hh <- .make_hexbin_function(x, action, cID, na.rm, no)
   out <- as_tibble(out)
 
-  if (action == "prop" | action == "majority") {
-    if (action == "prop") {
-      nncol <- dim(out)[2]
-      out <- cbind(out, hh)
-      colnames(out)[seq(nncol+1, dim(out)[2], 1)] <- 
-        paste0("meta_", seq(1, dim(hh)[2],1))
-    }
-    if (action == "majority") {
-      if (is.factor(x)) {
-        out$meta <- factor(hh, levels=levels(x))
-      } else {
-        out$meta <- hh
-      }
+  if (action == "majority") {
+    if (is.factor(x)) {
+      out$meta <- factor(hh, levels=levels(x))
+    } else {
+      out$meta <- hh
     }
   } else {
     out$meta <- hh
@@ -118,18 +111,12 @@ plot_hexbin_meta <- function(sce,
   
   if (is.null(title)) {
     if(action == "prop"){
-      title <- paste0(col, "_", action, "_", unique(x))
+      title <- paste0(col, "_", action, "_", unique(x)[no])
     } else {
       title <- paste0(col, "_", action)
     }
   }
 
-  if (action == "prop") {
-    .plot_hexbin(out, colour_by = paste0("meta_", no), 
-                 action=action, colors = NULL,
-                 title = title, xlab = xlab, ylab = ylab)
-  } else {
-    .plot_hexbin(out, colour_by = "meta", action=action,
-        colors = colors, title = title, xlab = xlab, ylab = ylab)
-  }
+  .plot_hexbin(out, colour_by = "meta", action=action,
+      colors = colors, title = title, xlab = xlab, ylab = ylab)
 }

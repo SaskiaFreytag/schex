@@ -77,7 +77,8 @@ This function plots any column of the meta data in the hexagon cell
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority", no=1)
+plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority")
+plot_hexbin_meta(pbmc_small, col="groups", action="prop", no=1)
 # For SingleCellExperiment object
 \dontrun{
 library(TENxPBMCData)

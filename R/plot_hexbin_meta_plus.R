@@ -95,29 +95,15 @@ plot_hexbin_meta_plus <- function(sce,
   
     if(is.factor(x)){
         out$meta <- factor(hh, levels=levels(x))
-      } else {
+    } else {
         out$meta <- hh
     }
-  
-    if(action == "prop"){
-        col_hh_2 <- .make_hexbin_colnames(x_col2, col2)
-        nncol <- dim(out)[2]
-        out <- cbind(out, hh2)
-        colnames(out)[seq(nncol+1, dim(out)[2], 1)] <- 
-          paste0("meta2_", seq(1, dim(hh2)[2],1))
+
+    out$meta2 <- hh2
         
-        .plot_hexbin_plus(out, colour_by = "meta", 
-                          fill_by_gene = paste0("meta2_", no),
-                          colors=colors, expand_hull=expand_hull, title=title,
-                          xlab=xlab, ylab=ylab, ...)
-        
-    } else {
-        out$meta2 <- hh2
-        
-        .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "meta2",
-                          colors=colors, expand_hull=expand_hull, title=title,
-                          xlab=xlab, ylab=ylab, ...)
-    }
+    .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "meta2",
+        colors=colors, expand_hull=expand_hull, title=title,
+        xlab=xlab, ylab=ylab, ...)
     
 }
 

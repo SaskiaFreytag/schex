@@ -1,5 +1,5 @@
 #' @importFrom stats median
-.make_hexbin_function <- function(x, action, cID, na.rm=FALSE) {
+.make_hexbin_function <- function(x, action, cID, na.rm=FALSE, no) {
   if (action == "majority") {
     func_if <- !(is.factor(x) | is.character(x))
 
@@ -22,16 +22,10 @@
     if (func_if) {
       stop("For action 'prop' x needs to be a factor or character.")
     } else {
-      nrows <- length(unique(cID))
-      res <- vapply(unique(x),
-        FUN.VALUE = rep(0, length = nrows),
-        function(y) {
-          tapply(x, cID, FUN = function(z) {
-            sum(z == y, na.rm = na.rm) / sum(!is.na(z))
+      res <- tapply(x, cID, FUN = function(z) {
+            sum(z == unique(x)[no], na.rm = na.rm) / sum(!is.na(z))
           })
-        }
-      )
-      res <- apply(res, 2, as.numeric)
+      res <- as.numeric(res)
       return(res)
     }
   }
@@ -100,18 +94,11 @@
   }
 }
 
-.make_hexbin_colnames <- function(x, name_s) {
-  if (is.character(x)) {
-    paste0(name_s, "_prop_", unique(x))
-  } else {
-    paste0(name_s, "_prop_", levels(x))
-  }
-}
 
 .get_mode <- function(v) {
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
-utils::globalVariables(c("dr", "x", "assayNames", "assays", "groups", "y"))
+utils::globalVariables(c("dr", "x", "assayNames", "assays", "groups", "y", "no"))
 
