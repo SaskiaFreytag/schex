@@ -6,9 +6,11 @@ test_that("correct plot_hexbin_feature_shiny Seurat", {
 })
 
 test_that("correct plot_hexbin_feature_shiny SingleCellExperiment", {
-  pbmc_small <- as.SingleCellExperiment(pbmc_small)
+  pbmc_small <- mockSCE() 
+  pbmc_small <- logNormCounts(pbmc_small) 
+  pbmc_small <- runPCA(pbmc_small)
   expect_equal(class(plot_hexbin_feature_shiny(pbmc_small, 
-      type="counts", feature="TALDO1", 
+      type="counts", feature="Gene_0001", 
       action="prop_0", min_nbins=2, max_nbins=10, dimension_reduction="PCA",
       mod="RNA")), "shiny.appobj")
 })
