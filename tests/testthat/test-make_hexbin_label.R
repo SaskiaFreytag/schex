@@ -30,7 +30,9 @@ test_that("error make_hexbin_label SingleCellExperiment", {
 })
 
 test_that("error wrong col make_hexbin_label SingleCellExperiment", {
-    pbmc_small <- as.SingleCellExperiment(pbmc_small)
+    pbmc_small <- mockSCE()
+    pbmc_small <- logNormCounts(pbmc_small)
+    pbmc_small <- runPCA(pbmc_small)
     pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
     expect_error(make_hexbin_label(pbmc_small, col="random"))
 })
