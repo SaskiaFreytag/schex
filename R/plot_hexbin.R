@@ -33,8 +33,8 @@
     }
   } else {
     ggplot(drhex, aes_string("x", "y", fill = colour_by)) +
-      geom_hex(stat = "identity") +
-      theme_classic() + scale_fill_viridis_c() + ggtitle(title) +
-      labs(x = xlab, y = ylab) + theme(legend.title = element_blank())
+      geom_hex(stat = "identity", aes_string(color = colour_by)) +
+      theme_classic() + scale_fill_viridis_c() + scale_color_viridis_c() + ggtitle(title) +
+      labs(x = xlab, y = ylab) + theme(legend.title = element_blank()) + guides(color = 'none')
   }
 }
