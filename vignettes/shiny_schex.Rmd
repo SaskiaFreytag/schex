@@ -3,8 +3,11 @@ title: "Communicating results with schex and shinydashboard or iSEE"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{shiny_schhex}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -25,24 +28,25 @@ library(iSEE)
 
 ## Setting up for a simple shiny dashboard or iSEE instance
 
-Interrogating your data is often easier when being able to do it interactively
-on the fly. With the packages `shiny` and `shinydashboard` it is simple to 
-create an interactive dashboard for exactly that purpose. Here we will work with 
-the single cell data from peripheral mononuclear cells (PBMCs) stored in the 
-`pbmc_small` `Seurat` object (which can be found in the `Seurat` package.) 
+Interrogating your data is often easier when being able to do it
+interactively on the fly. With the packages `shiny` and `shinydashboard`
+it is simple to create an interactive dashboard for exactly that
+purpose. Here we will work with the single cell data from peripheral
+mononuclear cells (PBMCs) stored in the `pbmc_small` `Seurat` object
+(which can be found in the `Seurat` package.)
 
-First we create a the hexagon cell representation and also make a data frame to
-store the position of cluster labels.
+First we create a the hexagon cell representation and also make a data
+frame to store the position of cluster labels.
 
 ```{r, eval=FALSE}
 pbmc_small <- make_hexbin(pbmc_small, nbins = 10, dimension_reduction = "PCA")
 df_label <- make_hexbin_label(pbmc_small, "RNA_snn_res.0.8")
-```    
+```
 
 ## The shiny dashboard
 
-Now it is pretty easy to create a simple shiny dashboard which allows you
-to visualize the gene expression of every gene in the dataset. After 
+Now it is pretty easy to create a simple shiny dashboard which allows
+you to visualize the gene expression of every gene in the dataset. After
 running the function, the application is initialized by running `app`.
 
 ```{r, eval=FALSE}
@@ -94,21 +98,22 @@ app <- shinyApp(
 
 ### Customizing your own shiny dashboard
 
-If you want to add functionality to your shiny dashboard, I would suggest the 
-following resources:
+If you want to add functionality to your shiny dashboard, I would
+suggest the following resources:
 
-*[shiny](https://shiny.rstudio.com/)
+\*[shiny](https://shiny.rstudio.com/)
 
-*[shinydashboard](https://rstudio.github.io/shinydashboard/)
+\*[shinydashboard](https://rstudio.github.io/shinydashboard/)
 
 ## An iSEE instance
 
-The [iSEE package](https://bioconductor.org/packages/release/bioc/html/iSEE.html) 
-provides another way of generating an interactive session in order to 
-interrogate your data in a web browser. However in order to use schex plots you
-need to provide a custom function that works on an object of the 
-`SummerizedExperiment` class. The `SingleCellExperiment` class inherits all 
-features from this class and can thus be used.
+The [iSEE
+package](https://bioconductor.org/packages/release/bioc/html/iSEE.html)
+provides another way of generating an interactive session in order to
+interrogate your data in a web browser. However in order to use schex
+plots you need to provide a custom function that works on an object of
+the `SummerizedExperiment` class. The `SingleCellExperiment` class
+inherits all features from this class and can thus be used.
 
 ```{r convert, eval=FALSE}
 pbmc_small <- as.SingleCellExperiment(pbmc_small)
@@ -123,8 +128,8 @@ plot_hexbin_gene_new <- function(sce, rows=NULL, rownames=character(0),
 }
 ```
 
-Simply now tell iSEE about schex, using the following. After 
-running the functions, the application is initialized by running `app`.
+Simply now tell iSEE about schex, using the following. After running the
+functions, the application is initialized by running `app`.
 
 ```{r, eval=FALSE}
 schex_plot_gene <- customDataPlotDefaults(pbmc_small, 1)
@@ -145,18 +150,18 @@ app <- iSEE(
     )
 ```
 
-Unfortunately in the iSEE application plots cannot be changed to display 
+Unfortunately in the iSEE application plots cannot be changed to display
 different genes as conveniently as with `shinydashboards`. If you want
 to diplay a different gene you will need to edit the following box:
 
-![](../man/figures/iSEE.png){width=60%}
+![](../man/figures/iSEE.png){width="60%"}
 
-For example by typing 
+For example by typing
 
-```
+```         
 type counts
 action prop_0
 rownames CD19
 ```
 
-you can change the plot to display the expression of *CD19*. 
+you can change the plot to display the expression of *CD19*.
