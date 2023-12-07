@@ -93,6 +93,6 @@ Seurat object.
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_gene(pbmc_small, type = "counts", gene = "TALDO1", 
+plot_hexbin_gene(pbmc_small, type = "RNA", gene = "TALDO1", 
     action = "prop_0")
 }

@@ -63,5 +63,5 @@ data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
 pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
 plot_hexbin_fc(pbmc_small, col="test", 
-feature="CA2", type="scale.data")
+feature="CA2", type="RNA")
 }

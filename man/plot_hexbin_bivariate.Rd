@@ -66,6 +66,6 @@ This function plots the mean expression and a measure of uncertainty
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_bivariate(pbmc_small, type="counts", feature="CD3D")
-plot_hexbin_bivariate(pbmc_small, type="counts", feature="CD3D", fan=TRUE)
+plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D")
+plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D", fan=TRUE)
 }

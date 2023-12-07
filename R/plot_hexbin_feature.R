@@ -57,9 +57,9 @@
 #' library(Seurat)
 #' data("pbmc_small")
 #' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+#' plot_hexbin_feature(pbmc_small, type="RNA", feature="TALDO1", 
 #'    action="median")
-#' plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
+#' plot_hexbin_feature(pbmc_small, type="RNA", feature="TALDO1", 
 #'    action="median", lower_cutoff=0.2, upper_cutoff=0.5)
 #' # For SingleCellExperiment object
 #' \dontrun{

@@ -92,6 +92,6 @@ This function plots any gene expresssion in the hexagon cell
 library(Seurat)
 data("pbmc_small")
 pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature_plus(pbmc_small, col="RNA_snn_res.1", type="counts",
+plot_hexbin_feature_plus(pbmc_small, col="RNA_snn_res.1", type="RNA",
    feature="NRBP1", action="mean")
 }
