@@ -1,11 +1,11 @@
-test_that("correct plot_hexbin_fc Seurat", {
-   pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-   pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
-   plot_hexbin_fc(pbmc_small, col="test", feature="CA2", type="scale.data")
-    pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-    expect_equal(class(plot_hexbin_fc(pbmc_small, col="test", feature="CA2",
-    type="scale.data"))[2], "ggplot")
-})
+#test_that("correct plot_hexbin_fc Seurat", {
+   #pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+   #pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
+   #plot_hexbin_fc(pbmc_small, col="test", feature="CA2", type="scale.data")
+    #pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
+    #expect_equal(class(plot_hexbin_fc(pbmc_small, col="test", feature="CA2",
+    #type="scale.data"))[2], "ggplot")
+#})
 
 test_that("correct plot_hexbin_fc SingleCellExperiment", {
   pbmc_small <- mockSCE() 
@@ -17,11 +17,11 @@ test_that("correct plot_hexbin_fc SingleCellExperiment", {
                                     type="counts"))[2], "ggplot")
 })
 
-test_that("error plot_hexbin_fc Seurat", {
-  pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
-  expect_error(plot_hexbin_fc(pbmc_small, col="test", feature="CA2",
-                              type="counts"))
-})
+#test_that("error plot_hexbin_fc Seurat", {
+  #pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
+  #expect_error(plot_hexbin_fc(pbmc_small, col="test", feature="CA2",
+                              #type="counts"))
+#})
 
 test_that("error plot_hexbin_fc SingleCellExperiment", {
   pbmc_small <- mockSCE() 

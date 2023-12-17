@@ -75,8 +75,7 @@ plot_hexbin_interact <- function(sce,
   
   .plot_hexbin_interact_helper(first_x, second_x, out, cID, interact,
                                feature, title, xlab, ylab)
-}  
-  
+}
 
 .plot_hexbin_interact_helper <- function(first_x, second_x,  out, cID, interact,
     feature, title, xlab, ylab) {

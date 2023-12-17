@@ -33,7 +33,9 @@ Suggests:
     shinydashboard,
     iSEE,
     igraph, 
-    scran
+    scran,
+    tibble,
+    scuttle
 URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
