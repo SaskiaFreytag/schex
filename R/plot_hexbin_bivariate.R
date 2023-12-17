@@ -31,7 +31,6 @@
 #'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
@@ -41,12 +40,17 @@
 #' @export
 #'
 #' @examples
-#' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D")
-#' plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D", fan=TRUE)
+#' # For SingleCellExperiment object
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
+#' plot_hexbin_bivariate(tenx_pbmc3k, type="RNA", feature="CD3D")
+#' plot_hexbin_bivariate(tenx_pbmc3k, type="RNA", feature="CD3D", fan=TRUE)
 plot_hexbin_bivariate <- function(sce, 
                                 mod="RNA", 
                                 type,
