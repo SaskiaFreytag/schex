@@ -1,16 +1,13 @@
 #' Plot of feature expression and uncertainty of single cells in bivariate 
 #'    hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param mod A string referring to the name of the modality used for plotting.
 #'     For RNA modality use "RNA". For other modalities use name of alternative 
 #'     object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
-#'     or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
 #'     object.
 #' @param type A string referring to the type of assay in the
-#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-#'    data transformation in the \code{\link[Seurat]{Seurat-class}} object.
+#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param feature A string referring to the name of one feature.
 #' @param fan Logical indicating whether to plot uncertainty surpressing palette.
 #' @param title A string containing the title of the plot.
@@ -26,9 +23,6 @@
 #'    uncertainty. When using \code{fan=TRUE} the raw count data should be used. 
 #'    In order to enable the calculation of the coefficient of variation a 
 #'    pseduo-count of 1 is added to every count.
-#'
-#'    To access the data that has been integrated in the 
-#'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
 #' @import SingleCellExperiment
@@ -51,7 +45,6 @@
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
 #' plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250")
 #' plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250", fan=TRUE)
-
 plot_hexbin_bivariate <- function(sce, 
                                 mod="RNA", 
                                 type,
