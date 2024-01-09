@@ -48,9 +48,10 @@
 #' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
-#' plot_hexbin_bivariate(tenx_pbmc3k, type="RNA", feature="CD3D")
-#' plot_hexbin_bivariate(tenx_pbmc3k, type="RNA", feature="CD3D", fan=TRUE)
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
+#' plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250")
+#' plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250", fan=TRUE)
+
 plot_hexbin_bivariate <- function(sce, 
                                 mod="RNA", 
                                 type,
