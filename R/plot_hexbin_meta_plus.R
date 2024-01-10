@@ -1,8 +1,7 @@
 #' Plot of meta data with annotation of single cell data in
 #'    bivariate hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param col1 A string referring to the name of one column in the meta data of
 #'   sce by which to make the outlines. Note that this should be a factor or
 #'   a character.
@@ -44,7 +43,6 @@
 #'   }
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
@@ -53,15 +51,19 @@
 #' @export
 #'
 #' @examples
-#' #' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' pbmc_small$RNA_snn_res.0.8 <- as.factor(pbmc_small$RNA_snn_res.0.8)
-#' plot_hexbin_meta_plus(pbmc_small, col1="RNA_snn_res.0.8",
-#'   col2="nCount_RNA", action="mean")
-#' plot_hexbin_meta_plus(pbmc_small, col1="RNA_snn_res.0.8",
-#'   col2="groups", action="prop", no=1)
+#' # For SingleCellExperiment object
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[-rm_ind, ]
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),perCellQCMetrics(tenx_pbmc3k))
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+#' tenx_pbmc3k$sizeChemistry <- as.factor(tenx_pbmc3k$Chemistry)
+#' plot_hexbin_meta_plus(tenx_pbmc3k, col1 = "Chemistry", col2 = "total", action = "median")
+
 plot_hexbin_meta_plus <- function(sce,
     col1,
     col2,

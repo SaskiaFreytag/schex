@@ -1,7 +1,6 @@
 #' Plot of meta data of single cell data in bivariate hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param col A string referring to the name of one column in the meta data of
 #'    sce by which to colour the hexagons.
 #' @param action A string specifying how meta data of observations in
@@ -29,8 +28,8 @@
 #'       a factor or character.}
 #'       \item{\code{prop}}{Returns the proportion of each level or unique
 #'       character in the bin. The associated meta data column needs to be a
-#'       factor or character.}
-#'       \item{\code{prop_0}}{Returns the proportion of observations in the bin
+#'       \item{\code{prop_0}}{Returns the proportion of observations in the b
+#'       factor or character.}in
 #'       greater than 0. The associated meta data column needs to be numeric.}
 #'       \item{\code{mode}}{Returns the mode of the observations in the bin. The
 #'       associated meta data column needs to be numeric.}
@@ -41,21 +40,13 @@
 #'   }
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @export
 #'
 #' @examples
-#' #' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority")
-#' plot_hexbin_meta(pbmc_small, col="groups", action="prop", no=1)
 #' # For SingleCellExperiment object
-#' \dontrun{
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
@@ -69,7 +60,6 @@
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_meta(tenx_pbmc3k, col = "total", action = "median")
-#' }
 plot_hexbin_meta <- function(sce,
     col,
     action,

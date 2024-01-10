@@ -10,7 +10,6 @@ setMethod(".prepare_data_feature", "SingleCellExperiment", function (sce,
     feature) {
   
     if(mod=="RNA"){
-  
         ind <- match(feature, rownames(sce))
 
         if (is.na(ind)) {

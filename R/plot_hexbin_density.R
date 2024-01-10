@@ -30,7 +30,6 @@ plot_hexbin_density <- function(sce,
 
 }
 
-
 .plot_hexbin_density_helper <- function(out, title, xlab, ylab){
   
     if(is.null(out)){
@@ -51,7 +50,7 @@ plot_hexbin_density <- function(sce,
   
     out <- as_tibble(out)
   
-    ggplot(out, aes_string("x", "y", fill="number_of_cells")) +
+    ggplot(out, aes("x", "y", fill="number_of_cells")) +
         geom_hex(stat = "identity") + scale_fill_viridis_c() +
         theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
         labs(x=xlab, y=ylab) + theme(legend.title=element_blank())

@@ -2,7 +2,7 @@
 #'    bivariate hexagon cells.
 #'
 #' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat-class}} object.
+#'    object.
 #' @param col A string referring to the name of one column in the meta data of
 #'    sce by which to compare. Note this factor can only contain two levels.
 #' @param mod A string referring to the name of one column in the meta data of
@@ -24,13 +24,26 @@
 #'   individual-specific effects are required.
 #'   
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @export
 #'
 #' @examples
+#' #' # For SingleCellExperiment
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calcAverage(tenx_pbmc3k)<0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
+#'    perCellQCMetrics(tenx_pbmc3k))
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
+#' plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
+#'    feature="ENSG00000135250", action="median")
+#'    
 #' #' # For Seurat object
 #' library(Seurat)
 #' data("pbmc_small")

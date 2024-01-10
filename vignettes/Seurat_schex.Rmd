@@ -43,6 +43,7 @@ set.seed(10)
 pbmc_small <- RunUMAP(pbmc_small, dims=1:10,
       verbose = FALSE)
 ```
+
 ### Converting to SingleCellExperiment object
 
 We will now convert the Seurat object into a SingleCellExperiment object.
