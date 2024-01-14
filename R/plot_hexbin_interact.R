@@ -1,13 +1,11 @@
 #' Plot of interaction of expression of single cells in bivariate hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param mod A vector of strings referring to the names of the modularities.
 #'    For \code{\link[SingleCellExperiment]{SingleCellExperiment}} use "RNA" to
 #'    access the RNA expression data stored as the main experiment type.
 #' @param type A vector of strings referring to the types of assays in the
-#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} or the types of
-#'    transformation in \code{\link[Seurat]{Seurat-class}} object.
+#'    \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param feature A vector of strings referring to the names of one features in
 #'    the same order as the vector of modularities.
 #' @param interact A string specifying how interaction between features is
@@ -31,7 +29,6 @@
 #'    Note that \code{fc} should be applied to log normalized values.
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @importFrom methods slotNames
 #' @import ggplot2
@@ -39,17 +36,21 @@
 #' @export
 #'
 #' @examples
-#' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc.sce <- as.SingleCellExperiment(pbmc_small)
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' protein <- matrix(rnorm(10 * ncol(pbmc_small)), ncol = ncol(pbmc_small))
+#'  For SingleCellExperiment
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' protein <- matrix(rnorm(10 * ncol(tenx_pbmc3k)), ncol = ncol(tenx_pbmc3k))
 #' rownames(protein) <- paste0("A", seq(1, 10, 1))
-#' colnames(protein) <- colnames(pbmc_small)
-#' pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
-#' plot_hexbin_interact(pbmc_small, mod=c("RNA", "ADT"), type=c("count", "count"),
-#'      feature=c("CD7", "A1"), interact="mi")
+#' colnames(protein) <- colnames(tenx_pbmc3k)
+#' alt_adt <- SummarizedExperiment(assays = list(counts = protein))
+#' altExp(tenx_pbmc3k, "ADT") <- alt_adt
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
+#' plot_hexbin_interact(tenx_pbmc3k, type = c("counts", "counts"), mod = c("RNA", "ADT"), feature = c("ENSG00000126756", "A1"), interact = "mi")
 plot_hexbin_interact <- function(sce,
     mod,
     type,
