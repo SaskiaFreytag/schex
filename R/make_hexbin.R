@@ -58,3 +58,32 @@ setMethod("make_hexbin", "SingleCellExperiment", function(sce,
 
   return(sce)
 })
+
+.make_hexbin_helper <- function(dr, nbins = 80, use_dims) {
+  if (dim(dr)[2] < max(use_dims)) {
+    stop("Please specify use_dims that are calculated.")
+  }
+  
+  xbnds <- range(c(dr[, use_dims[1]]))
+  ybnds <- range(c(dr[, use_dims[2]]))
+  
+  drhex <- hexbin(dr[, use_dims[1]],
+                  dr[, use_dims[2]],
+                  nbins,
+                  xbnds = xbnds,
+                  ybnds = ybnds,
+                  IDs = TRUE
+  )
+  cID <- drhex@cID
+  drhex <- cbind(
+    as.numeric(hcell2xy(drhex)$x),
+    as.numeric(hcell2xy(drhex)$y),
+    as.numeric(drhex@count)
+  )
+  
+  colnames(drhex) <- c("x", "y", "number_of_cells")
+  
+  res <- list(cID = cID, hexbin.matrix = drhex)
+  
+  return(res)
+}
