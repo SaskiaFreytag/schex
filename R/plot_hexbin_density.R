@@ -53,7 +53,7 @@ plot_hexbin_density <- function(sce,
   
     out <- as_tibble(out)
   
-    ggplot(out, aes("x", "y", fill="number_of_cells")) +
+    ggplot(out, aes("x", "y", fill=as.numeric("number_of_cells"))) +
         geom_hex(stat = "identity") + scale_fill_viridis_c() +
         theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
         labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
