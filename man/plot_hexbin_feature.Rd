@@ -76,7 +76,7 @@ This function plots the expression of any feature in the hexagon
 library(TENxPBMCData)
 library(scater)
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calcAverage(tenx_pbmc3k)<0.1
+rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
 colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
    perCellQCMetrics(tenx_pbmc3k))
