@@ -17,18 +17,15 @@ plot_hexbin_bivariate(
 )
 }
 \arguments{
-\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat-class}} object.}
+\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{mod}{A string referring to the name of the modality used for plotting.
 For RNA modality use "RNA". For other modalities use name of alternative 
 object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
-or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
 object.}
 
 \item{type}{A string referring to the type of assay in the
-\code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
+\code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{feature}{A string referring to the name of one feature.}
 
@@ -57,15 +54,17 @@ This function plots the mean expression and a measure of uncertainty
    uncertainty. When using \code{fan=TRUE} the raw count data should be used. 
    In order to enable the calculation of the coefficient of variation a 
    pseduo-count of 1 is added to every count.
-
-   To access the data that has been integrated in the 
-   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
-# For Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D")
-plot_hexbin_bivariate(pbmc_small, type="RNA", feature="CD3D", fan=TRUE)
+# For SingleCellExperiment object
+library(TENxPBMCData)
+library(scater)
+tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
+plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250")
+plot_hexbin_bivariate(tenx_pbmc3k, type="counts", feature="ENSG00000135250", fan=TRUE)
 }

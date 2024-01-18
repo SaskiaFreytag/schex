@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' #' # For SingleCellExperiment object
+#' # For SingleCellExperiment object
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")

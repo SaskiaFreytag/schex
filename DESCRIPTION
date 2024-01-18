@@ -10,8 +10,7 @@ Description: Builds hexbin plots for variables and dimension reduction stored
     Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Depends: SingleCellExperiment (>= 1.7.4),
     Seurat,
-    ggplot2 (>= 3.2.1),
-    shiny
+    ggplot2 (>= 3.2.1)
 Imports: hexbin,
         stats,
         methods,
@@ -19,7 +18,6 @@ Imports: hexbin,
         dplyr,
         entropy,
         ggforce,
-        scales,
         grid,
         concaveman
 Suggests: 
@@ -40,7 +38,7 @@ URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 biocViews: Software, Sequencing,
       SingleCell, DimensionReduction, Visualization
 VignetteBuilder: knitr

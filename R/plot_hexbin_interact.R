@@ -36,21 +36,18 @@
 #' @export
 #'
 #' @examples
-#'  For SingleCellExperiment
+#' # For SingleCellExperiment
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-#' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
-#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+#' rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),perCellQCMetrics(tenx_pbmc3k))
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-#' protein <- matrix(rnorm(10 * ncol(tenx_pbmc3k)), ncol = ncol(tenx_pbmc3k))
-#' rownames(protein) <- paste0("A", seq(1, 10, 1))
-#' colnames(protein) <- colnames(tenx_pbmc3k)
-#' alt_adt <- SummarizedExperiment(assays = list(counts = protein))
-#' altExp(tenx_pbmc3k, "ADT") <- alt_adt
-#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
-#' plot_hexbin_interact(tenx_pbmc3k, type = c("counts", "counts"), mod = c("RNA", "ADT"), feature = c("ENSG00000126756", "A1"), interact = "mi")
+#' tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 10, dimension_reduction = "PCA")
+#' plot_hexbin_interact(tenx_pbmc3k, type = c("counts", "counts"), mod = c("RNA", "RNA"), feature = c("ENSG00000146109", "ENSG00000102265"), interact = "fc")
+
 plot_hexbin_interact <- function(sce,
     mod,
     type,

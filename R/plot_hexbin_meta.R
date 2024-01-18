@@ -27,9 +27,10 @@
 #'       observations in the bin. The associated meta data column needs to be
 #'       a factor or character.}
 #'       \item{\code{prop}}{Returns the proportion of each level or unique
-#'       character in the bin. The associated meta data column needs to be a
+#'       character in the bin. The associated meta data column needs to be 
+#'       a factor or character}
 #'       \item{\code{prop_0}}{Returns the proportion of observations in the b
-#'       factor or character.}in
+#'       factor or character in the bin
 #'       greater than 0. The associated meta data column needs to be numeric.}
 #'       \item{\code{mode}}{Returns the mode of the observations in the bin. The
 #'       associated meta data column needs to be numeric.}
