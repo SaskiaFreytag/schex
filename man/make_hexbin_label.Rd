@@ -29,5 +29,6 @@ tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
-make_hexbin_label(tenx_pbmc3k, col="Chemistry")
+tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace=TRUE))
+make_hexbin_label(tenx_pbmc3k, col="random")
 }
