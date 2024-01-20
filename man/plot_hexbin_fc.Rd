@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_hexbin_fc.R
 \name{plot_hexbin_fc}
 \alias{plot_hexbin_fc}
-\title{Plot of fold change of selected gene in single cell data using 
+\title{Plot of fold change of selected gene in single cell data using
    bivariate hexagon cells.}
 \usage{
 plot_hexbin_fc(
@@ -45,15 +45,15 @@ the different levels in the selected column of the meta data.}
 A \code{\link{ggplot2}{ggplot}} object.
 }
 \description{
-Plot of fold change of selected gene in single cell data using 
+Plot of fold change of selected gene in single cell data using
    bivariate hexagon cells.
 }
 \details{
-This function plots fold change within each 
-  hexagon, which are calculated with \code{\link{make_hexbin}}. 
-  Note that the fold change is only accurate if the condition 
-  investigated is within the same individual. For conditions across 
-  different individuals different methods that account for 
+This function plots fold change within each
+  hexagon, which are calculated with \code{\link{make_hexbin}}.
+  Note that the fold change is only accurate if the condition
+  investigated is within the same individual. For conditions across
+  different individuals different methods that account for
   individual-specific effects are required.
 }
 \examples{
@@ -61,12 +61,12 @@ This function plots fold change within each
 library(TENxPBMCData)
 library(scater)
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
-tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),perCellQCMetrics(tenx_pbmc3k))
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), perCellQCMetrics(tenx_pbmc3k))
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-tenx_pbmc3k$test <- as.factor(sample(1:2, dim(tenx_pbmc3k)[2], replace=TRUE))
-plot_hexbin_fc(tenx_pbmc3k, col = "test", feature="ENSG00000187608", type = "counts" )
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+tenx_pbmc3k$test <- as.factor(sample(1:2, dim(tenx_pbmc3k)[2], replace = TRUE))
+plot_hexbin_fc(tenx_pbmc3k, col = "test", feature = "ENSG00000187608", type = "counts")
 }

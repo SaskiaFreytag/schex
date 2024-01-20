@@ -27,7 +27,7 @@ plot_hexbin_feature_plus(
 sce by which to colour the hexagons.}
 
 \item{mod}{A string referring to the name of the modality used for plotting.
-For RNA modality use "RNA". For other modalities use name of alternative 
+For RNA modality use "RNA". For other modalities use name of alternative
 object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 object.}
 
@@ -90,7 +90,9 @@ rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
 tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA") 
-plot_hexbin_feature_plus(tenx_pbmc3k, col="Sample", type="counts",
-   feature="ENSG00000135250", action="mean")
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
+plot_hexbin_feature_plus(tenx_pbmc3k,
+    col = "Sample", type = "counts",
+    feature = "ENSG00000135250", action = "mean"
+)
 }

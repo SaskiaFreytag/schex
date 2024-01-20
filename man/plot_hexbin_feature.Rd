@@ -21,8 +21,8 @@ plot_hexbin_feature(
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{mod}{A string referring to the name of the modality used for plotting.
-For RNA modality use "RNA". For other modalities use name of alternative 
-object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
+For RNA modality use "RNA". For other modalities use name of alternative
+object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 object.}
 
 \item{type}{A string referring to the type of assay in the
@@ -40,11 +40,11 @@ binned  hexagon cells are to be summarized. Possible actions are
 
 \item{ylab}{A string containing the title of the y axis.}
 
-\item{lower_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
-remove expression values below this quantile. Expressed as decimal. 
+\item{lower_cutoff}{For \code{mode}, \code{mean} and \code{median} actions,
+remove expression values below this quantile. Expressed as decimal.
 Default: 0}
 
-\item{upper_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
+\item{upper_cutoff}{For \code{mode}, \code{mean} and \code{median} actions,
 remove expression values above this quantile. Expressed as decimal.
 Default: 1}
 }
@@ -76,15 +76,21 @@ This function plots the expression of any feature in the hexagon
 library(TENxPBMCData)
 library(scater)
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calculateAverage(tenx_pbmc3k)<0.1
-tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-   perCellQCMetrics(tenx_pbmc3k))
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+colData(tenx_pbmc3k) <- cbind(
+    colData(tenx_pbmc3k),
+    perCellQCMetrics(tenx_pbmc3k)
+)
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-   feature="ENSG00000135250", action="median")
-plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-   feature="ENSG00000135250", action="mode")
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+plot_hexbin_feature(tenx_pbmc3k,
+    type = "logcounts",
+    feature = "ENSG00000135250", action = "median"
+)
+plot_hexbin_feature(tenx_pbmc3k,
+    type = "logcounts",
+    feature = "ENSG00000135250", action = "mode"
+)
 }

@@ -57,55 +57,54 @@
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 #' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
 #' tenx_pbmc3k <- tenx_pbmc3k[-rm_ind, ]
-#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),perCellQCMetrics(tenx_pbmc3k))
+#' colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), perCellQCMetrics(tenx_pbmc3k))
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' tenx_pbmc3k$sizeChemistry <- as.factor(tenx_pbmc3k$Chemistry)
 #' plot_hexbin_meta_plus(tenx_pbmc3k, col1 = "Chemistry", col2 = "total", action = "median")
-
-plot_hexbin_meta_plus <- function(sce,
+plot_hexbin_meta_plus <- function(
+    sce,
     col1,
     col2,
     action,
-    no=1,
-    colors=NULL,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL,
-    expand_hull=3,
-    na.rm=FALSE,
+    no = 1,
+    colors = NULL,
+    title = NULL,
+    xlab = NULL,
+    ylab = NULL,
+    expand_hull = 3,
+    na.rm = FALSE,
     ...) {
-  
     out <- .extract_hexbin(sce)
     cID <- .extract_cID(sce)
-  
-    if(is.null(out)){
+
+    if (is.null(out)) {
         stop("Compute hexbin representation before plotting.")
     }
-    
-    if(is.null(title)) {
-      title <- paste0(col1, "_majority", "_", col2, "_", action)
+
+    if (is.null(title)) {
+        title <- paste0(col1, "_majority", "_", col2, "_", action)
     }
-  
+
     x_col2 <- .prepare_data_meta(sce, col2)
     x <- .prepare_data_meta(sce, col1)
-  
-    hh <- .make_hexbin_function(x, 'majority', cID, na.rm)
+
+    hh <- .make_hexbin_function(x, "majority", cID, na.rm)
     hh2 <- .make_hexbin_function(x_col2, action, cID, na.rm)
     out <- as_tibble(out)
-  
-    if(is.factor(x)){
-        out$meta <- factor(hh, levels=levels(x))
+
+    if (is.factor(x)) {
+        out$meta <- factor(hh, levels = levels(x))
     } else {
         out$meta <- hh
     }
 
     out$meta2 <- hh2
-        
-    .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "meta2",
-        colors=colors, expand_hull=expand_hull, title=title,
-        xlab=xlab, ylab=ylab, ...)
-    
-}
 
+    .plot_hexbin_plus(out,
+        colour_by = "meta", fill_by_gene = "meta2",
+        colors = colors, expand_hull = expand_hull, title = title,
+        xlab = xlab, ylab = ylab, ...
+    )
+}

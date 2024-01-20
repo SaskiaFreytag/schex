@@ -59,7 +59,7 @@ This function plots any column of the meta data in the hexagon cell
       observations in the bin. The associated meta data column needs to be
       a factor or character.}
       \item{\code{prop}}{Returns the proportion of each level or unique
-      character in the bin. The associated meta data column needs to be 
+      character in the bin. The associated meta data column needs to be
       a factor or character}
       \item{\code{prop_0}}{Returns the proportion of observations in the b
       factor or character in the bin
@@ -80,8 +80,8 @@ tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
 tenx_pbmc3k <- tenx_pbmc3k[-rm_ind, ]
 colData(tenx_pbmc3k) <- cbind(
-  colData(tenx_pbmc3k),
-  perCellQCMetrics(tenx_pbmc3k)
+    colData(tenx_pbmc3k),
+    perCellQCMetrics(tenx_pbmc3k)
 )
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)

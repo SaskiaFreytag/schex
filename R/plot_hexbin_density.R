@@ -23,39 +23,40 @@
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
 #' plot_hexbin_density(tenx_pbmc3k)
-plot_hexbin_density <- function(sce, 
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL){
-    
+plot_hexbin_density <- function(
+    sce,
+    title = NULL,
+    xlab = NULL,
+    ylab = NULL) {
     out <- .extract_hexbin(sce)
     .plot_hexbin_density_helper(out, title, xlab, ylab)
-
 }
 
-.plot_hexbin_density_helper <- function(out, title, xlab, ylab){
-  
-    if(is.null(out)){
-      stop("Compute hexbin representation before plotting.")
-   }
-  
-    if(is.null(title)) {
+.plot_hexbin_density_helper <- function(out, title, xlab, ylab) {
+    if (is.null(out)) {
+        stop("Compute hexbin representation before plotting.")
+    }
+
+    if (is.null(title)) {
         title <- "Density"
     }
-  
-    if(is.null(xlab)) {
+
+    if (is.null(xlab)) {
         xlab <- "x"
     }
-    
-    if(is.null(ylab)) {
+
+    if (is.null(ylab)) {
         ylab <- "y"
     }
-  
+
     out <- as_tibble(out)
-  
-    ggplot(out, aes("x", "y", fill=as.numeric("number_of_cells"))) +
-        geom_hex(stat = "identity") + scale_fill_viridis_c() +
-        theme_classic() + theme(legend.position="bottom") + ggtitle(title) +
-        labs(x=xlab, y=ylab) + theme(legend.title=element_blank())
-  
+
+    ggplot(out, aes("x", "y", fill = as.numeric("number_of_cells"))) +
+        geom_hex(stat = "identity") +
+        scale_fill_viridis_c() +
+        theme_classic() +
+        theme(legend.position = "bottom") +
+        ggtitle(title) +
+        labs(x = xlab, y = ylab) +
+        theme(legend.title = element_blank())
 }
