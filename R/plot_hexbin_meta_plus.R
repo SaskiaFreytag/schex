@@ -61,8 +61,9 @@
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' tenx_pbmc3k$sizeChemistry <- as.factor(tenx_pbmc3k$Chemistry)
-#' plot_hexbin_meta_plus(tenx_pbmc3k, col1 = "Chemistry", col2 = "total", action = "median")
+#' tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace = TRUE))
+#' tenx_pbmc3k$random <- as.factor(tenx_pbmc3k$random)
+#' plot_hexbin_meta_plus(tenx_pbmc3k, col1 = "random", col2 = "total", action = "median")
 plot_hexbin_meta_plus <- function(
     sce,
     col1,
