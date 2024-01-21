@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 library(ggplot2)
 theme_set(theme_classic())
 ```

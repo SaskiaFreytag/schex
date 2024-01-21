@@ -2,7 +2,7 @@
 title: "Using schex with Seurat"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Seurat_schex}
+  %\VignetteIndexEntry{Seurat_to_SCE}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
     collapse = TRUE,
     comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 library(ggplot2)
 theme_set(theme_classic())
 ```
