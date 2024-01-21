@@ -40,7 +40,7 @@
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
-#' tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace = TRUE))
+#' tenx_pbmc3k$random <- factor(sample(1:2, ncol(tenx_pbmc3k), replace = TRUE))
 #' plot_hexbin_fc(tenx_pbmc3k, col = "random", feature = "ENSG00000187608", type = "counts")
 plot_hexbin_fc <- function(
     sce,
