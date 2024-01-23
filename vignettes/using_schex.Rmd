@@ -269,3 +269,9 @@ these plots. Simply use `ggsave` in order to save any created plot.
 ```{r, eval=FALSE}
 ggsave(gg, file = "schex_plot.pdf")
 ```
+
+To find the details of the session for reproducibility, use this:
+
+```{r}
+sessionInfo()
+```
