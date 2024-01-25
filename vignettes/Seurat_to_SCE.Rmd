@@ -118,3 +118,9 @@ The fact that `schex` renders `ggplot` objects can also be used to save these pl
 ```{r, eval=FALSE}
 ggsave(gg, file = "schex_plot.pdf")
 ```
+
+To find the details of the session for reproducibility, use this:
+
+```{r}
+sessionInfo()
+```
