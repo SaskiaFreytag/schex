@@ -21,7 +21,6 @@
 #' @return A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @importFrom hexbin hexbin hcell2xy
 #' @import SingleCellExperiment
-#' @import Seurat
 #' @export
 #'
 #' @examples
