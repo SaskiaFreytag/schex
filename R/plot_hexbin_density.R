@@ -51,7 +51,7 @@ plot_hexbin_density <- function(
 
     out <- as_tibble(out)
 
-    ggplot(out, aes("x", "y", fill = as.numeric("number_of_cells"))) +
+    ggplot(out, aes_string("x", "y", fill = "number_of_cells")) +
         geom_hex(stat = "identity") +
         scale_fill_viridis_c() +
         theme_classic() +
