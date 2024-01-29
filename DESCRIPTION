@@ -9,7 +9,6 @@ Description: Builds hexbin plots for variables and dimension reduction stored
     ideas used in this package are based on the excellent work of Dan Carr,
     Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Depends: SingleCellExperiment (>= 1.7.4),
-    Seurat,
     ggplot2 (>= 3.2.1)
 Imports: hexbin,
         stats,
@@ -28,6 +27,7 @@ Suggests:
     covr,
     TENxPBMCData,
     scater,
+    Seurat,
     shinydashboard,
     iSEE,
     igraph, 
