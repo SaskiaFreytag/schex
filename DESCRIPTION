@@ -18,6 +18,7 @@ Imports: hexbin,
         entropy,
         ggforce,
         grid,
+        rlang,
         concaveman
 Suggests: 
     ggrepel,

@@ -10,6 +10,7 @@
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
+#' @import rlang
 #' @export
 #'
 #' @examples
@@ -51,7 +52,7 @@ plot_hexbin_density <- function(
 
     out <- as_tibble(out)
 
-    ggplot(out, aes_string("x", "y", fill = "number_of_cells")) +
+    ggplot(out, aes(x = !!sym("x"), y = !!sym("y"), fill = !!sym("number_of_cells"))) +
         geom_hex(stat = "identity") +
         scale_fill_viridis_c() +
         theme_classic() +
