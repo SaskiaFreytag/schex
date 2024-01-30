@@ -6,3 +6,4 @@
 ^\.git$
 ^doc$
 ^Meta$
+^schex\.Rproj$
