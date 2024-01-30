@@ -21,21 +21,18 @@ plot_hexbin_feature_plus(
 )
 }
 \arguments{
-\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat-class}} object.}
+\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}.}
 
 \item{col}{A string referring to the name of one column in the meta data of
 sce by which to colour the hexagons.}
 
 \item{mod}{A string referring to the name of the modality used for plotting.
-For RNA modality use "RNA". For other modalities use name of alternative 
-object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
-or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
+For RNA modality use "RNA". For other modalities use name of alternative
+object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 object.}
 
 \item{type}{A string referring to the type of assay in the
-\code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
+\code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{feature}{A string referring to the name of one feature.}
 
@@ -83,15 +80,20 @@ This function plots any gene expresssion in the hexagon cell
      \item{\code{median}}{Returns the median of the observations in the bin.
      The associated meta data column needs to be numeric.}
   }
-  
-   To access the data that has been integrated in the 
-   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
-#' # For Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature_plus(pbmc_small, col="RNA_snn_res.1", type="counts",
-   feature="NRBP1", action="mean")
+# For SingleCellExperiment object
+library(TENxPBMCData)
+library(scater)
+tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
+tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace = TRUE))
+plot_hexbin_feature_plus(tenx_pbmc3k,
+    col = "random", type = "counts",
+    feature = "ENSG00000135250", action = "mean"
+)
 }

@@ -18,18 +18,15 @@ plot_hexbin_feature(
 )
 }
 \arguments{
-\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat-class}} object.}
+\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{mod}{A string referring to the name of the modality used for plotting.
-For RNA modality use "RNA". For other modalities use name of alternative 
-object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
-or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
+For RNA modality use "RNA". For other modalities use name of alternative
+object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 object.}
 
 \item{type}{A string referring to the type of assay in the
-\code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-data transformation in the \code{\link[Seurat]{Seurat-class}} object.}
+\code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{feature}{A string referring to the name of one feature.}
 
@@ -43,11 +40,11 @@ binned  hexagon cells are to be summarized. Possible actions are
 
 \item{ylab}{A string containing the title of the y axis.}
 
-\item{lower_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
-remove expression values below this quantile. Expressed as decimal. 
+\item{lower_cutoff}{For \code{mode}, \code{mean} and \code{median} actions,
+remove expression values below this quantile. Expressed as decimal.
 Default: 0}
 
-\item{upper_cutoff}{For \code{mode}, \code{mean} and \code{median} actions, 
+\item{upper_cutoff}{For \code{mode}, \code{mean} and \code{median} actions,
 remove expression values above this quantile. Expressed as decimal.
 Default: 1}
 }
@@ -73,45 +70,27 @@ This function plots the expression of any feature in the hexagon
       \item{\code{median}}{Returns the median of the observations in the bin.
       The associated meta data column needs to be numeric.}
    }
-   
-   To access the data that has been integrated in the 
-   \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
 }
 \examples{
-# For Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
-   action="median")
-plot_hexbin_feature(pbmc_small, type="counts", feature="TALDO1", 
-   action="median", lower_cutoff=0.2, upper_cutoff=0.5)
 # For SingleCellExperiment object
-\dontrun{
 library(TENxPBMCData)
 library(scater)
 tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
-rm_ind <- calcAverage(tenx_pbmc3k)<0.1
-tenx_pbmc3k <- tenx_pbmc3k[!rm_ind,]
-colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k),
-   perCellQCMetrics(tenx_pbmc3k))
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+colData(tenx_pbmc3k) <- cbind(
+    colData(tenx_pbmc3k),
+    perCellQCMetrics(tenx_pbmc3k)
+)
 tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 tenx_pbmc3k <- runPCA(tenx_pbmc3k)
-tenx_pbmc3k <- make_hexbin( tenx_pbmc3k, 20, dimension_reduction = "PCA")
-plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-   feature="ENSG00000135250", action="median")
-plot_hexbin_feature(tenx_pbmc3k, type="logcounts",
-   feature="ENSG00000135250", action="mode")
-}
-# For other modalities in Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-protein <- matrix(rnorm(10* ncol(pbmc_small)), ncol=ncol(pbmc_small))
-rownames(protein) <- paste0("A", seq(1,10,1))
-colnames(protein) <- colnames(pbmc_small)
-pbmc_small[["ADT"]] <- CreateAssayObject(counts = protein)
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-plot_hexbin_feature(pbmc_small, type="counts", mod="ADT",
-    feature="A1", action="prop_0")
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+plot_hexbin_feature(tenx_pbmc3k,
+    type = "logcounts",
+    feature = "ENSG00000135250", action = "median"
+)
+plot_hexbin_feature(tenx_pbmc3k,
+    type = "logcounts",
+    feature = "ENSG00000135250", action = "mode"
+)
 }

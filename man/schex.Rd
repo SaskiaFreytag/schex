@@ -6,7 +6,7 @@
 \title{schex: A package for plotting hexbin plots for single cell omics data.}
 \description{
 Builds hexbin plots for variables and dimension reduction stored
-single cell omics data such as SingleCellExperiment and SeuratObject. The
+single cell omics data such as SingleCellExperiment. The
 ideas used in this package are based on the excellent work of Dan Carr,
 Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 }

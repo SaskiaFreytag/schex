@@ -2,16 +2,17 @@ Package: schex
 Type: Package
 Title: Hexbin plots for single cell omics data
 Version: 1.7.0
-Author: Saskia Freytag
-Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
+Authors@R:
+    person("Saskia", "Freytag", email = "freytag.s@wehi.edu.au", role = c("aut", "cre"))
+    person("Wancheng", "Tang", email = "wanchengt@student.unimelb.edu.au", role = c("ctb"))
+    person("Zimo", "Peng", email = "zimop@student.unimelb.edu.au", role = c("ctb"))
+    person("Jingxiu", "Huang", email = "jmhuang@student.unimelb.edu.au", role = c("ctb"))
 Description: Builds hexbin plots for variables and dimension reduction stored
     in single cell omics data such as SingleCellExperiment and SeuratObject. The
     ideas used in this package are based on the excellent work of Dan Carr,
     Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Depends: SingleCellExperiment (>= 1.7.4),
-    Seurat,
-    ggplot2 (>= 3.2.1),
-    shiny
+    ggplot2 (>= 3.2.1)
 Imports: hexbin,
         stats,
         methods,
@@ -19,8 +20,8 @@ Imports: hexbin,
         dplyr,
         entropy,
         ggforce,
-        scales,
         grid,
+        rlang,
         concaveman
 Suggests: 
     ggrepel,
@@ -30,15 +31,18 @@ Suggests:
     covr,
     TENxPBMCData,
     scater,
+    Seurat,
     shinydashboard,
     iSEE,
     igraph, 
-    scran
+    scran,
+    tibble,
+    scuttle
 URL: https://github.com/SaskiaFreytag/schex
 BugReports: https://github.com/SaskiaFreytag/schex/issues
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 biocViews: Software, Sequencing,
-      SingleCell, DimensionReduction, Visualization
+      SingleCell, DimensionReduction, Visualization, ImmunoOncology, DataImport
 VignetteBuilder: knitr

@@ -1,18 +1,15 @@
 #' Plot of gene expression and meta data of single cell data in
 #' bivariate hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'   or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}.
 #' @param col A string referring to the name of one column in the meta data of
 #'    sce by which to colour the hexagons.
 #' @param mod A string referring to the name of the modality used for plotting.
-#'     For RNA modality use "RNA". For other modalities use name of alternative 
-#'     object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}} 
-#'     or the name of the assay for the \code{\link[Seurat]{Seurat-class}} 
+#'     For RNA modality use "RNA". For other modalities use name of alternative
+#'     object for the \code{\link[SingleCellExperiment]{SingleCellExperiment}}
 #'     object.
 #' @param type A string referring to the type of assay in the
-#'   \code{\link[SingleCellExperiment]{SingleCellExperiment}} object or the
-#'   data transformation in the \code{\link[Seurat]{Seurat-class}} object.
+#'   \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param feature A string referring to the name of one feature.
 #' @param action A string specifying how gene expression of observations in
 #'   binned  hexagon cells are to be summarized. Possible actions are
@@ -44,12 +41,9 @@
 #'      \item{\code{median}}{Returns the median of the observations in the bin.
 #'      The associated meta data column needs to be numeric.}
 #'   }
-#'   
-#'    To access the data that has been integrated in the 
-#'    \code{\link[Seurat]{Seurat-class}} object specifiy \code{mod="integrated"}.
+#'
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
@@ -58,97 +52,108 @@
 #' @export
 #'
 #' @examples
-#' #' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_feature_plus(pbmc_small, col="RNA_snn_res.1", type="counts",
-#'    feature="NRBP1", action="mean")
-plot_hexbin_feature_plus <- function(sce,
+#' # For SingleCellExperiment object
+#' library(TENxPBMCData)
+#' library(scater)
+#' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+#' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+#' tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+#' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+#' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+#' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 10, dimension_reduction = "PCA")
+#' tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace = TRUE))
+#' plot_hexbin_feature_plus(tenx_pbmc3k,
+#'     col = "random", type = "counts",
+#'     feature = "ENSG00000135250", action = "mean"
+#' )
+plot_hexbin_feature_plus <- function(
+    sce,
     col,
-    mod="RNA",
+    mod = "RNA",
     type,
     feature,
     action,
-    colors=NULL,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL,
-    expand_hull=3,
+    colors = NULL,
+    title = NULL,
+    xlab = NULL,
+    ylab = NULL,
+    expand_hull = 3,
     ...) {
-  
     out <- .extract_hexbin(sce)
     cID <- .extract_cID(sce)
-  
-    if(is.null(out)){
+
+    if (is.null(out)) {
         stop("Compute hexbin representation before plotting.")
     }
-  
+
     x_gene <- .prepare_data_feature(sce, mod, type, feature)
-  
+
     hh_gene <- .make_hexbin_function(x_gene, action, cID)
-  
+
     x <- .prepare_data_meta(sce, col)
-    
-    hh <- .make_hexbin_function(x, 'majority', cID)
+
+    hh <- .make_hexbin_function(x, "majority", cID)
     out <- as_tibble(out)
-  
-    if(is.factor(x)){
-        out$meta <- factor(hh, levels=levels(x))
+
+    if (is.factor(x)) {
+        out$meta <- factor(hh, levels = levels(x))
     } else {
         out$meta <- hh
     }
 
     out$feature <- hh_gene
-    
-    if(is.null(title)) {
-      title <- paste0(col, "_majority_", feature, "_", action)
+
+    if (is.null(title)) {
+        title <- paste0(col, "_majority_", feature, "_", action)
     }
-    
-    .plot_hexbin_plus(out, colour_by = "meta", fill_by_gene = "feature",
-        colors=colors, expand_hull=expand_hull, title=title,
-        xlab=xlab, ylab=ylab, ...)  
+
+    .plot_hexbin_plus(out,
+        colour_by = "meta", fill_by_gene = "feature",
+        colors = colors, expand_hull = expand_hull, title = title,
+        xlab = xlab, ylab = ylab, ...
+    )
 }
 
 
-.plot_hexbin_plus <- function(drhex, colour_by="meta", fill_by_gene,
-                            colors=NULL, expand_hull=3, legend=legend,
-                         title=NULL, xlab=NULL, ylab=NULL, ...) {
+.plot_hexbin_plus <- function(drhex, colour_by = "meta", fill_by_gene,
+                              colors = NULL, expand_hull = 3, legend = legend,
+                              title = NULL, xlab = NULL, ylab = NULL, ...) {
+    if (any(!c("x", "y", colour_by) %in% colnames(drhex))) {
+        stop("The dataframe must contain columns named 'x', 'y' and col.")
+    }
 
-  if (any(!c("x", "y", colour_by) %in% colnames(drhex))) {
-    stop("The dataframe must contain columns named 'x', 'y' and col.")
-  }
+    if (is.null(xlab)) {
+        xlab <- "x"
+    }
 
-  if(is.null(xlab)) {
-    xlab <- "x"
-  }
+    if (is.null(ylab)) {
+        ylab <- "y"
+    }
 
-  if(is.null(ylab)) {
-    ylab <- "y"
-  }
-
-  if(is.null(colors)){
-
-    ggplot(drhex, aes_string(x="x", y="y", fill=fill_by_gene)) +
-      geom_hex(stat = "identity") +
-      geom_mark_hull(aes_string(label = colour_by, col = colour_by),
-      show.legend = FALSE, expand = unit(expand_hull, "mm"),
-      fill=NA, size=2, ...) +
-      theme_classic() + scale_fill_viridis_c() +
-      ggtitle(title) + labs(x=xlab, y=ylab) +
-      theme(legend.title=element_blank())
-
+    if (is.null(colors)) {
+        ggplot(drhex, aes_string(x = "x", y = "y", fill = fill_by_gene)) +
+            geom_hex(stat = "identity") +
+            geom_mark_hull(aes_string(label = colour_by, col = colour_by),
+                show.legend = FALSE, expand = unit(expand_hull, "mm"),
+                fill = NA, size = 2, ...
+            ) +
+            theme_classic() +
+            scale_fill_viridis_c() +
+            ggtitle(title) +
+            labs(x = xlab, y = ylab) +
+            theme(legend.title = element_blank())
     } else {
-
-      ggplot(drhex, aes_string(x="x", y="y", fill=fill_by_gene)) +
-        geom_hex(stat = "identity") +
-        geom_mark_hull(aes_string(label = colour_by, col = colour_by),
-        show.legend = FALSE, expand = unit(expand_hull, "mm"),
-        fill=NA, size=2, ...) + theme_classic() + scale_fill_viridis_c() +
-        ggtitle(title) + labs(x=xlab, y=ylab) +
-        theme(legend.title=element_blank()) + scale_color_manual(values=colors)
-
+        ggplot(drhex, aes_string(x = "x", y = "y", fill = fill_by_gene)) +
+            geom_hex(stat = "identity") +
+            geom_mark_hull(aes_string(label = colour_by, col = colour_by),
+                show.legend = FALSE, expand = unit(expand_hull, "mm"),
+                fill = NA, size = 2, ...
+            ) +
+            theme_classic() +
+            scale_fill_viridis_c() +
+            ggtitle(title) +
+            labs(x = xlab, y = ylab) +
+            theme(legend.title = element_blank()) +
+            scale_color_manual(values = colors)
     }
-
 }
-

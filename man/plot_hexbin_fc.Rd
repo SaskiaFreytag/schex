@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_hexbin_fc.R
 \name{plot_hexbin_fc}
 \alias{plot_hexbin_fc}
-\title{Plot of fold change of selected gene in single cell data using 
+\title{Plot of fold change of selected gene in single cell data using
    bivariate hexagon cells.}
 \usage{
 plot_hexbin_fc(
@@ -19,7 +19,7 @@ plot_hexbin_fc(
 }
 \arguments{
 \item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat-class}} object.}
+object.}
 
 \item{col}{A string referring to the name of one column in the meta data of
 sce by which to compare. Note this factor can only contain two levels.}
@@ -45,23 +45,28 @@ the different levels in the selected column of the meta data.}
 A \code{\link{ggplot2}{ggplot}} object.
 }
 \description{
-Plot of fold change of selected gene in single cell data using 
+Plot of fold change of selected gene in single cell data using
    bivariate hexagon cells.
 }
 \details{
-This function plots fold change within each 
-  hexagon, which are calculated with \code{\link{make_hexbin}}. 
-  Note that the fold change is only accurate if the condition 
-  investigated is within the same individual. For conditions across 
-  different individuals different methods that account for 
+This function plots fold change within each
+  hexagon, which are calculated with \code{\link{make_hexbin}}.
+  Note that the fold change is only accurate if the condition
+  investigated is within the same individual. For conditions across
+  different individuals different methods that account for
   individual-specific effects are required.
 }
 \examples{
-#' # For Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-pbmc_small$test <- as.factor(sample(1:2, dim(pbmc_small)[2], replace=TRUE))
-plot_hexbin_fc(pbmc_small, col="test", 
-feature="CA2", type="scale.data")
+# For SingleCellExperiment
+library(TENxPBMCData)
+library(scater)
+tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+colData(tenx_pbmc3k) <- cbind(colData(tenx_pbmc3k), perCellQCMetrics(tenx_pbmc3k))
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
+tenx_pbmc3k$random <- factor(sample(1:2, ncol(tenx_pbmc3k), replace = TRUE))
+plot_hexbin_fc(tenx_pbmc3k, col = "random", feature = "ENSG00000187608", type = "counts")
 }

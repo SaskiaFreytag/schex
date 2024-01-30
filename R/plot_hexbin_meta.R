@@ -1,7 +1,6 @@
 #' Plot of meta data of single cell data in bivariate hexagon cells.
 #'
-#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-#'    or \code{\link[Seurat]{Seurat-class}} object.
+#' @param sce A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.
 #' @param col A string referring to the name of one column in the meta data of
 #'    sce by which to colour the hexagons.
 #' @param action A string specifying how meta data of observations in
@@ -28,9 +27,10 @@
 #'       observations in the bin. The associated meta data column needs to be
 #'       a factor or character.}
 #'       \item{\code{prop}}{Returns the proportion of each level or unique
-#'       character in the bin. The associated meta data column needs to be a
-#'       factor or character.}
-#'       \item{\code{prop_0}}{Returns the proportion of observations in the bin
+#'       character in the bin. The associated meta data column needs to be
+#'       a factor or character}
+#'       \item{\code{prop_0}}{Returns the proportion of observations in the b
+#'       factor or character in the bin
 #'       greater than 0. The associated meta data column needs to be numeric.}
 #'       \item{\code{mode}}{Returns the mode of the observations in the bin. The
 #'       associated meta data column needs to be numeric.}
@@ -41,82 +41,77 @@
 #'   }
 #'
 #' @return A \code{\link{ggplot2}{ggplot}} object.
-#' @import Seurat
 #' @import SingleCellExperiment
 #' @import ggplot2
 #' @importFrom dplyr as_tibble
 #' @export
 #'
 #' @examples
-#' #' # For Seurat object
-#' library(Seurat)
-#' data("pbmc_small")
-#' pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-#' plot_hexbin_meta(pbmc_small, col="RNA_snn_res.1", action="majority")
-#' plot_hexbin_meta(pbmc_small, col="groups", action="prop", no=1)
 #' # For SingleCellExperiment object
-#' \dontrun{
 #' library(TENxPBMCData)
 #' library(scater)
 #' tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
 #' rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
 #' tenx_pbmc3k <- tenx_pbmc3k[-rm_ind, ]
 #' colData(tenx_pbmc3k) <- cbind(
-#'   colData(tenx_pbmc3k),
-#'   perCellQCMetrics(tenx_pbmc3k)
+#'     colData(tenx_pbmc3k),
+#'     perCellQCMetrics(tenx_pbmc3k)
 #' )
 #' tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
 #' tenx_pbmc3k <- runPCA(tenx_pbmc3k)
 #' tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 20, dimension_reduction = "PCA")
 #' plot_hexbin_meta(tenx_pbmc3k, col = "total", action = "median")
-#' }
-plot_hexbin_meta <- function(sce,
+plot_hexbin_meta <- function(
+    sce,
     col,
     action,
     no = 1,
-    colors=NULL,
-    title=NULL,
-    xlab=NULL,
-    ylab=NULL,
-    na.rm=FALSE){
-  
-  out <- .extract_hexbin(sce)
-  cID <- .extract_cID(sce)
-  
-  x <- .prepare_data_meta(sce, col)
-  
-  .plot_hexbin_meta_helper(x, out, cID, col, action, no, title, xlab, ylab,
-                           colors, na.rm)
+    colors = NULL,
+    title = NULL,
+    xlab = NULL,
+    ylab = NULL,
+    na.rm = FALSE) {
+    out <- .extract_hexbin(sce)
+    cID <- .extract_cID(sce)
+
+    x <- .prepare_data_meta(sce, col)
+
+    .plot_hexbin_meta_helper(
+        x, out, cID, col, action, no, title, xlab, ylab,
+        colors, na.rm
+    )
 }
 
 
 .plot_hexbin_meta_helper <- function(x, out, cID, col, action, no, title,
                                      xlab, ylab, colors, na.rm) {
-  if (is.null(out)) {
-    stop("Compute hexbin representation before plotting.")
-  }
-
-  hh <- .make_hexbin_function(x, action, cID, na.rm, no)
-  out <- as_tibble(out)
-
-  if (action == "majority") {
-    if (is.factor(x)) {
-      out$meta <- factor(hh, levels=levels(x))
-    } else {
-      out$meta <- hh
+    if (is.null(out)) {
+        stop("Compute hexbin representation before plotting.")
     }
-  } else {
-    out$meta <- hh
-  }
-  
-  if (is.null(title)) {
-    if(action == "prop"){
-      title <- paste0(col, "_", action, "_", unique(x)[no])
-    } else {
-      title <- paste0(col, "_", action)
-    }
-  }
 
-  .plot_hexbin(out, colour_by = "meta", action=action,
-      colors = colors, title = title, xlab = xlab, ylab = ylab)
+    hh <- .make_hexbin_function(x, action, cID, na.rm, no)
+    out <- as_tibble(out)
+
+    if (action == "majority") {
+        if (is.factor(x)) {
+            out$meta <- factor(hh, levels = levels(x))
+        } else {
+            out$meta <- hh
+        }
+    } else {
+        out$meta <- hh
+    }
+
+    if (is.null(title)) {
+        if (action == "prop") {
+            title <- paste0(col, "_", action, "_", unique(x)[no])
+        } else {
+            title <- paste0(col, "_", action)
+        }
+    }
+
+    .plot_hexbin(out,
+        colour_by = "meta", action = action,
+        colors = colors, title = title, xlab = xlab, ylab = ylab
+    )
 }

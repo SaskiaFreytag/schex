@@ -7,8 +7,7 @@
 make_hexbin_label(sce, col)
 }
 \arguments{
-\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}}
-or \code{\link[Seurat]{Seurat-class}} object.}
+\item{sce}{A \code{\link[SingleCellExperiment]{SingleCellExperiment}} object.}
 
 \item{col}{The name referring to one column in meta data for which
 the label position on the plot is calculated for every level. The chosen
@@ -21,9 +20,15 @@ A dataframe.
 Group label plot position.
 }
 \examples{
-#' # For Seurat object
-library(Seurat)
-data("pbmc_small")
-pbmc_small <- make_hexbin(pbmc_small, 10, dimension_reduction = "PCA")
-make_hexbin_label(pbmc_small, col="RNA_snn_res.1")
+# For SingleCellExperiment object
+library(TENxPBMCData)
+library(scater)
+tenx_pbmc3k <- TENxPBMCData(dataset = "pbmc3k")
+rm_ind <- calculateAverage(tenx_pbmc3k) < 0.1
+tenx_pbmc3k <- tenx_pbmc3k[!rm_ind, ]
+tenx_pbmc3k <- logNormCounts(tenx_pbmc3k)
+tenx_pbmc3k <- runPCA(tenx_pbmc3k)
+tenx_pbmc3k <- make_hexbin(tenx_pbmc3k, 80, dimension_reduction = "PCA")
+tenx_pbmc3k$random <- factor(sample(1:3, ncol(tenx_pbmc3k), replace = TRUE))
+make_hexbin_label(tenx_pbmc3k, col = "random")
 }

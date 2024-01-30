@@ -1,0 +1,126 @@
+---
+title: "Using schex with Seurat"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Seurat_to_SCE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+library(ggplot2)
+theme_set(theme_classic())
+```
+
+Reduced dimension plotting is one of the essential tools for the analysis of single cell data. However, as the number of cells/nuclei in these plots increases, the usefulness of these plots decreases. Many cells are plotted on top of each other obscuring information, even when taking advantage of transparency settings. This package provides binning strategies of cells/nuclei into hexagon cells. Plotting summarized information of all cells/nuclei in their respective hexagon cells presents information without obstructions. The package seemlessly works with the two most common object classes for the storage of single cell data; `SingleCellExperiment` from the [SingleCellExperiment](https://bioconductor.org/packages/3.9/bioc/html/SingleCellExperiment.html) package and `Seurat` from the [Seurat](https://satijalab.org/seurat/) package. In this vignette I will be presenting the use of `schex` for `SingleCellExperiment` objects that are converted from `Seurat` objects.
+
+## Load libraries
+
+```{r load-libraries, message=FALSE, warning=FALSE}
+library(schex)
+library(dplyr)
+library(Seurat)
+```
+
+## Setup single cell data
+
+In order to demonstrate the capabilities of the schex package, I will use the a subsetted dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 10x Genomics. There are 80 single cells with 230 features in this dataset.
+
+```{r}
+pbmc_small
+```
+
+### Perform dimensionality reductions
+
+The dataset already contains two dimension reductions (PCA and TSNE). We will now add UMAP. Since there is a random component in the UMAP, we will set a seed. You can also add dimension reductions after conversion using package that include functionalities for SingleCellExperiment objects.
+
+```{r umap, message=FALSE, warning=FALSE}
+set.seed(10)
+pbmc_small <- RunUMAP(pbmc_small,
+    dims = 1:10,
+    verbose = FALSE
+)
+```
+
+### Converting to SingleCellExperiment object
+
+We will now convert the Seurat object into a SingleCellExperiment object.
+
+```{r seurat-to-sce, message=FALSE, warning=FALSE}
+pbmc.sce <- as.SingleCellExperiment(pbmc_small)
+```
+
+## Plotting single cell data
+
+At this stage in the workflow we usually would like to plot aspects of our data in one of the reduced dimension representations. Instead of plotting this in an ordinary fashion, I will demonstrate how schex can provide a better way of plotting this.
+
+#### Calculate hexagon cell representation
+
+First, I will calculate the hexagon cell representation for each cell for a specified dimension reduction representation. I decide to use `nbins=40` which specifies that I divide my x range into 10 bins. Note that this might be a parameter that you want to play around with depending on the number of cells/ nuclei in your dataset. Generally, for more cells/nuclei, `nbins` should be increased.
+
+```{r calc-hexbin}
+pbmc.sce <- make_hexbin(pbmc.sce,
+    nbins = 10,
+    dimension_reduction = "UMAP"
+)
+```
+
+#### Plot number of cells/nuclei in each hexagon cell
+
+First I plot how many cells are in each hexagon cell. This should be relatively even, otherwise change the `nbins` parameter in the previous calculation.
+
+```{r plot-density, fig.height=7, fig.width=7}
+plot_hexbin_density(pbmc.sce)
+```
+
+#### Plot meta data in hexagon cell representation
+
+Next I colour the hexagon cells by some meta information, such as the median total count in each hexagon cell.
+
+```{r plot-meta-1, fig.height=7, fig.width=7}
+plot_hexbin_meta(pbmc.sce, col = "nCount_RNA", action = "median")
+```
+
+#### Plot gene expression in hexagon cell representation
+
+Finally, I will visualize the gene expression of the CD1C gene in the hexagon cell representation.
+
+```{r plot-gene, fig.height=7, fig.width=7}
+gene_id <- "CD1C"
+schex::plot_hexbin_feature(pbmc.sce,
+    type = "counts", feature = gene_id,
+    action = "mean", xlab = "UMAP1", ylab = "UMAP2",
+    title = paste0("Mean of ", gene_id)
+)
+```
+
+### Understanding `schex` output as `ggplot` objects
+
+The `schex` packages renders ordinary `ggplot` objects and thus these can be treated and manipulated using the [`ggplot` grammar](https://ggplot2.tidyverse.org/). For example the non-data components of the plots can be changed using the function `theme`.
+
+```{r}
+gene_id <- "CD1C"
+gg <- schex::plot_hexbin_feature(pbmc.sce,
+    type = "counts", feature = gene_id,
+    action = "mean", xlab = "UMAP1", ylab = "UMAP2",
+    title = paste0("Mean of ", gene_id)
+)
+gg + theme_void()
+```
+
+The fact that `schex` renders `ggplot` objects can also be used to save these plots. Simply use `ggsave` in order to save any created plot.
+
+```{r, eval=FALSE}
+ggsave(gg, file = "schex_plot.pdf")
+```
+
+To find the details of the session for reproducibility, use this:
+
+```{r}
+sessionInfo()
+```
