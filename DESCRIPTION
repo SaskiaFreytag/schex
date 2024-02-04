@@ -1,14 +1,10 @@
 Package: schex
 Type: Package
 Title: Hexbin plots for single cell omics data
-Version: 1.8.0
-Authors@R:
-    c(person("Saskia", "Freytag", email = "freytag.s@wehi.edu.au", role = c("aut", "cre")),
-    person("Wancheng", "Tang", email = "wanchengt@student.unimelb.edu.au", role = c("ctb")),
-    person("Zimo", "Peng", email = "zimop@student.unimelb.edu.au", role = c("ctb")),
-    person("Jingxiu", "Huang", email = "jmhuang@student.unimelb.edu.au", role = c("ctb")))
+Version: 1.17.0
+Maintainer: Saskia Freytag <saskia.freytag@perkins.uwa.edu.au>
 Description: Builds hexbin plots for variables and dimension reduction stored
-    in single cell omics data such as SingleCellExperiment and SeuratObject. The
+    in single cell omics data such as SingleCellExperiment. The
     ideas used in this package are based on the excellent work of Dan Carr,
     Nicholas Lewin-Koh, Martin Maechler and Thomas Lumley.
 Depends: SingleCellExperiment (>= 1.7.4),
